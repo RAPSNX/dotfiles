@@ -26,7 +26,7 @@
     bind = SUPER,R, togglesplit,
     bind = SUPER,RETURN, exec, ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty
     bind = SUPER,S, movetoworkspace, 2
-    bind = SUPER,SPACE, exec, ${pkgs.wofi}/bin/wofi
+    bind = SUPER,SPACE, exec, ${pkgs.wofi}/bin/wofi --show=drun -a
     bind = SUPER,P, exec, ${pkgs.wlogout}/bin/wlogout
     bind = SUPER,T, togglefloating,
     bind = SUPER,H, movefocus, l
