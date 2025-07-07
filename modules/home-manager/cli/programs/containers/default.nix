@@ -2,6 +2,7 @@
   imports = [
     ./k9s.nix
     ./krewfile.nix
+    ./podman.nix
   ];
 
   home.packages = with pkgs; [
