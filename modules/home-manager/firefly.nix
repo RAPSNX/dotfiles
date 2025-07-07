@@ -40,7 +40,7 @@
             }
             {
               ID = "eDP-1";
-              settings = "highres, 6400x0, 1";
+              settings = "disabled";
             }
           ];
         };
