@@ -26,8 +26,7 @@
     bind = SUPER,R, togglesplit,
     bind = SUPER,RETURN, exec, ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty
     bind = SUPER,S, movetoworkspace, 2
-    bind = SUPER,SPACE, exec, export LC_ALL=C && ${pkgs.tofi}/bin/tofi-drun | xargs hyprctl dispatch exec --
-    bind = SUPER,D, exec, export LC_ALL=C && ${pkgs.tofi}/bin/tofi-run | xargs hyprctl dispatch exec --
+    bind = SUPER,SPACE, exec, ${pkgs.wofi}/bin/wofi
     bind = SUPER,P, exec, ${pkgs.wlogout}/bin/wlogout
     bind = SUPER,T, togglefloating,
     bind = SUPER,H, movefocus, l
