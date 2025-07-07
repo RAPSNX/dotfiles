@@ -23,7 +23,7 @@ in {
   catppuccin.k9s.enable = true;
   programs.k9s = {
     enable = true;
-    plugin =
+    plugins =
       defaultPlugins
       // lib.optionalAttrs config.roles.workdevice workPlugins;
   };
