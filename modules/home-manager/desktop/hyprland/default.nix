@@ -31,24 +31,20 @@ in {
   config = mkIf cfg.enable {
     catppuccin.hyprland.enable = true;
 
-    wayland.windowManager.hyprland = mkMerge [
-      {enable = true;}
+    wayland.windowManager.hyprland = {
+      enable = true;
+      package =
+        if cfg.configOnly
+        then null
+        else pkgs.hyprland;
+    };
 
-      (mkIf cfg.configOnly {
-        package = null;
-        systemd.enable = false;
-        xwayland.enable = false;
-        portalPackage = null;
-      })
+    home.packages = with pkgs; [
+      hyprland-qtutils
     ];
 
-    home.packages = with pkgs;
-      mkIf (!cfg.configOnly) [
-        hyprland-qtutils
-      ];
-
     xdg.portal = {
-      enable = !cfg.configOnly;
+      enable = true;
       config = {
         common = {
           default = ["hyprland" "gtk"];
