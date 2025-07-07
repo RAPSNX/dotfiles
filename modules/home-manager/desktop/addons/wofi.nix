@@ -3,7 +3,7 @@
     enable = true;
     settings = {
       show = "drun";
-      prompt = "❯";
+      prompt = "";
       insensitive = true;
       allow_markup = false;
       location = "center";
@@ -12,5 +12,11 @@
       columns = 1;
       allow_images = true;
     };
+    style = ''
+      * {
+        font-family: CaskaydiaCove Nerd Font;
+        font-size: 16px;
+      }
+    '';
   };
 }
