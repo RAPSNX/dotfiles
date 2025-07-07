@@ -7,11 +7,12 @@
   imports = [
     # Tools
     ./audio.nix
-    ./tray.nix
+    # TODO: make configurable or remove
+    # ./tray.nix
 
     # Programs
     ./spotify.nix
-    ./nextcloud.nix
+    # ./nextcloud.nix
 
     # Browsers
     ./firefox.nix
