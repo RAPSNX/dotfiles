@@ -3,21 +3,9 @@
   lib,
   ...
 }: {
+  catppuccin.gtk.enable = true;
   gtk = lib.mkForce {
     enable = true;
-
-    theme = {
-      name = "Catppuccin-GTK-Dark";
-      package = pkgs.magnetic-catppuccin-gtk;
-    };
-
-    iconTheme = {
-      package = pkgs.catppuccin-papirus-folders.override {
-        flavor = "mocha";
-        accent = "lavender";
-      };
-      name = "Papirus-Dark";
-    };
 
     gtk3.extraConfig = {
       gtk-toolbar-style = "GTK_TOOLBAR_BOTH";
@@ -65,6 +53,7 @@
       XCURSOR_SIZE = toString size;
       XCURSOR_PATH = "${pkgs.catppuccin-cursors.mochaMauve}/share/icons";
       HYPRCURSOR_THEME = name;
+      # GTK_THEME = "catppuccin-mocha-mauve-standard+default";
     };
   };
 }

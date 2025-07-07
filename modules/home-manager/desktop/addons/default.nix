@@ -5,6 +5,6 @@
     ./wlogout
     ./qt.nix
     ./gtk.nix
-    ./tofi.nix
+    ./wofi.nix
   ];
 }
