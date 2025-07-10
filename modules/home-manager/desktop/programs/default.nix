@@ -31,7 +31,6 @@
       # gnome-disk-utility
     ]
     ++ lib.optionals config.roles.workdevice [
-      mumble
       stackit-cli
       openstackclient-full
       vault-bin

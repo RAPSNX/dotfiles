@@ -6,10 +6,16 @@
     ./desktop
   ];
 
-  # NOTE: Additionally
+  # TODO:
+  # --
+  # - Check what needs to be configurable (diff zion)
   # - Create window-rules
-  # - Check dotfiles structure
   # - Move most of nixOS to HM
+  # - Use atuin
+
+  # FIXME:
+  # - Bluetooth tray not working
+  # - Check why nixpath in nixshell is at very fist shadowing the nix-shell path
 
   config = {
     # my hm-modules config
@@ -31,11 +37,11 @@
             }
             {
               ID = "DP-1";
-              settings = "3840x2160@240, 2560x0, 1.5";
+              settings = "3840x2160@240, 2560x0, 1.25";
             }
             {
               ID = "eDP-1";
-              settings = "disabled";
+              settings = "highres, 5632x0, 1";
             }
           ];
         };
