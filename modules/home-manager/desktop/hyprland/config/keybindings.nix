@@ -12,12 +12,12 @@
     bind = SUPER,7, workspace, 5
     bind = SUPER,8, workspace, 6
 
-    bind = SUPER+SHIFT,1, movetoworkspace, 1
-    bind = SUPER+SHIFT,2, movetoworkspace, 2
-    bind = SUPER+SHIFT,3, movetoworkspace, 3
-    bind = SUPER+SHIFT,6, movetoworkspace, 4
-    bind = SUPER+SHIFT,7, movetoworkspace, 5
-    bind = SUPER+SHIFT,8, movetoworkspace, 6
+    bind = ALT,Q, movetoworkspace, 1
+    bind = ALT,W, movetoworkspace, 2
+    bind = ALT,E, movetoworkspace, 3
+    bind = ALT,Z, movetoworkspace, 4
+    bind = ALT,U, movetoworkspace, 5
+    bind = ALT,I, movetoworkspace, 6
 
     bind = SUPER,O, togglespecialworkspace, scratchy
     bind = SUPER,M, togglespecialworkspace, aux
