@@ -1,8 +1,8 @@
-{
+{config, ...}: {
   sops.secrets.atuin = {
-    sopsFile = ./secrets.yaml;
-    path = "/home/rap/.config/atuin/config.toml";
-    mode = "777";
+    sopsFile = ../../../common/secrets.yaml;
+    path = "${config.xdg.configHome}/atuin/config.toml";
+    mode = "750";
   };
   programs.atuin = {
     enable = true;

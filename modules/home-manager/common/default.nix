@@ -28,6 +28,12 @@ in {
     }
     else {};
 
+  sops.secrets.ssh_config = {
+    sopsFile = ./secrets.yaml;
+    path = "${config.home.homeDirectory}/.ssh/config";
+    mode = "600";
+  };
+
   programs.home-manager.enable = true;
   xdg.enable = true;
 

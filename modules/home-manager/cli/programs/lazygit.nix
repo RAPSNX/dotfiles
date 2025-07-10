@@ -3,7 +3,7 @@
     enable = true;
     settings = {
       git = {
-        autoFetch = false; # does not work when SSH key requires password (ref: https://github.com/jesseduffield/lazygit/issues/1498)
+        autoFetch = true;
         paging = {
           colorArg = "always";
           pager = "${config.programs.git.delta.package}/bin/delta --dark --paging=never";
