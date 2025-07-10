@@ -4,7 +4,7 @@ keys:
     - &kubex age1qmfyk82lve992tvzw82d4dgr3ek77xx9m7uez3uq55mgqu6r5eys40evkr
     - &firefly age13ps3kkzfn3eyaqc50reudytr5ws80ssamzh09kj6878a6lgxususuu58wp
 creation_rules:
-  - path_regex: ./modules/home-manager/common/secrets.yaml
+  - path_regex: modules/home-manager/common/secrets.yaml$
     key_groups:
       - age:
           - *rap_zion 
