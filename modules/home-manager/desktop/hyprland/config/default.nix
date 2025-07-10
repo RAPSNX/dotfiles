@@ -8,7 +8,7 @@
 in {
   imports = [
     ./keybindings.nix
-    # ./windowrules.nix
+    ./windowrules.nix
   ];
 
   wayland.windowManager.hyprland.settings = {
@@ -17,16 +17,6 @@ in {
       gaps_out = 10;
       border_size = 3;
     };
-
-    windowrule = [
-      "float, class:steam"
-      "size 70% 70%, class:steam"
-      "center, class:steam"
-
-      "float, class:com.nextcloud.desktopclient.nextcloud"
-      "size 20% 50%, class:com.nextcloud.desktopclient.nextcloud"
-      "move 79% 3%, class:com.nextcloud.desktopclient.nextcloud"
-    ];
 
     xwayland = {
       force_zero_scaling = true;
@@ -47,7 +37,7 @@ in {
       lib.concatLists [
         # move alacritty to special workspace silently
         [
-          "[ workspace special silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
+          "[ workspace special:scratchy silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
           "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
         ]
 
@@ -63,22 +53,6 @@ in {
       lib.map
       (m: "${m.ID}, ${m.settings}")
       cfg.monitors;
-
-    workspace = with lib; let
-      # NOTE: Possible nil-pointer if elemAt access null object
-      primary = (elemAt cfg.monitors 1).ID;
-      secondary = (elemAt cfg.monitors 0).ID;
-    in [
-      "name:1, monitor:${primary}"
-      "name:2, monitor:${primary}"
-      "name:3, monitor:${primary}"
-      "name:4, monitor:${primary}"
-      "name:5, monitor:${secondary}"
-      "name:6, monitor:${secondary}"
-      "name:7, monitor:${secondary}"
-      "name:8, monitor:${secondary}"
-      "name:9, monitor:${secondary}"
-    ];
 
     dwindle = {
       preserve_split = "yes";
