@@ -3,9 +3,21 @@
   lib,
   ...
 }: {
-  catppuccin.gtk.enable = true;
   gtk = lib.mkForce {
     enable = true;
+
+    theme = {
+      name = "Catppuccin-GTK-Purple-Dark";
+      package = pkgs.magnetic-catppuccin-gtk.override {
+        tweaks = ["black"];
+        accent = ["purple"];
+      };
+    };
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.catppuccin-papirus-folders;
+    };
 
     gtk3.extraConfig = {
       gtk-toolbar-style = "GTK_TOOLBAR_BOTH";
