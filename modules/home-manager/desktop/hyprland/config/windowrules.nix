@@ -11,18 +11,20 @@ in {
   wayland.windowManager.hyprland.settings = {
     workspace = [
       # Main
-      "name:term, monitor:${primary}"
-      "name:browser, monitor:${primary}"
-      "name:spare, monitor:${primary}"
+      "name:1, monitor:${primary}" # Terminal
+      "name:2, monitor:${primary}" # Browser
+      "name:3, monitor:${primary}" # Spare
 
       # Secondary
-      "name:browser2, monitor:${secondary}"
-      "name:pass, monitor:${secondary}"
-      "name:spare2, monitor:${secondary}"
+      "name:4, monitor:${secondary}" # Browser
+      "name:5, monitor:${secondary}" # Keepass
+      "name:6, monitor:${secondary}" # Spare
 
       # Special
       "special:scratchy"
       "special:aux"
+
+      "special:blackhole"
     ];
 
     windowrule = [
@@ -33,6 +35,16 @@ in {
       "float, class:com.nextcloud.desktopclient.nextcloud"
       "size 20% 50%, class:com.nextcloud.desktopclient.nextcloud"
       "move 79% 3%, class:com.nextcloud.desktopclient.nextcloud"
+    ];
+
+    windowrulev2 = [
+      "workspace 1, class:^(Alacritty)$"
+      "workspace 4, class:^(firefox_firefox)$"
+
+      "workspace special:aux, class:^(.*mumble.*)$"
+      "workspace special:aux, class:^(.*ZSTray.*)$"
+
+      "workspace special:blackhole, class:^(Intune-portal)$"
     ];
   };
 }
