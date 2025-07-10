@@ -7,6 +7,10 @@
     if config.roles.workdevice
     then "raphael.groemmer@stackit.cloud"
     else "github@rapsn.me";
+
+  myGit = pkgs.git.override {
+    withLibsecret = true;
+  };
 in {
   home.packages = with pkgs; [
     gh
@@ -16,7 +20,8 @@ in {
     git = {
       enable = true;
       inherit userEmail;
-      userName = "rgroemmer";
+      package = myGit;
+      userName = "RAPSNX";
 
       delta.enable = true;
       ignores = [
@@ -34,6 +39,7 @@ in {
       ];
 
       extraConfig = {
+        credential.helper = "${myGit}/bin/git-credential-libsecret";
         commit = {
           gpgsign = false;
         };

@@ -26,7 +26,7 @@ with lib; let
 
   '';
 in {
-  config = mkIf cfg.hyprpaper {
+  config = {
     home.file.".config/wallpapers" = {
       source = ./wallpapers;
       recursive = true;

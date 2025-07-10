@@ -19,7 +19,6 @@ in {
   options.roles.desktop.hyprland = {
     enable = mkEnableOption "Enable hyprland";
     hyprlock = mkEnableOption "Enable hyprlock & hypridle";
-    hyprpaper = mkEnableOption "Enable hyprpaper desktop wallpaper manager";
     hyprcursor = mkEnableOption "Enable hyprcursor theme";
     configOnly = mkEnableOption "Only write hyprland config with home-manager";
     monitors = mkOption {
@@ -31,13 +30,15 @@ in {
   config = mkIf cfg.enable {
     catppuccin.hyprland.enable = true;
 
-    wayland.windowManager.hyprland = {
-      enable = true;
-      package =
-        if cfg.configOnly
-        then null
-        else pkgs.hyprland;
-    };
+    wayland.windowManager.hyprland =
+      {
+        enable = true;
+        package = pkgs.hyprland;
+      }
+      // lib.optionalAttrs cfg.configOnly {
+        package = null;
+        systemd.enable = false;
+      };
 
     home.packages = with pkgs; [
       hyprland-qtutils

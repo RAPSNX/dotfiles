@@ -46,26 +46,17 @@ in {
     in
       lib.concatLists [
         # move alacritty to special workspace silently
+        [
+          "[ workspace special silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
+          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+        ]
 
-        (delay 1
-          [
-            "[ workspace special silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
-            "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-          ])
+        (delay 2 [
+          "firefox"
+          "/home/rap/.nix-profile/bin/shuffle-wallpaper"
+        ])
 
-        (delay 2
-          [
-            # work
-            "/opt/zscaler/scripts/zstray_desktop.sh"
-            "teams-for-linux"
-          ])
-
-        # TODO: fix
-        # "${pkgs.firefox-devedition}/bin/firefox-devedition"
-        # "${pkgs.blueman}/bin/blueman-applet"
-
-        # set wallpapers randomly
-        # "sleep 1 && /home/rap/.nix-profile/bin/shuffle-wallpaper"
+        (delay 2 config.roles.autostart)
       ];
 
     monitor =

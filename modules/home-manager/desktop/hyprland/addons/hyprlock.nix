@@ -1,7 +1,7 @@
 {
-  pkgs,
   lib,
   config,
+  pkgs,
   ...
 }:
 with lib; let
@@ -11,11 +11,6 @@ in {
     programs.hyprlock = {
       enable = true;
       package = pkgs.hyprlock;
-      settings = {
-        general = {
-          disable_loading_bar = true;
-        };
-      };
     };
 
     services.hypridle = {

@@ -29,7 +29,6 @@
           enable = true;
           configOnly = true;
           hyprlock = false;
-          hyprpaper = false;
           monitors = [
             {
               ID = "HDMI-A-1";
@@ -46,6 +45,10 @@
           ];
         };
       };
+      autostart = [
+        "/opt/zscaler/scripts/zstray_desktop.sh"
+        "mumble"
+      ];
     };
     # hm config
     home = {

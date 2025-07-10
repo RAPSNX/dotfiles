@@ -18,3 +18,5 @@ sops updatekeys secrets/secrets.yaml
 ```
 
 # TODO: Add sops-nix docs, add & edit secrets
+
+# TODO: Add workdevice manual steps, ppa hyprland and uwsm
