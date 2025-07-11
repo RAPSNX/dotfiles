@@ -5,10 +5,6 @@
 }: let
   inherit (config.roles) useNixGL;
 in {
-  imports = [
-    ./addons
-  ];
-
   catppuccin.alacritty.enable = true;
   programs.alacritty = {
     enable = true;
@@ -45,7 +41,7 @@ in {
           family = fontname;
           style = "Italic";
         };
-        size = 12;
+        size = 13;
         offset.y = 3;
       };
 
