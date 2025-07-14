@@ -1,43 +1,33 @@
 {
   pkgs,
-  config,
-  lib,
+  inputs,
   ...
-}:
-with lib; let
-  cfg = config.roles.desktop.hyprland;
-
-  primary = (elemAt cfg.monitors 1).ID;
-  secondary = (elemAt cfg.monitors 0).ID;
-
-  path = "~/.config/wallpapers";
-
+}: let
+  path = "${inputs.self.outPath}/extra/wallpapers";
   shuffle-wallpaper = pkgs.writeShellScriptBin "shuffle-wallpaper" ''
-    #!/usr/bin/env bash
+      #!/usr/bin/env bash
 
-    SHUFFLE1="$(ls ${path} | shuf -n1)"
-    hyprctl hyprpaper preload "${path}/$SHUFFLE1"
-    hyprctl hyprpaper wallpaper "${primary},${path}/$SHUFFLE1"
-    SHUFFLE2="$(ls ${path} | grep -v "$SHUFFLE1" | shuf -n1)"
-    hyprctl hyprpaper preload "${path}/$SHUFFLE2"
-    hyprctl hyprpaper wallpaper "${secondary},${path}/$SHUFFLE2"
+      WALLPAPER_PATH="${path}"
+      readarray -t MONITORS < <(hyprctl monitors -j | jq -r '.[].name')
+      COUNT=''${#MONITORS[@]}
 
-    hyprctl hyprpaper unload unused
+      readarray -t PAPERS < <(find "$WALLPAPER_PATH" -type f | shuf -n "$COUNT")
 
+      for ((i = 0; i < COUNT; i++)); do
+          MON="''${MONITORS[i]}"
+          PAPER="''${PAPERS[i]}"
+          hyprctl hyprpaper preload "$PAPER"
+          hyprctl hyprpaper wallpaper "$MON,$PAPER"
+          hyprctl hyprpaper unload unused
+    done
   '';
 in {
-  config = {
-    home.file.".config/wallpapers" = {
-      source = ./wallpapers;
-      recursive = true;
-    };
-    home.packages = [shuffle-wallpaper];
+  home.packages = [shuffle-wallpaper];
 
-    services.hyprpaper = {
-      enable = true;
-      settings = {
-        splash = false;
-      };
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      splash = false;
     };
   };
 }

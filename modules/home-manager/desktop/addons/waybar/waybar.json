@@ -14,9 +14,9 @@
         "tray",
         "memory",
         "network",
+        "backlight",
         "pulseaudio",
-        "battery",
-        "custom/power"
+        "battery"
     ],
     "wlr/taskbar": {
         "format": "{icon}",
@@ -74,17 +74,30 @@
 	      "nospacing": 1
     },
     "pulseaudio": {
-        "format": "{icon}",
-        "format-bluetooth": "󰂰",
-        "nospacing": 1,
-        "tooltip-format": "Volume : {volume}%",
-        "format-muted": "󰝟",
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "󰂰 {volume}%",
+        "format-muted": "󰝟 Muted",
+        "tooltip-format": "Volume: {volume}%\nDevice: {desc}",
         "format-icons": {
             "headphone": "",
-            "default": ["󰖀","󰕾",""]
+            "handsfree": "󰋎",
+            "default": [ "󰖀", "󰕾", "" ]
         },
         "on-click": "pavucontrol",
-        "scroll-step": 1
+        "scroll-step": 5,
+        "nospacing": false
+    },
+    "backlight": {
+      "device": "amdgpu_bl1",
+      "format": "󰃠 {percent}%",
+      "scroll-step": 5,
+      "format-icons": ["", ""]
+    },
+    "battery": {
+      "format": "{icon} {capacity}%",
+      "format-charging": " {capacity}%",
+      "format-icons": ["", "", "", "", ""],
+      "interval": 10
     },
     "custom/logo": {
         "format": " ❄️",

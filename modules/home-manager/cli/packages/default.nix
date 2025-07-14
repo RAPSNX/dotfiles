@@ -63,5 +63,6 @@ in {
     ++ lib.optionals config.roles.workdevice [
       workpkgs.gardenctl
       workpkgs.gardenlogin
+      brightnessctl
     ];
 }

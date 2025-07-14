@@ -41,9 +41,9 @@ in {
           "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
         ]
 
-        (delay 2 [
-          "firefox"
+        (delay 1 [
           "${config.home.homeDirectory}/.nix-profile/bin/shuffle-wallpaper"
+          "firefox"
         ])
 
         (delay 2 config.roles.autostart)
