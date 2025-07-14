@@ -23,8 +23,6 @@ in {
       # Special
       "special:scratchy"
       "special:aux"
-
-      "special:blackhole"
     ];
 
     windowrule = [
@@ -43,8 +41,6 @@ in {
 
       "workspace special:aux, class:^(.*mumble.*)$"
       "workspace special:aux, class:^(.*ZSTray.*)$"
-
-      "workspace special:blackhole, class:^(Intune-portal)$"
     ];
   };
 }

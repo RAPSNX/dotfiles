@@ -43,7 +43,7 @@ in {
 
         (delay 2 [
           "firefox"
-          "/home/rap/.nix-profile/bin/shuffle-wallpaper"
+          "${config.home.homeDirectory}/.nix-profile/bin/shuffle-wallpaper"
         ])
 
         (delay 2 config.roles.autostart)
