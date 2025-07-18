@@ -9,13 +9,7 @@
   # TODO:
   # --
   # - Check what needs to be configurable (diff zion)
-  # - Create window-rules
   # - Move most of nixOS to HM
-  # - Use atuin
-
-  # FIXME:
-  # - Bluetooth tray not working
-  # - Check why nixpath in nixshell is at very fist shadowing the nix-shell path
 
   config = {
     # my hm-modules config

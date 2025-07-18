@@ -1,6 +1,13 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   programs.firefox = {
-    enable = true;
+    enable =
+      if config.roles.workdevice
+      then true
+      else false;
     package = pkgs.firefox-devedition;
 
     policies = {
