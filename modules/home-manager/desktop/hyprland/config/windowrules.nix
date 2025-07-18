@@ -39,8 +39,8 @@ in {
       "workspace 1, class:^(Alacritty)$"
       "workspace 4, class:^(firefox_firefox)$"
 
-      "workspace special:aux, class:^(.*mumble.*)$"
-      "workspace special:aux, class:^(.*ZSTray.*)$"
+      "workspace special:aux silent, class:^(.*mumble.*)$"
+      "workspace special:aux silent, class:^(.*ZSTray.*)$"
     ];
   };
 }

@@ -46,9 +46,10 @@
         };
       };
       autostart = [
-        "[ workspace special:aux silent ] /snap/bin/mumble"
         "[ workspace special:aux silent ] /opt/zscaler/scripts/zstray_desktop.sh"
+        "mumble"
         "killall /opt/microsoft/intune/bin/intune-portal"
+        "sleep 1 && hyprctl dispatch workspace 1"
       ];
     };
     # hm config
