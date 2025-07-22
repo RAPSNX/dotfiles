@@ -23,13 +23,14 @@
           enable = true;
           configOnly = true;
           hyprlock = false;
+          # TODO: make monitors configurable via nw-displays and import of non-nix managed config file for hyprland config
           monitors = [
             {
               ID = "HDMI-A-1";
               settings = "2560x1440@144, 0x0, 1";
             }
             {
-              ID = "DP-1";
+              ID = "DP-2";
               settings = "3840x2160@240, 2560x0, 1.25";
             }
             {
