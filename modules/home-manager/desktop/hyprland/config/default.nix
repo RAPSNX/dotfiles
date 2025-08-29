@@ -4,6 +4,7 @@
   config,
   ...
 }: let
+  # TODO: remove
   cfg = config.roles.desktop.hyprland;
 in {
   imports = [
@@ -49,10 +50,14 @@ in {
         (delay 2 config.roles.autostart)
       ];
 
-    monitor =
-      lib.map
-      (m: "${m.ID}, ${m.settings}")
-      cfg.monitors;
+    source = [
+      "~/.config/hypr/monitors.conf"
+    ];
+    # TODO: Remove
+    # monitor =
+    #   lib.map
+    #   (m: "${m.ID}, ${m.settings}")
+    #   cfg.monitors;
 
     dwindle = {
       preserve_split = "yes";

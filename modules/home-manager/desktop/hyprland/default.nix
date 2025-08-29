@@ -9,7 +9,7 @@ with lib; let
 in {
   imports = [
     # Config
-    ./config
+    # ./config
 
     # Addons
     ./addons/hyprpaper.nix
@@ -56,6 +56,21 @@ in {
         xdg-desktop-portal-gtk
       ];
     };
+
+    # Write two files as entrypoint for `/usr/share/wayland-sessions` two point to different
+    home.file.".config/hypr/hyprland-work.conf".text = ''
+      ${builtins.readFile ./config/hyprland.conf}
+      source = ~/.config/hypr/hyprland.conf
+      source = ~/.config/hypr/monitors-work.conf
+      source = ~/.config/hypr/workspaces-work.conf
+    '';
+
+    home.file.".config/hypr/hyprland-home.conf".text = ''
+      ${builtins.readFile ./config/hyprland.conf}
+      source = ~/.config/hypr/hyprland.conf
+      source = ~/.config/hypr/monitors.conf
+      source = ~/.config/hypr/workspaces.conf
+    '';
 
     # environment.d defines environment variables for the user session, beyond shell level.
     # It is processed by `systemd --user`, basically after login.

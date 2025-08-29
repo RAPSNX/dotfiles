@@ -5,20 +5,21 @@
 }:
 with lib; let
   cfg = config.roles.desktop.hyprland;
+  # TODO: remove
   primary = (elemAt cfg.monitors 1).ID;
   secondary = (elemAt cfg.monitors 0).ID;
 in {
   wayland.windowManager.hyprland.settings = {
     workspace = [
-      # Main
-      "name:1, monitor:${primary}" # Terminal
-      "name:2, monitor:${primary}" # Browser
-      "name:3, monitor:${primary}" # Spare
-
-      # Secondary
-      "name:4, monitor:${secondary}" # Browser
-      "name:5, monitor:${secondary}" # Keepass
-      "name:6, monitor:${secondary}" # Spare
+      # # Main
+      # "name:1, monitor:${primary}" # Terminal
+      # "name:2, monitor:${primary}" # Browser
+      # "name:3, monitor:${primary}" # Spare
+      #
+      # # Secondary
+      # "name:4, monitor:${secondary}" # Browser
+      # "name:5, monitor:${secondary}" # Keepass
+      # "name:6, monitor:${secondary}" # Spare
 
       # Special
       "special:scratchy"
@@ -38,6 +39,7 @@ in {
     windowrulev2 = [
       "workspace 1, class:^(Alacritty)$"
       "workspace 4, class:^(firefox_firefox)$"
+      "workspace 5, class:^(chromium-browser)$"
 
       "workspace special:aux silent, class:^(.*mumble.*)$"
       "workspace special:aux silent, class:^(.*ZSTray.*)$"

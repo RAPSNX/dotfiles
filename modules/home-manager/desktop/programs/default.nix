@@ -34,5 +34,6 @@
       stackit-cli
       openstackclient-full
       vault-bin
+      nwg-displays
     ];
 }
