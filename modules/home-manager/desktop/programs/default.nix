@@ -16,9 +16,6 @@
     # Browsers
     ./firefox.nix
     ./chromium.nix
-
-    # Custom shell scripts
-    ./screenshot.nix
   ];
 
   # Default desktop programs
@@ -26,6 +23,8 @@
     [
       xfce.thunar
       vlc
+      grimblast
+      nwg-displays
       # gparted
       # gnome-disk-utility
     ]
@@ -33,6 +32,5 @@
       stackit-cli
       openstackclient-full
       vault-bin
-      nwg-displays
     ];
 }

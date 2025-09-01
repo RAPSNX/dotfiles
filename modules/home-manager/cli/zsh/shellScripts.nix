@@ -15,10 +15,16 @@
     KUBECONFIG=$(fzf <<<"$YAMLS")
     export KUBECONFIG=$BASE_PATH/$KUBECONFIG
   '';
+  # TODO:(app): make desktop app
+  screenshoot = pkgs.writeShellScriptBin "screenshoot" ''
+    #!/usr/bin/env bash
+    grimblast save area
+  '';
 in {
   home.packages = [
     nix_run
     nix_shell
     selc
+    screenshoot
   ];
 }
