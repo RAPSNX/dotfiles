@@ -9,9 +9,10 @@
     nix shell nixpkgs#"$@"
   '';
   selc = pkgs.writeShellScriptBin "selc" ''
+    #!/usr/bin/env bash
     BASE_PATH=$HOME/.config/kubeconfig
-    YAMLS=$(find $BASE_PATH -name '*.yaml' | awk -F/ '{ print $NF }')
-    KUBECONFIG=$(echo $YAMLS | fzf)
+    YAMLS=$(find "$BASE_PATH" -name '*.yaml' | awk -F/ '{ print $NF }')
+    KUBECONFIG=$(fzf <<<"$YAMLS")
     export KUBECONFIG=$BASE_PATH/$KUBECONFIG
   '';
 in {
