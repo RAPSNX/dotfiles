@@ -4,7 +4,7 @@
     layout = [
       {
         label = "lock";
-        action = "/usr/local/bin/hyprlock";
+        action = "hyprlock";
         text = "Lock";
         keybind = "l";
       }
