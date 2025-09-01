@@ -42,7 +42,6 @@ with lib; {
       share = true;
     };
 
-    # TODO: Move helper to extra binaries
     initContent = let
       zshConfigEarlyInit = mkOrder 550 ''
         source ~/.config/zsh/plugins/p10k.zsh

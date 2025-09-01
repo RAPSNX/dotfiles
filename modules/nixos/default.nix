@@ -18,9 +18,6 @@
     ./services/podman.nix
     ./services/tailscale.nix
 
-    # security
-    ./security/sops.nix
-
     # roles
     ./roles/k3s
     ./roles/desktop
