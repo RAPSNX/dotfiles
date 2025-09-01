@@ -56,7 +56,11 @@
     lib = nixpkgs.lib // home-manager.lib;
 
     systems = ["aarch64-linux" "x86_64-linux"];
-    pkgsFor = lib.genAttrs systems (system: import nixpkgs {inherit system;});
+    pkgsFor = lib.genAttrs systems (system:
+      import nixpkgs {
+        inherit system;
+        overlays = [(import ./overlays)];
+      });
     forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
   in {
     inherit lib;

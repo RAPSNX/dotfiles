@@ -103,3 +103,22 @@ Therefore we can use some helper functions.
       # so its used to add the system after the attribute which called the function as well as injecting into nixpkgs.
       forAllSystems = f: lib.genAttrs systems (system: f (pkgsFor system));
 ```
+
+## Overlays
+
+```nix
+final: prev: {
+  python313Packages =
+    prev.python313Packages
+    // {
+      i3ipc = prev.python313Packages.i3ipc.overrideAttrs (old: {
+        doCheck = false;
+      });
+    };
+}
+```
+
+Final is the package after this overlay. (Not needed often)
+Prev is the package before this overlay, may after some other overlays from upstream.
+
+This overlay function will be executed while instantiating `<nixpkgs>`, `prev` is the `pkgs` instance with correct `system`, before the overlay is applied.

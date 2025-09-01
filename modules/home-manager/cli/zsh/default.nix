@@ -13,13 +13,15 @@ with lib; {
 
   catppuccin.zsh-syntax-highlighting.enable = true;
 
-  programs.zsh = {
+  programs.zsh = let
+    homeDir = config.home.homeDirectory;
+  in {
     enable = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     enableCompletion = true;
     autocd = true;
-    dotDir = ".config/zsh";
+    dotDir = "${homeDir}/.config/zsh";
 
     sessionVariables = {
       EDITOR = "vim";
@@ -44,7 +46,7 @@ with lib; {
 
     initContent = let
       zshConfigEarlyInit = mkOrder 550 ''
-        source ~/.config/zsh/plugins/p10k.zsh
+        source ${homeDir}/.config/zsh/plugins/p10k.zsh
       '';
       zshConfig = mkOrder 1000 ''
         POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
