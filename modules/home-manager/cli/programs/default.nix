@@ -21,6 +21,7 @@ in {
     # Security
     ./gpg.nix
     ./sops.nix
+    ./keyring.nix
 
     # Container tools
     ./containers
@@ -32,4 +33,6 @@ in {
       eza.enable = true;
     }
     // withTheme;
+
+  services.ssh-agent.enable = true;
 }

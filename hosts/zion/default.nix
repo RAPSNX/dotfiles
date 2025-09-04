@@ -46,8 +46,6 @@
     sudo.wheelNeedsPassword = false;
   };
 
-  services.gnome.gnome-keyring.enable = true;
-
   networking = {
     hostName = "zion";
     networkmanager.enable = true;
