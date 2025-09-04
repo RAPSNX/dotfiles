@@ -26,9 +26,37 @@ in {
 
     wayland.windowManager.hyprland = {
       enable = true;
-      # TODO:(workdevice): Check if pkgs can still be set
       package = pkgs.hyprland;
       systemd.enable = false; # Disable for uswm
+
+      settings = {
+        general = {
+          gaps_in = 8;
+          gaps_out = 10;
+          border_size = 3;
+        };
+
+        # Auto tile new windows
+        dwindle = {
+          preserve_split = "yes";
+          special_scale_factor = 0.8;
+        };
+
+        xwayland = {
+          force_zero_scaling = true;
+        };
+
+        input = {
+          kb_layout = "eu";
+          repeat_rate = 45;
+          repeat_delay = 150;
+          accel_profile = "flat";
+          sensitivity = 1; # -1.0 - 1.0, 0 means no modification.
+        };
+
+        decoration = import ./config/decoration.nix;
+        exec-once = import ./config/autostart.nix {} ++ config.roles.autostart;
+      };
     };
 
     home.packages = with pkgs; [

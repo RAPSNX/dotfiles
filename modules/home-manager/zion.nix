@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ./common
 
@@ -16,6 +20,10 @@
           hyprlock = true;
         };
       };
+
+      autostart = [
+        "[ workspace special:scratchy silent ] ${pkgs.alacritty}/bin/alacritty -t scratchy"
+      ];
     };
     # hm config
     home = rec {

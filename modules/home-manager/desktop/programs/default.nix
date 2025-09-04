@@ -27,6 +27,7 @@
       nwg-displays
       gparted
       gnome-disk-utility
+      wf-recorder
     ]
     ++ lib.optionals config.roles.workdevice [
       stackit-cli

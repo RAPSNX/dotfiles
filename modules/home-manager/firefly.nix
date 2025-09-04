@@ -1,4 +1,9 @@
-{lib, ...}: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ./common
 
@@ -20,6 +25,7 @@
       };
       autostart = [
         # Programs
+        "[ workspace special:scratchy silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
         "[ workspace special:aux silent ] /opt/zscaler/scripts/zstray_desktop.sh"
         "mumble"
         "keepassxc"
