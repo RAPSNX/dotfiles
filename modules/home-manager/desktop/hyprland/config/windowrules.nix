@@ -5,11 +5,8 @@
 }:
 with lib; let
   cfg = config.roles.desktop.hyprland;
-  # TODO: remove
-  primary = (elemAt cfg.monitors 1).ID;
-  secondary = (elemAt cfg.monitors 0).ID;
 in {
-  wayland.windowManager.hyprland.settings = {
+  wayland.windowManager.hyprland.settings = mkIf cfg.enable {
     workspace = [
       # # Main
       # "name:1, monitor:${primary}" # Terminal
@@ -28,8 +25,6 @@ in {
 
     windowrule = [
       "float, class:steam"
-      "size 70% 70%, class:steam"
-      "center, class:steam"
 
       "float, class:com.nextcloud.desktopclient.nextcloud"
       "size 20% 50%, class:com.nextcloud.desktopclient.nextcloud"

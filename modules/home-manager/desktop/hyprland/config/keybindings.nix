@@ -46,7 +46,7 @@
 
     # Programms
     bind = SUPER,RETURN, exec, ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty
-    bind = SUPER,SPACE, exec, ${pkgs.wofi}/bin/wofi --show=drun -a
+    bind = SUPER,SPACE, exec, ${pkgs.fuzzel}/bin/fuzzel
     bind = SUPER,P, exec, ${pkgs.wlogout}/bin/wlogout
     bind = SUPER,Q, killactive
 

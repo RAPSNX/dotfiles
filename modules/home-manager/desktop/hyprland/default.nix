@@ -9,8 +9,7 @@ with lib; let
 in {
   imports = [
     # Config
-    # TODO:(hyprland) cleanup after zion and work done
-    # ./config
+    ./config
 
     # Addons
     ./addons/hyprpaper.nix
@@ -20,26 +19,17 @@ in {
   options.roles.desktop.hyprland = {
     enable = mkEnableOption "Enable hyprland";
     hyprlock = mkEnableOption "Enable hyprlock & hypridle";
-    hyprcursor = mkEnableOption "Enable hyprcursor theme";
-    configOnly = mkEnableOption "Only write hyprland config with home-manager";
-    monitors = mkOption {
-      type = with types; listOf attrs;
-      default = [];
-    };
   };
 
   config = mkIf cfg.enable {
     catppuccin.hyprland.enable = true;
 
-    wayland.windowManager.hyprland =
-      {
-        enable = true;
-        package = pkgs.hyprland;
-      }
-      // lib.optionalAttrs cfg.configOnly {
-        package = null;
-        systemd.enable = false;
-      };
+    wayland.windowManager.hyprland = {
+      enable = true;
+      # TODO:(workdevice): Check if pkgs can still be set
+      package = pkgs.hyprland;
+      systemd.enable = false; # Disable for uswm
+    };
 
     home.packages = with pkgs; [
       hyprland-qtutils

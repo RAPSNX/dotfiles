@@ -12,7 +12,7 @@ in {
     ./windowrules.nix
   ];
 
-  wayland.windowManager.hyprland.settings = {
+  wayland.windowManager.hyprland.settings = lib.mkIf cfg.enable {
     general = {
       gaps_in = 8;
       gaps_out = 10;
@@ -26,7 +26,7 @@ in {
     input = {
       kb_layout = "eu";
       repeat_rate = 35;
-      repeat_delay = 250;
+      repeat_delay = 200;
       accel_profile = "flat";
       sensitivity = 1; # -1.0 - 1.0, 0 means no modification.
     };
@@ -47,17 +47,12 @@ in {
           "firefox"
         ])
 
-        (delay 2 config.roles.autostart)
+        # (delay 2 config.roles.autostart)
       ];
 
     source = [
       "~/.config/hypr/monitors.conf"
     ];
-    # TODO: Remove
-    # monitor =
-    #   lib.map
-    #   (m: "${m.ID}, ${m.settings}")
-    #   cfg.monitors;
 
     dwindle = {
       preserve_split = "yes";

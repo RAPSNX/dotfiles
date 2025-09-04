@@ -1,8 +1,4 @@
-{
-  lib,
-  config,
-  ...
-}: {
+{lib, ...}: {
   imports = [
     ./common
 
@@ -12,6 +8,8 @@
 
   config = {
     roles = {
+      workdevice = false;
+
       desktop = {
         hyprland = {
           enable = true;
@@ -20,9 +18,9 @@
       };
     };
     # hm config
-    home = {
+    home = rec {
       username = "rap";
-      homeDirectory = lib.mkDefault "/home/${config.home.username}";
+      homeDirectory = lib.mkDefault "/home/${username}";
       stateVersion = lib.mkDefault "22.05";
     };
   };

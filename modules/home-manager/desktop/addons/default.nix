@@ -5,6 +5,6 @@
     ./wlogout
     ./qt.nix
     ./gtk.nix
-    ./wofi.nix
+    ./fuzzel.nix
   ];
 }

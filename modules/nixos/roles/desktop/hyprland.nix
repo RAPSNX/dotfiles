@@ -8,7 +8,10 @@ with lib; let
   cfg = config.hostConfiguration.roles.desktop;
 in {
   config = mkIf cfg {
-    programs.hyprland.enable = true;
+    programs.hyprland = {
+      enable = true;
+      withUWSM = true;
+    };
 
     services.greetd = {
       enable = true;

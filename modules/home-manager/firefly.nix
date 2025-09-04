@@ -6,13 +6,7 @@
     ./desktop
   ];
 
-  # TODO:
-  # --
-  # - Check what needs to be configurable (diff zion)
-  # - Move most of nixOS to HM
-
   config = {
-    # my hm-modules config
     roles = {
       workdevice = true;
 
@@ -22,7 +16,6 @@
         hyprland = {
           enable = true;
           configOnly = true;
-          hyprlock = false;
         };
       };
       autostart = [
