@@ -19,6 +19,7 @@ in {
       unzip
       gnused
       gnugrep
+      killall
 
       pciutils
 

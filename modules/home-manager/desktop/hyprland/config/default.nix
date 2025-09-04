@@ -25,8 +25,8 @@ in {
 
     input = {
       kb_layout = "eu";
-      repeat_rate = 35;
-      repeat_delay = 200;
+      repeat_rate = 45;
+      repeat_delay = 150;
       accel_profile = "flat";
       sensitivity = 1; # -1.0 - 1.0, 0 means no modification.
     };

@@ -51,7 +51,7 @@
 
   home = let
     name = "catppuccin-mocha-mauve-cursors";
-    size = 28;
+    size = 35;
   in {
     pointerCursor = lib.mkForce {
       enable = true;
