@@ -89,6 +89,8 @@ with lib; {
       k = "kubectl";
       kk = "k9s";
       clean = "nix-collect-garbage -d && nix-store --gc && nix-store --verify --check-contents --repair";
+
+      selc = "source select_kc";
     };
 
     oh-my-zsh = {

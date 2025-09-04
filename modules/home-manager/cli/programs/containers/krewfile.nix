@@ -11,6 +11,8 @@
       "pv-migrate"
       "stern"
       "node-shell"
+      "ns"
+      "ctx"
     ];
   };
 }

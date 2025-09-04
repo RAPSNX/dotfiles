@@ -65,7 +65,6 @@
       XCURSOR_SIZE = toString size;
       XCURSOR_PATH = "${pkgs.catppuccin-cursors.mochaMauve}/share/icons";
       HYPRCURSOR_THEME = name;
-      # GTK_THEME = "catppuccin-mocha-mauve-standard+default";
     };
   };
 }
