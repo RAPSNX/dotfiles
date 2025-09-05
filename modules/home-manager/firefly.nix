@@ -24,7 +24,6 @@
       autostart = [
         # Programs
         "[ workspace special:scratchy silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
-        "[ workspace special:aux silent ] /opt/zscaler/scripts/zstray_desktop.sh"
 
         "systemd-run --user --unit voice mumble"
         "systemd-run --user --unit secrets keepassxc"
