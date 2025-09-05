@@ -17,11 +17,9 @@
 
       useNixGL = true;
 
-      desktop = {
-        hyprland = {
-          enable = true;
-          configOnly = true;
-        };
+      desktop.hyprland = {
+        enable = true;
+        configOnly = true;
       };
       autostart = [
         # Programs

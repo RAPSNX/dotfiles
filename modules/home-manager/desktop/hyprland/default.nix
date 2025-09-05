@@ -15,6 +15,7 @@ in {
 
   options.roles.desktop.hyprland = {
     enable = mkEnableOption "Enable hyprland";
+    configOnly = mkEnableOption "Provision only config files";
     hyprlock = mkEnableOption "Enable hyprlock & hypridle";
   };
 
@@ -27,7 +28,10 @@ in {
       workspaces = import ./config/workspaces.nix;
     in {
       enable = true;
-      package = pkgs.hyprland;
+      package =
+        if cfg.configOnly
+        then null
+        else pkgs.hyprland;
       systemd.enable = false; # Disable for uswm
 
       settings = {
