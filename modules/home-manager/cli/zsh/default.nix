@@ -45,11 +45,14 @@ with lib; {
     };
 
     initContent = let
-      zshConfigEarlyInit = mkOrder 550 ''
-        source ${homeDir}/.config/zsh/plugins/p10k.zsh
+      zshConfigEarlyInit = mkOrder 10 ''
+        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        fi
       '';
       zshConfig = mkOrder 1000 ''
         POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+        source ${homeDir}/.config/zsh/plugins/p10k.zsh
       '';
       zshWorkConfig = mkOrder 1001 ''
         # Gardenctl
@@ -63,9 +66,8 @@ with lib; {
         zshConfigEarlyInit
         zshConfig
         (
-          if cfg.workdevice
-          then zshWorkConfig
-          else ""
+          lib.optionalString cfg.workdevice
+          zshWorkConfig
         )
       ];
     shellAliases = {
