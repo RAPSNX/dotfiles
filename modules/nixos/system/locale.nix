@@ -15,5 +15,9 @@
   };
   time.timeZone = "Europe/Berlin";
   time.hardwareClockInLocalTime = true;
-  console.keyMap = "de";
+
+  console = {
+    font = "ter-v32b";
+    keyMap = "us";
+  };
 }
