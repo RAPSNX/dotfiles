@@ -30,4 +30,19 @@ in {
       splash = false;
     };
   };
+
+  systemd.user.services.set-wallpaper = {
+    Unit = {
+      Description = "set-wallpaper";
+      After = ["graphical-session.target"];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${shuffle-wallpaper}/bin/shuffle-wallpaper";
+      RemainAfterExit = true;
+    };
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+  };
 }
