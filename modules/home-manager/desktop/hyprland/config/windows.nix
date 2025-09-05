@@ -6,7 +6,7 @@
 
     # Resize
     "size 20% 50%, class:com.nextcloud.desktopclient.nextcloud"
-    "move 78% 1%, class:com.nextcloud.desktopclient.nextcloud"
+    "move 78% 4%, class:com.nextcloud.desktopclient.nextcloud"
     "move 1% 1%, class:^(.*ZSTray.*)$"
   ];
 
@@ -39,8 +39,6 @@
     # Layout toggle
     "SUPER,T, togglesplit,"
     "SUPER,U, togglefloating,"
-
-    "SUPER, R, submap, resize"
   ];
 
   extraConfig = ''
@@ -49,6 +47,7 @@
     bindm = SUPER, mouse:273, resizewindow
 
     # Resize mode
+    bind = SUPER, R, submap, resize
     submap = resize
       bind = , H, resizeactive, -60 0
       bind = , J, resizeactive, 0 60

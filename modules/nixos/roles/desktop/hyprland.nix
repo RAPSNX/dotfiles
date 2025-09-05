@@ -24,7 +24,7 @@ in {
     };
 
     environment.etc."greetd/hyprland.conf".text = ''
-      exec-once = ${pkgs.greetd.qtgreet}/bin/qtgreet; hyprctl dispatch exit
+      exec-once = ${pkgs.greetd}/bin/qtgreet; hyprctl dispatch exit
     '';
   };
 }
