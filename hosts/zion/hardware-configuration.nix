@@ -11,11 +11,8 @@
   boot = {
     initrd.availableKernelModules = [
       "nvme"
-      "xhci_pci"
-      "ahci"
-      "usb_storage"
+      "xhci_pci" # USB-3.0 Controller
       "usbhid"
-      "sd_mod"
     ];
     initrd.kernelModules = ["amdgpu"];
     kernelModules = ["kvm-amd"];
@@ -27,7 +24,7 @@
     fsType = "ext4";
   };
 
-  fileSystems."/boot/efi" = {
+  fileSystems."/boot" = {
     device = "/dev/disk/by-label/BOOT";
     fsType = "vfat";
   };

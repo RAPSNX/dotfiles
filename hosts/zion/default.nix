@@ -7,8 +7,7 @@
   # Host specific configuration
   hostConfiguration = {
     boot = {
-      grub = true;
-      armSupport = true;
+      armSupport = false;
       supportedFilesystems = ["ntfs"];
     };
 

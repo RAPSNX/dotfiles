@@ -18,6 +18,8 @@
     nix = {
       package = lib.mkDefault pkgs.nix;
 
+      gc.randomizedDelaySec = "10min";
+
       settings = {
         experimental-features = [
           "nix-command"
