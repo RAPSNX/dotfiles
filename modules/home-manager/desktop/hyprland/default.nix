@@ -8,9 +8,6 @@ with lib; let
   cfg = config.roles.desktop.hyprland;
 in {
   imports = [
-    # Config
-    ./config
-
     # Addons
     ./addons/hyprpaper.nix
     ./addons/hyprlock.nix
@@ -24,7 +21,11 @@ in {
   config = mkIf cfg.enable {
     catppuccin.hyprland.enable = true;
 
-    wayland.windowManager.hyprland = {
+    wayland.windowManager.hyprland = let
+      windows = import ./config/windows.nix;
+      programs = import ./config/programs.nix;
+      workspaces = import ./config/workspaces.nix;
+    in {
       enable = true;
       package = pkgs.hyprland;
       systemd.enable = false; # Disable for uswm
@@ -55,8 +56,19 @@ in {
         };
 
         decoration = import ./config/decoration.nix;
-        exec-once = import ./config/autostart.nix {} ++ config.roles.autostart;
+        exec-once = import ./config/autostart.nix ++ config.roles.autostart;
+
+        inherit (windows) windowrule windowrulev2;
+        inherit (workspaces) workspace;
+
+        bind = windows.bind ++ programs.bind ++ workspaces.bind;
+
+        source = [
+          "~/.config/hypr/monitors.conf"
+          "~/.config/hypr/workspaces.conf"
+        ];
       };
+      inherit (windows) extraConfig;
     };
 
     home.packages = with pkgs; [

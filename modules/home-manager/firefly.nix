@@ -27,9 +27,10 @@
         # Programs
         "[ workspace special:scratchy silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
         "[ workspace special:aux silent ] /opt/zscaler/scripts/zstray_desktop.sh"
-        "mumble"
-        "keepassxc"
-        "sleep 2 && chromium"
+
+        "systemd-run --user --unit voice mumble"
+        "systemd-run --user --unit secrets keepassxc"
+        "systemd-run --user --unit google chromium"
 
         # Autoclose
         "killall /opt/microsoft/intune/bin/intune-portal"
