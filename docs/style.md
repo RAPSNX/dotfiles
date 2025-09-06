@@ -1,5 +1,7 @@
 ## 🏛️ Structure
 
+# TODO: Update this completly
+
 - **`flake.nix`** Entrypoint to all:
     - `NixOS` configurations.
     - `HomeManager` configurations.
