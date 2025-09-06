@@ -8,14 +8,31 @@
   ...
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix")];
+
+  hardware.graphics.enable = true; # Enable OpenGL
+
+  services.xserver.videoDrivers = ["nvidia"]; # Nvidia driver for Xorg and Wayland
+
+  hardware = {
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement = {
+        enable = false;
+        finegrained = false;
+      };
+      open = true;
+
+      nvidiaSettings = true;
+    };
+    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  };
+
   boot = {
     initrd.availableKernelModules = [
       "nvme"
       "xhci_pci" # USB-3.0 Controller
       "usbhid"
     ];
-    initrd.kernelModules = ["amdgpu"];
-    kernelModules = ["kvm-amd"];
     extraModulePackages = [];
   };
 
@@ -32,5 +49,4 @@
   networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
