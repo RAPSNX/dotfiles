@@ -1,17 +1,13 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../nixos
+    ../../modules/nixos
   ];
 
-  system = {
+  # Host specific configuration
+  hostConfiguration = {
     boot = {
-      grub = true;
-      armSupport = true;
+      armSupport = false;
       supportedFilesystems = ["ntfs"];
     };
 
@@ -37,45 +33,9 @@
       tailscale = true;
     };
 
-    modules = {
+    roles = {
       desktop = true;
       gaming = true;
-    };
-  };
-
-  # Host specific configuration
-
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
-    ];
-  };
-
-  # Secrets for host
-  sops.secrets = {
-    ssh_config = {
-      sopsFile = ./secrets.yaml;
-      path = "/home/rap/.ssh/config";
-      owner = config.system.user.name;
-      group = "root";
-      mode = "600";
-    };
-    yubi = {
-      sopsFile = ./secrets.yaml;
-      path = "/home/rap/.ssh/yubi";
-      owner = config.system.user.name;
-      group = "root";
-      mode = "600";
-    };
-    swiss = {
-      sopsFile = ./secrets.yaml;
-      path = "/home/rap/.ssh/swiss";
-      owner = config.system.user.name;
-      group = "root";
-      mode = "600";
     };
   };
 
@@ -84,8 +44,6 @@
     rtkit.enable = true; # realtime-kit
     sudo.wheelNeedsPassword = false;
   };
-
-  services.gnome.gnome-keyring.enable = true;
 
   networking = {
     hostName = "zion";

@@ -4,21 +4,21 @@
   pkgs,
   ...
 }: let
-  user = config.system.user.name;
+  user = config.hostConfiguration.user.name;
 in {
   imports = [
+    inputs.disko.nixosModules.disko
+
     ./hardware-configuration.nix
     ./disko.nix
-    ../../nixos
-
-    inputs.disko.nixosModules.disko
+    ../../modules/nixos
   ];
+
   # Host specific configuration
-  system = {
-    boot = {
-      systemd = true;
-      supportedFilesystems = ["zfs"];
-    };
+  hostConfiguration = {
+    stable = true;
+    boot.supportedFilesystems = ["zfs"];
+
     user = {
       name = "kubex";
       initialHashedPassword = "$y$j9T$8uQSJbY6w9kjXnj74JKjA1$pWYgNf.gb497suX//oIw6aggEPoD2Xv1kvMKZfDTOU/";
@@ -29,7 +29,8 @@ in {
       extraOptions = {};
       extraGroups = [];
     };
-    modules = {
+
+    roles = {
       k3s = true;
     };
   };
@@ -45,17 +46,6 @@ in {
       RPROMPT = "%D %T";
     };
     systemPackages = [pkgs.restic];
-  };
-
-  # Secrets for host
-  sops.secrets = {
-    ssh_config = {
-      sopsFile = ./secrets.yaml;
-      path = "/home/${user}/.ssh/config";
-      owner = user;
-      group = "root";
-      mode = "600";
-    };
   };
 
   nix.settings.trusted-users = ["@wheel"]; # need for remote build

@@ -2,16 +2,10 @@ keys:
   users:
     - &rap_zion age1y8vwxjyzhftr8n0mry5zkq34ra5g69z927p9s3qrj04gzqwasc8q3fqlgf
     - &kubex age1qmfyk82lve992tvzw82d4dgr3ek77xx9m7uez3uq55mgqu6r5eys40evkr
+    - &firefly age13ps3kkzfn3eyaqc50reudytr5ws80ssamzh09kj6878a6lgxususuu58wp
 creation_rules:
-  - path_regex: hosts/zion/secrets.yaml$
+  - path_regex: modules/home-manager/common/secrets.yaml$
     key_groups:
       - age:
           - *rap_zion
-  - path_regex: home-manager/cli/programs/secrets.yaml$
-    key_groups:
-      - age:
-          - *rap_zion
-  - path_regex: hosts/kubex/secrets.yaml$
-    key_groups:
-      - age:
-          - *kubex
+          - *firefly

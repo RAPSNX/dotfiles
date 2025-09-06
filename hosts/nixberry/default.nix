@@ -4,24 +4,15 @@
   ...
 }: {
   imports = [
-    ../../nixos
-
     inputs.nixos-hardware.nixosModules.raspberry-pi-3
+
+    ../../modules/nixos
   ];
 
   # Host specific configuration
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
-      options = ["noatime"];
-    };
-  };
+  hostConfiguration = {
+    stable = true;
 
-  system = {
-    boot = {
-      grub = false;
-    };
     user = {
       name = "rap";
       initialHashedPassword = "$y$j9T$8uQSJbY6w9kjXnj74JKjA1$pWYgNf.gb497suX//oIw6aggEPoD2Xv1kvMKZfDTOU/";
@@ -29,8 +20,17 @@
       extraOptions = {};
       extraGroups = [];
     };
+
     services = {
       tailscale = true;
+    };
+  };
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
+      options = ["noatime"];
     };
   };
 

@@ -17,4 +17,6 @@ sudo cat /home/rap/.config/sops/age/keys.txt | grep "public key"
 sops updatekeys secrets/secrets.yaml
 ```
 
-# TODO: Add sops-nix docs, add & edit secrets
+# TODO(docs): Add sops-nix docs, add & edit secrets
+
+# TODO(docs): Add workdevice manual steps, ppa hyprland and uwsm
