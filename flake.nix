@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -71,14 +72,16 @@
         specialArgs = {inherit inputs outputs;};
       };
       # K3S home-lab
+      # FIXME: Fix refactoring for kubex, check nixpkgs-stable and diff before update.
       kubex = lib.nixosSystem {
         modules = [./hosts/kubex];
         specialArgs = {inherit inputs outputs;};
       };
       # Raspberry-pi 3
+      # FIXME: Fix refactoring for kubex, check nixpkgs-stable and diff before update.
       nixberry = lib.nixosSystem {
         modules = [./hosts/nixberry];
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs outputs;};
       };
       # ISO multi-tool
       vinox = lib.nixosSystem {

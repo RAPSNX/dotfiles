@@ -31,7 +31,7 @@ in {
       ];
 
       loader = {
-        timeout = 0;
+        timeout = mkDefault 0;
 
         systemd-boot = {
           enable = true;

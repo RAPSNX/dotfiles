@@ -14,10 +14,7 @@
 
   # Host specific configuration
   hostConfiguration = {
-    boot = {
-      systemd = true;
-      supportedFilesystems = ["ntfs"];
-    };
+    boot.supportedFilesystems = ["ntfs"];
 
     user = {
       name = "root";

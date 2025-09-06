@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  user = config.system.user.name;
+  user = config.hostConfiguration.user.name;
 in {
   imports = [
     inputs.disko.nixosModules.disko
@@ -17,11 +17,7 @@ in {
   # Host specific configuration
   hostConfiguration = {
     stable = true;
-
-    boot = {
-      systemd = true;
-      supportedFilesystems = ["zfs"];
-    };
+    boot.supportedFilesystems = ["zfs"];
 
     user = {
       name = "kubex";
@@ -50,17 +46,6 @@ in {
       RPROMPT = "%D %T";
     };
     systemPackages = [pkgs.restic];
-  };
-
-  # Secrets for host
-  sops.secrets = {
-    ssh_config = {
-      sopsFile = ./secrets.yaml;
-      path = "/home/${user}/.ssh/config";
-      owner = user;
-      group = "root";
-      mode = "600";
-    };
   };
 
   nix.settings.trusted-users = ["@wheel"]; # need for remote build

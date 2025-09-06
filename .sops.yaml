@@ -7,9 +7,5 @@ creation_rules:
   - path_regex: modules/home-manager/common/secrets.yaml$
     key_groups:
       - age:
-          - *rap_zion 
-          - *firefly 
-  - path_regex: hosts/kubex/secrets.yaml$
-    key_groups:
-      - age:
-          - *kubex 
+          - *rap_zion
+          - *firefly
