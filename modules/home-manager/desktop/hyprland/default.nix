@@ -60,7 +60,7 @@ in {
         };
 
         decoration = import ./config/decoration.nix;
-        exec-once = import ./config/autostart.nix ++ config.roles.autostart;
+        exec-once = import ./config/autostart.nix {inherit pkgs;} ++ config.roles.autostart;
 
         inherit (windows) windowrule windowrulev2;
         inherit (workspaces) workspace;
