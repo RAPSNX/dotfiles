@@ -9,18 +9,18 @@
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix")];
 
-  hardware.graphics.enable = true; # Enable OpenGL
-
   services.xserver.videoDrivers = ["nvidia"]; # Nvidia driver for Xorg and Wayland
 
   hardware = {
+    graphics.enable = true; # Enable OpenGL
+
     nvidia = {
       modesetting.enable = true;
       powerManagement = {
         enable = false;
         finegrained = false;
       };
-      open = true;
+      open = false;
 
       nvidiaSettings = true;
     };

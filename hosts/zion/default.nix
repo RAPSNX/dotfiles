@@ -53,7 +53,12 @@
   };
 
   environment = {
-    systemPackages = with pkgs; [qt6.qtwayland];
+    systemPackages = with pkgs; [
+      qt6.qtwayland
+      nvidia-system-monitor-qt
+      glxinfo
+      vulkan-tools
+    ];
 
     sessionVariables = {
       WLR_NO_HARDWARE_CURSORS = "1";
