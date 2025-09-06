@@ -30,7 +30,7 @@
         "systemd-run --user --unit google chromium"
 
         # Autoclose
-        "killall /opt/microsoft/intune/bin/intune-portal"
+        "sleep 1 && killall /usr/bin/intune-portal"
 
         # Unfocus last workspace
         "sleep 1 && hyprctl dispatch workspace 1"
