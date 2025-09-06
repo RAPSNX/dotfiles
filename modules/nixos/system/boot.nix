@@ -40,7 +40,6 @@ in {
 
         efi = {
           canTouchEfiVariables = true;
-          # Recommended for systemd-boot '/boot', for grub its '/boot/efi'
           efiSysMountPoint = "/boot";
         };
       };

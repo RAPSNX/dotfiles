@@ -260,22 +260,6 @@
         "type": "github"
       }
     },
-    "grub-theme": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1752224239,
-        "narHash": "sha256-jgM22pvCQvb0bjQQXoiqGMgScR9AgCK3OfDF5Ud+/mk=",
-        "owner": "catppuccin",
-        "repo": "grub",
-        "rev": "0a37ab19f654e77129b409fed371891c01ffd0b9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "grub",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -820,7 +804,6 @@
       "inputs": {
         "catppuccin": "catppuccin",
         "disko": "disko",
-        "grub-theme": "grub-theme",
         "home-manager": "home-manager",
         "hyprland-git": "hyprland-git",
         "krewfile": "krewfile",

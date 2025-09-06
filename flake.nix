@@ -8,10 +8,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    grub-theme = {
-      url = "github:catppuccin/grub";
-      flake = false;
-    };
     nixGL = {
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,7 +22,6 @@
     };
     krewfile = {
       url = "github:brumhard/krewfile";
-
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -99,7 +94,7 @@
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
       };
-      # Apple macbook work-device
+      # Firefly workmachine
       "raphael.groemmer@stackit.cloud@firefly" = lib.homeManagerConfiguration {
         modules = [./modules/home-manager/firefly.nix];
         pkgs = pkgsFor.x86_64-linux;
