@@ -35,7 +35,6 @@
 
     roles = {
       desktop = true;
-      gaming = true;
     };
   };
 
