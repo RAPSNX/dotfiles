@@ -67,6 +67,11 @@ in {
 
         bind = windows.bind ++ programs.bind ++ workspaces.bind;
 
+        env = [
+          "LIBVA_DRIVER_NAME,nvidia"
+          "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        ];
+
         source = [
           "~/.config/hypr/monitors.conf"
           "~/.config/hypr/workspaces.conf"

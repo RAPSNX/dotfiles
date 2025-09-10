@@ -20,9 +20,10 @@
         enable = false;
         finegrained = false;
       };
-      open = false;
+      open = true;
 
       nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
     };
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
