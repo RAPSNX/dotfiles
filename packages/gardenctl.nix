@@ -5,16 +5,16 @@
 }:
 buildGoModule rec {
   pname = "gardenctl";
-  version = "2.11.0";
+  version = "2.12.0-dev";
 
   src = fetchFromGitHub {
     owner = "gardener";
     repo = "gardenctl-v2";
-    rev = "v${version}";
-    hash = "sha256-OgaTmqtygssPAEiWC0Ug+8+TwPeHx+ax74+clNGDNcU=";
+    rev = "e268ad02130241b195571ebf5d1699688e0e595c";
+    hash = "sha256-j6+bwhItJV7hvwmtl/tUdxwVbrGcvwfMJhOpRX4nVz0=";
   };
 
-  vendorHash = "sha256-CfQNJerLcHlfC9zKNfHeWoMCba9WwLQ6FC2MOuoBvmc=";
+  vendorHash = "sha256-t0KeSM98StlqtatxLDV0tSuLw/7aej4GBr+WM++dtpU=";
 
   subPackages = ["/"];
 

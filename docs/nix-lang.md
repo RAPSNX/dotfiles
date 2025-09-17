@@ -122,3 +122,10 @@ Final is the package after this overlay. (Not needed often)
 Prev is the package before this overlay, may after some other overlays from upstream.
 
 This overlay function will be executed while instantiating `<nixpkgs>`, `prev` is the `pkgs` instance with correct `system`, before the overlay is applied.
+
+## Update custom packages (derivation)
+
+1. Bump version, set all `hash`es to empty sting `""`.
+2. Build module, and wait until nix will fail and output the first `hash`. Continue with the second.
+
+Mind also the language specific `hash`es for example `vendorHash` for `go` modules.
