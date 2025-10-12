@@ -19,7 +19,6 @@
     };
     neonix = {
       url = "github:rgroemmer/neonix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     krewfile = {
       url = "github:brumhard/krewfile";
