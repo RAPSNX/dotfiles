@@ -34,6 +34,8 @@ in {
         else pkgs.hyprland;
       systemd.enable = false; # Disable for uswm
 
+      portalPackage = pkgs.xdg-desktop-portal-wlr;
+
       settings = {
         general = {
           gaps_in = 8;
@@ -77,6 +79,7 @@ in {
 
     home.packages = with pkgs; [
       hyprland-qtutils
+      slurp
     ];
 
     xdg.portal = {
@@ -87,8 +90,7 @@ in {
         };
       };
       extraPortals = with pkgs; [
-        xdg-desktop-portal-hyprland
-        xdg-desktop-portal-gtk
+        xdg-desktop-portal-wlr
       ];
     };
 
