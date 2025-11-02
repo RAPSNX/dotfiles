@@ -19,6 +19,7 @@
 
       desktop.hyprland = {
         enable = true;
+        hyprlock = true;
         configOnly = true;
       };
       autostart = [

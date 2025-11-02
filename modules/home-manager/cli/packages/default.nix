@@ -59,7 +59,8 @@ in {
       wl-clipboard
 
       # Note taking
-      obsidian
+      # TODO: broken
+      # obsidian
     ]
     ++ lib.optionals config.roles.workdevice [
       workpkgs.gardenctl
