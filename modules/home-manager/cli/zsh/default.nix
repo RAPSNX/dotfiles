@@ -7,6 +7,7 @@
 with lib; {
   imports = [
     ./shellScripts.nix
+    ./starship.nix
   ];
 
   home.packages = [pkgs.zsh-completions];
@@ -17,11 +18,16 @@ with lib; {
     homeDir = config.home.homeDirectory;
   in {
     enable = true;
+
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    enableCompletion = true;
     autocd = true;
     dotDir = "${homeDir}/.config/zsh";
+
+    enableCompletion = true;
+    completionInit = "";
+
+    zprof.enable = true;
 
     sessionVariables = {
       EDITOR = "vim";
@@ -44,15 +50,19 @@ with lib; {
       share = true;
     };
 
-    initContent =
-      lib.mkOrder 1500
-      (lib.optionalString cfg.workdevice
-        ''
-          # Gardenctl
-          [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
-          source <(gardenctl completion zsh)
-          eval $(gardenctl kubectl-env zsh)
-        '');
+    # TODO: readd this
+    # # Gardenctl
+    # [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
+    # source <(gardenctl completion zsh)
+    # eval $(gardenctl kubectl-env zsh)
+    initContent = lib.mkMerge [
+      (lib.mkOrder 500
+        '''')
+      (lib.mkOrder 1000
+        '''')
+      (lib.mkOrder 1500
+        '''')
+    ];
 
     shellAliases = {
       # Overwrites
