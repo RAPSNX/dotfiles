@@ -18,3 +18,15 @@
 ```
 home-manager switch --flake .#raphael.groemmer@stackit.cloud@firefly
 ```
+
+## Manual things
+
+### Disable gpg at all
+```
+systemctl --user mask gpg-agent.service
+systemctl --user mask gpg-agent.socket
+systemctl --user mask gpg-agent-ssh.socket
+systemctl --user mask gpg-agent-extra.socket
+systemctl --user mask gpg-agent-browser.socket
+systemctl --user stop gpg-agent.service
+```
