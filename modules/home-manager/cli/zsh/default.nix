@@ -14,31 +14,22 @@ with lib; {
 
   catppuccin.zsh-syntax-highlighting.enable = true;
 
-  programs.zsh = let
-    homeDir = config.home.homeDirectory;
-  in {
+  programs.zsh = {
     enable = true;
 
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     autocd = true;
-    dotDir = "${homeDir}/.config/zsh";
+    dotDir = "${config.home.homeDirectory}/.config/zsh";
 
     enableCompletion = true;
-    completionInit = "";
-
-    zprof.enable = true;
 
     sessionVariables = {
       EDITOR = "vim";
       VISUAL = "vim";
 
-      # pinentry for sign commits with gpg
-      GPG_TTY = "$(tty)";
-
       # disable highlight of history-substring-search
       HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND = "";
-      POWERLEVEL9K_INSTANT_PROMPT = "quiet";
     };
 
     history = {
@@ -55,12 +46,12 @@ with lib; {
     # [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
     # source <(gardenctl completion zsh)
     # eval $(gardenctl kubectl-env zsh)
-    initContent = lib.mkMerge [
-      (lib.mkOrder 500
+    initContent = mkMerge [
+      (mkOrder 500
         '''')
-      (lib.mkOrder 1000
+      (mkOrder 1000
         '''')
-      (lib.mkOrder 1500
+      (mkOrder 1500
         '''')
     ];
 
@@ -84,9 +75,10 @@ with lib; {
 
       k = "kubectl";
       kk = "k9s";
-      clean = "nix-collect-garbage -d && nix-store --gc && nix-store --verify --check-contents --repair";
-
+      kns = "kubectl ns";
       selc = "source select_kc";
+
+      clean = "nix-collect-garbage -d && nix-store --gc && nix-store --verify --check-contents --repair";
     };
 
     oh-my-zsh = {
