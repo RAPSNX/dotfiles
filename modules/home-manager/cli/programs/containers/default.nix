@@ -3,6 +3,7 @@
     ./k9s.nix
     ./krewfile.nix
     ./podman.nix
+    ./kubecolor.nix
   ];
 
   home.packages = with pkgs; [

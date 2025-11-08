@@ -15,7 +15,6 @@
       name = "rap";
       extraGroups = [
         "networkmanager"
-        "docker"
         "wireshark"
       ];
       extraOptions = {
