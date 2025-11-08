@@ -22,7 +22,7 @@
       };
 
       autostart = [
-        "[ workspace special:scratchy silent ] ${pkgs.alacritty}/bin/alacritty -t scratchy"
+        "[ workspace special:scratchy silent ] uwsm app -- ${pkgs.alacritty}/bin/alacritty -t scratchy"
       ];
     };
     # hm config

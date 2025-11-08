@@ -29,3 +29,17 @@ sudo efibootmgr --create \
   --label "NixOS" \
   --loader '\EFI\systemd\systemd-bootx64.efi' \ # Mind the backslashes
 ```
+
+## UWSM
+
+### start apps
+Use `uswm app -- <app-name>` to start apps.
+This will start the app in a seperate `systemd` scope, which is part of the `app.slice`.
+If not, the process will be part of the `session.slice`, which can result in termination of the user session.
+
+Keep the slice as clean as possible:
+```bash
+│   │ │ ├─wayland-wm@hyprland\x2duwsm.desktop.service
+│   │ │ │ ├─77102 /run/current-system/sw/bin/Hyprland
+│   │ │ │ └─77200 Xwayland :0 -rootless -core -listenfd 54 -listenfd 55 -displayfd 107 -wm 104
+```

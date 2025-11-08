@@ -1,11 +1,8 @@
 {
   inputs,
-  config,
   pkgs,
   ...
-}: let
-  user = config.hostConfiguration.user.name;
-in {
+}: {
   imports = [
     inputs.disko.nixosModules.disko
 

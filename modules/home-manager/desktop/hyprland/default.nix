@@ -24,7 +24,9 @@ in {
 
     wayland.windowManager.hyprland = let
       windows = import ./config/windows.nix;
-      programs = import ./config/programs.nix;
+      programs = import ./config/programs.nix {
+        inherit pkgs config;
+      };
       workspaces = import ./config/workspaces.nix;
     in {
       enable = true;

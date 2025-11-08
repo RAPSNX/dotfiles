@@ -1,8 +1,4 @@
 {
-  pkgs,
-  config,
-  ...
-}: {
   wayland.windowManager.hyprland.extraConfig = ''
     # Workspace actions
     bind = SUPER,1, workspace, 1
@@ -18,6 +14,7 @@
     bind = ALT,4, movetoworkspace, 4
     bind = ALT,5, movetoworkspace, 5
     bind = ALT,6, movetoworkspace, 6
+    bind = ALT,6, movetoworkspace, 7
 
     bind = SUPER,O, togglespecialworkspace, scratchy
     bind = SUPER,M, togglespecialworkspace, aux
@@ -43,12 +40,6 @@
     bind = SUPER,J, movefocus, d
     bind = SUPER,K, movefocus, u
     bind = SUPER,L, movefocus, r
-
-    # Programms
-    bind = SUPER,RETURN, exec, ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty
-    bind = SUPER,SPACE, exec, ${pkgs.fuzzel}/bin/fuzzel
-    bind = SUPER,P, exec, ${pkgs.wlogout}/bin/wlogout
-    bind = SUPER,Q, killactive
 
     # Resize
     bindm = SUPER, mouse:272, movewindow
