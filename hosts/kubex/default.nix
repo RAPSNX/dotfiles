@@ -13,7 +13,6 @@
 
   # Host specific configuration
   hostConfiguration = {
-    stable = true;
     boot.supportedFilesystems = ["zfs"];
 
     user = {

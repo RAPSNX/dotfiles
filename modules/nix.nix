@@ -2,11 +2,8 @@
   inputs,
   lib,
   pkgs,
-  config,
   ...
 }: {
-  options.hostConfiguration.stable = lib.mkEnableOption "Use stable nixpkgs";
-
   config = {
     nixpkgs = {
       config = {
@@ -29,14 +26,9 @@
       };
 
       # Add nixpkgs flake input as a registry to make nix3 commands consistent with the flake.
-      registry = let
-        inherit (config.hostConfiguration) stable;
-      in {
+      registry = {
         nixpkgs = {
-          flake =
-            if stable
-            then inputs.nixpkgs-stable
-            else inputs.nixpkgs;
+          flake = inputs.nixpkgs;
         };
       };
 

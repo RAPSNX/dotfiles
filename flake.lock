@@ -840,7 +840,6 @@
         "nixGL": "nixGL",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgs-stable": "nixpkgs-stable",
         "pre-commit-hooks": "pre-commit-hooks_3",
         "sops-nix": "sops-nix"
       }
