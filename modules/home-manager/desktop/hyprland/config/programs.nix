@@ -7,5 +7,9 @@
     "SUPER,SPACE, exec, uwsm app -- ${pkgs.fuzzel}/bin/fuzzel"
     "SUPER,P, exec, ${pkgs.wlogout}/bin/wlogout"
     "SUPER,Q, killactive"
+
+    # Mumble
+    "SUPER,Z, exec, mumble rpc togglemute"
+    "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
   ];
 }

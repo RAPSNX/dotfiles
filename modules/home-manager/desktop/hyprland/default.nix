@@ -36,7 +36,7 @@ in {
         else pkgs.hyprland;
       systemd.enable = false; # Disable for uswm
 
-      portalPackage = pkgs.xdg-desktop-portal-wlr;
+      # portalPackage = pkgs.xdg-desktop-portal-wlr;
 
       settings = {
         general = {

@@ -39,7 +39,7 @@ in {
     Service = {
       Type = "oneshot";
       ExecStart = "${shuffle-wallpaper}/bin/shuffle-wallpaper";
-      RemainAfterExit = true;
+      Restart = "on-failure";
     };
     Install = {
       WantedBy = ["graphical-session.target"];

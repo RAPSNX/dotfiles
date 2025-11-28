@@ -26,9 +26,8 @@
         # Programs
         "[ workspace special:scratchy silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
 
-        "systemd-run --user --unit voice mumble"
+        "systemd-run --user --unit voice mumble --tray"
         "systemd-run --user --unit secrets keepassxc"
-        "systemd-run --user --unit google chromium"
 
         # Autoclose
         "sleep 1 && killall /usr/bin/intune-portal"
@@ -42,6 +41,13 @@
       username = "raphael.groemmer@stackit.cloud";
       homeDirectory = lib.mkDefault "/home/Raphael.Groemmer@stackit.cloud";
       stateVersion = lib.mkDefault "22.05";
+      activation = {
+        mirror-hyprland-config = lib.hm.dag.entryAfter ["writeBoundary"] ''
+          DIR="$HOME/.config/hypr"
+          sed -e 's#/hypr/monitors#/hypr/monitors-work#g' \
+          -e 's#/hypr/workspaces#/hypr/workspaces-work#g' "$DIR/hyprland.conf" > "$DIR/hyprland-work.conf"
+        '';
+      };
     };
   };
 }

@@ -1,3 +1,3 @@
 {
-  programs.gpg.enable = true;
+  programs.gpg.enable = false;
 }
