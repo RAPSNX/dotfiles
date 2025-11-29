@@ -38,8 +38,8 @@
     };
 
     home = {
-      username = "raphael.groemmer@stackit.cloud";
-      homeDirectory = lib.mkDefault "/home/Raphael.Groemmer@stackit.cloud";
+      username = "rapsn";
+      homeDirectory = lib.mkDefault "/home/rapsn";
       stateVersion = lib.mkDefault "22.05";
       activation = {
         mirror-hyprland-config = lib.hm.dag.entryAfter ["writeBoundary"] ''

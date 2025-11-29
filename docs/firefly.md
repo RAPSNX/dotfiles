@@ -16,17 +16,13 @@
 4. Make home-manager switch
 
 ```
-home-manager switch --flake .#raphael.groemmer@stackit.cloud@firefly
+home-manager switch --flake .#rapsn@firefly
 ```
 
 ## Manual things
 
 ### Disable gpg at all
 ```
-systemctl --user mask gpg-agent.service
-systemctl --user mask gpg-agent.socket
-systemctl --user mask gpg-agent-ssh.socket
-systemctl --user mask gpg-agent-extra.socket
-systemctl --user mask gpg-agent-browser.socket
-systemctl --user stop gpg-agent.service
+systemctl --user mask --now gpg-agent.service gpg-agent.socket \
+  gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket
 ```

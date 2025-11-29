@@ -99,7 +99,7 @@
         extraSpecialArgs = {inherit inputs outputs;};
       };
       # Firefly workmachine
-      "raphael.groemmer@stackit.cloud@firefly" = lib.homeManagerConfiguration {
+      "rapsn@firefly" = lib.homeManagerConfiguration {
         modules = [./modules/home-manager/firefly.nix];
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit self inputs outputs;};
