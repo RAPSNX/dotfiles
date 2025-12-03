@@ -70,7 +70,7 @@
 
       git_metrics = {
         disabled = false;
-        # format = "[ +$added ]($added_style)[-$deleted ]($deleted_style)";
+        format = "([ +$added ]($added_style) )([-$deleted ]($deleted_style) )";
         added_style = "fg:green bg:base";
         deleted_style = "fg:red bg:base";
       };
