@@ -50,6 +50,7 @@ with lib; {
       (mkOrder 500
         '''')
       (mkOrder 1000
+        # [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
         '''')
       (mkOrder 1500
         '''')
