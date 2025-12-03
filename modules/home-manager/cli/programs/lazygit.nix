@@ -5,10 +5,12 @@
     settings = {
       git = {
         autoFetch = true;
-        paging = {
-          colorArg = "always";
-          pager = "${config.programs.git.delta.package}/bin/delta --dark --paging=never";
-        };
+        pagers = [
+          {
+            colorArg = "always";
+            pager = "${config.programs.git.delta.package}/bin/delta --dark --paging=never";
+          }
+        ];
       };
     };
   };

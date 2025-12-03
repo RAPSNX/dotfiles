@@ -46,19 +46,7 @@ in {
       // cfg.extraOptions;
 
     # User config
-    programs.zsh = {
-      enable = true;
-      syntaxHighlighting.enable = true;
-      enableCompletion = true;
-      ohMyZsh = {
-        enable = true;
-        plugins = [
-          "git"
-          "kubectl"
-          "fzf"
-        ];
-      };
-    };
+    programs.zsh.enable = true;
     system.userActivationScripts.zshrc = "touch .zshrc"; # Prevent new user dialog
     environment.pathsToLink = [
       "/share/zsh" # autocompletion

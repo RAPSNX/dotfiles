@@ -21,8 +21,8 @@ in {
       };
       window = {
         padding = {
-          x = 5;
-          y = 5;
+          x = 3;
+          y = 3;
         };
       };
 
@@ -42,7 +42,6 @@ in {
           style = "Italic";
         };
         size = 13;
-        offset.y = 3;
       };
 
       mouse.bindings = [

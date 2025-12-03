@@ -1,11 +1,8 @@
 {
   inputs,
-  config,
   pkgs,
   ...
-}: let
-  user = config.hostConfiguration.user.name;
-in {
+}: {
   imports = [
     inputs.disko.nixosModules.disko
 
@@ -16,7 +13,6 @@ in {
 
   # Host specific configuration
   hostConfiguration = {
-    stable = true;
     boot.supportedFilesystems = ["zfs"];
 
     user = {

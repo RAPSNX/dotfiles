@@ -15,7 +15,6 @@
       name = "rap";
       extraGroups = [
         "networkmanager"
-        "docker"
         "wireshark"
       ];
       extraOptions = {
@@ -63,6 +62,5 @@
 
   services.udev.packages = with pkgs; [
     qmk-udev-rules
-    android-udev-rules
   ];
 }

@@ -7,32 +7,29 @@
 with lib; {
   imports = [
     ./shellScripts.nix
+    ./starship.nix
   ];
 
   home.packages = [pkgs.zsh-completions];
 
   catppuccin.zsh-syntax-highlighting.enable = true;
 
-  programs.zsh = let
-    homeDir = config.home.homeDirectory;
-  in {
+  programs.zsh = {
     enable = true;
+
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    enableCompletion = true;
     autocd = true;
-    dotDir = "${homeDir}/.config/zsh";
+    dotDir = "${config.home.homeDirectory}/.config/zsh";
+
+    enableCompletion = true;
 
     sessionVariables = {
       EDITOR = "vim";
       VISUAL = "vim";
 
-      # pinentry for sign commits with gpg
-      GPG_TTY = "$(tty)";
-
       # disable highlight of history-substring-search
       HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND = "";
-      POWERLEVEL9K_INSTANT_PROMPT = "quiet";
     };
 
     history = {
@@ -44,32 +41,21 @@ with lib; {
       share = true;
     };
 
-    initContent = let
-      zshConfigEarlyInit = mkOrder 10 ''
-        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-        fi
-      '';
-      zshConfig = mkOrder 1000 ''
-        POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
-        source ${homeDir}/.config/zsh/plugins/p10k.zsh
-      '';
-      zshWorkConfig = mkOrder 1001 ''
-        # Gardenctl
-        [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
-        source <(gardenctl completion zsh)
-        eval $(gardenctl kubectl-env zsh)
-      '';
-      cfg = config.roles;
-    in
-      lib.mkMerge [
-        zshConfigEarlyInit
-        zshConfig
-        (
-          lib.optionalString cfg.workdevice
-          zshWorkConfig
-        )
-      ];
+    # TODO: readd this
+    # # Gardenctl
+    # [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
+    # source <(gardenctl completion zsh)
+    # eval $(gardenctl kubectl-env zsh)
+    initContent = mkMerge [
+      (mkOrder 500
+        '''')
+      (mkOrder 1000
+        # [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
+        '''')
+      (mkOrder 1500
+        '''')
+    ];
+
     shellAliases = {
       # Overwrites
       cat = "bat";
@@ -90,9 +76,10 @@ with lib; {
 
       k = "kubectl";
       kk = "k9s";
-      clean = "nix-collect-garbage -d && nix-store --gc && nix-store --verify --check-contents --repair";
-
+      kns = "kubectl ns";
       selc = "source select_kc";
+
+      clean = "nix-collect-garbage -d && nix-store --gc && nix-store --verify --check-contents --repair";
     };
 
     oh-my-zsh = {
@@ -118,16 +105,6 @@ with lib; {
         name = "zsh-nix-shell";
         file = "nix-shell.plugin.zsh";
         src = "${zsh-nix-shell}/share/zsh-nix-shell";
-      }
-      {
-        name = "powerlevel10k";
-        file = "powerlevel10k.zsh-theme";
-        src = "${zsh-powerlevel10k}/share/zsh-powerlevel10k";
-      }
-      {
-        name = "p10k.zsh";
-        file = "p10k.zsh";
-        src = ./p10k.conf;
       }
     ];
   };
