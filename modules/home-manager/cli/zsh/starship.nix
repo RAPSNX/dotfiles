@@ -1,105 +1,88 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   catppuccin.starship.enable = true;
+
   programs.starship = {
     enable = true;
     settings = {
       add_newline = true;
       command_timeout = 2000;
 
+      # saubere Powerline-Form mit Catppuccin-Farben
       format = lib.concatStrings [
+        "[](fg:blue)"
         "$os"
+        "[](fg:blue bg:teal)"
         "$directory"
+        "[](fg:teal bg:yellow)"
+        "$git_branch$git_status"
+        "[](fg:yellow bg:base)"
+        "$git_metrics"
 
-        "$git_branch"
-        "$git_commit"
+        "$fill"
+
+        "$cmd_duration"
+
+        "$line_break"
 
         "$character"
       ];
 
-      right_format = lib.concatStrings [
-        "$kubernetes"
-        "$shlvl"
-      ];
+      right_format = lib.concatStrings [];
 
-      os.disabled = false;
-
-      line_break.disabled = true;
+      os = {
+        disabled = false;
+        # nur Farbe, Rest macht das Theme
+        style = "bg:blue fg:base";
+      };
 
       directory = {
-        truncate_to_repo = true;
+        truncation_symbol = "…/";
         truncation_length = 5;
         format = "[ $path ]($style)";
-        style = "fg:text bg:#3B76F0";
+        style = "fg:base bg:teal";
       };
 
-      kubernetes = {
-        disabled = false;
-        format = "[$symbol$context( \\($namespace\\))]($style) ";
+      fill = {
+        symbol = " ";
+        style = "bright-black";
       };
-
-      shlvl.disabled = false;
 
       git_branch = {
-        symbol = " ";
-        ignore_branches = ["HEAD"];
+        format = "[ $symbol$branch(:$remote_branch) ]($style)";
+        symbol = "  ";
+        style = "fg:base bg:yellow";
       };
 
-      git_commit = {
-        tag_disabled = false;
-        tag_symbol = " 🏷 ";
-        format = "[$tag]($style) ";
+      git_status = {
+        conflicted = "=$count";
+        ahead = "⇡$count";
+        behind = "⇣$count";
+        diverged = "⇕⇡$ahead_count⇣$behind_count";
+        untracked = "?$count";
+        stashed = "\\$$count";
+        modified = "!$count";
+        staged = "+$count";
+        renamed = "»$count";
+        deleted = "✘$count";
+        format = "[ $all_status ]($style)";
+        style = "fg:base bg:yellow";
       };
 
-      package = {
-        disabled = true;
-        format = "[$symbol$version]($style) ";
-        display_private = true;
+      git_metrics = {
+        disabled = false;
+        # saubere Darstellung + korrekte Styles
+        format = "[ +$added ]($added_style)[-$deleted ]($deleted_style)";
+        added_style = "fg:green bg:base";
+        deleted_style = "fg:red bg:base";
       };
-
-      fill.symbol = " ";
 
       cmd_duration = {
-        min_time = 2000;
-        format = "[  $duration ]($style)";
-        style = "white";
+        format = "[$duration ]($style) ";
       };
 
-      battery = {
-        format = "[$symbol $percentage]($style) ";
-        empty_symbol = "🪫";
-        charging_symbol = "🔋";
-        full_symbol = "🔋";
-        display = [
-          {
-            threshold = 10;
-            style = "red";
-          }
-        ];
-      };
-
-      custom = {
-        proxy = {
-          description = "The currently used proxy";
-          when = ''test -n "$http_proxy"'';
-          command = ''test -n "$PROXY_TARGET" && echo "$PROXY_TARGET" || echo "<unknown>"'';
-          shell = ["${lib.getExe pkgs.bash}" "--noprofile" "--norc"];
-          symbol = "🔀 ";
-          style = "bright-yellow";
-          format = "[$symbol$output]($style) ";
-        };
-        openstack = {
-          description = "The currently targeted openstack tenant";
-          when = ''test -n "$OS_TENANT_NAME"'';
-          command = ''echo "$OS_TENANT_NAME"'';
-          shell = ["${lib.getExe pkgs.bash}" "--noprofile" "--norc"];
-          symbol = "☁️ ";
-          style = "bright-red";
-          format = "[$symbol$output]($style) ";
-        };
+      character = {
+        success_symbol = "[ ➜](bold fg:green) ";
+        error_symbol = "[ ✗](bold fg:red) ";
       };
     };
   };
