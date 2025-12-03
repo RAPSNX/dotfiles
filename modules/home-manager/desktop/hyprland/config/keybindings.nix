@@ -14,7 +14,7 @@
     bind = ALT,4, movetoworkspace, 4
     bind = ALT,5, movetoworkspace, 5
     bind = ALT,6, movetoworkspace, 6
-    bind = ALT,6, movetoworkspace, 7
+    bind = ALT,7, movetoworkspace, 7
 
     bind = SUPER,O, togglespecialworkspace, scratchy
     bind = SUPER,M, togglespecialworkspace, aux
