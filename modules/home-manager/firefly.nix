@@ -40,13 +40,6 @@
       username = "rapsn";
       homeDirectory = lib.mkDefault "/home/rapsn";
       stateVersion = lib.mkDefault "22.05";
-      activation = {
-        mirror-hyprland-config = lib.hm.dag.entryAfter ["writeBoundary"] ''
-          DIR="$HOME/.config/hypr"
-          sed -e 's#/hypr/monitors#/hypr/monitors-work#g' \
-          -e 's#/hypr/workspaces#/hypr/workspaces-work#g' "$DIR/hyprland.conf" > "$DIR/hyprland-work.conf"
-        '';
-      };
     };
   };
 }
