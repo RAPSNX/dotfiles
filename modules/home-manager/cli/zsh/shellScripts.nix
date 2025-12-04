@@ -2,12 +2,12 @@
   # nix helpers
   nix-run = pkgs.writeShellScriptBin "nr" ''
     #!/usr/bin/env bash
-    nix run $(printf 'nixpkgs#%s ' "$@") --command zsh
+    nix run $(printf 'nixpkgs#%s ' "$@")
   '';
 
   nix-shell = pkgs.writeShellScriptBin "ns" ''
     #!/usr/bin/env bash
-    nix shell $(printf 'nixpkgs#%s ' "$@") --command zsh
+    nix shell $(printf 'nixpkgs#%s ' "$@")
   '';
 
   # kubeconfig selector
