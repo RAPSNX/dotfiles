@@ -14,8 +14,7 @@
       show_tabs = false;
       secrets_filter = false;
 
-      # TODO: update to new address
-      sync_address = "https://atuin.taild68e9.ts.net";
+      sync_address = "https://atuin.app.rockwolf.eu";
     };
   };
 }

@@ -108,6 +108,16 @@
         error_symbol = "[ ✗](bold fg:red) ";
       };
 
+      os.symbols = {
+        Alpine = " ";
+        Debian = " ";
+        Fedora = " ";
+        Linux = " ";
+        NixOS = " ";
+        Raspbian = " ";
+        Ubuntu = " ";
+      };
+
       custom = {
         proxy = {
           description = "The currently used proxy";
