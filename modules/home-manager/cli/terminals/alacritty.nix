@@ -1,17 +1,8 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
-  inherit (config.roles) useNixGL;
-in {
+{pkgs, ...}: {
   catppuccin.alacritty.enable = true;
   programs.alacritty = {
     enable = true;
-    package =
-      if useNixGL
-      then config.lib.nixGL.wrap pkgs.alacritty
-      else pkgs.alacritty;
+    package = pkgs.alacritty;
     settings = {
       terminal.shell.program = "zsh";
       env.TERM = "xterm-256color";

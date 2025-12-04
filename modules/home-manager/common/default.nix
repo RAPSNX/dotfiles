@@ -3,9 +3,7 @@
   lib,
   config,
   ...
-}: let
-  inherit (inputs) nixGL;
-in {
+}: {
   imports = [
     # module inputs
     inputs.catppuccin.homeModules.catppuccin
@@ -19,14 +17,6 @@ in {
     # global nix & nixpkgs settings
     ../../nix.nix
   ];
-
-  nixGL =
-    if config.roles.useNixGL
-    then {
-      inherit (nixGL) packages;
-      defaultWrapper = "mesa";
-    }
-    else {};
 
   sops.secrets.ssh_config = {
     sopsFile = ./secrets.yaml;

@@ -11,10 +11,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixGL = {
-      url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     hyprland-git = {
       url = "github:hyprwm/hyprland";
       inputs.nixpkgs.follows = "nixpkgs";

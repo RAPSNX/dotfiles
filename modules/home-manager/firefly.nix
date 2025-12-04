@@ -1,9 +1,4 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   imports = [
     ./common
 
@@ -15,16 +10,15 @@
     roles = {
       workdevice = true;
 
-      useNixGL = true;
-
       desktop.hyprland = {
         enable = true;
         hyprlock = true;
         configOnly = true;
       };
+
       autostart = [
         # Programs
-        "[ workspace special:scratchy silent ] ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty -t scratchy"
+        "[ workspace special:scratchy silent ] alacritty -t scratchy"
 
         "systemd-run --user --unit voice mumble --tray"
         "systemd-run --user --unit secrets keepassxc"
@@ -35,6 +29,11 @@
         # Unfocus last workspace
         "sleep 1 && hyprctl dispatch workspace 1"
       ];
+    };
+
+    targets.genericLinux = {
+      enable = true;
+      gpu.enable = true;
     };
 
     home = {
