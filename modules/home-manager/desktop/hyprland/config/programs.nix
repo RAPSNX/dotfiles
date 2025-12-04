@@ -11,5 +11,8 @@
     # Mumble
     "SUPER,Z, exec, mumble rpc togglemute"
     "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
+
+    # Mouseless
+    "SUPER,K, exec, wl-kbptr -o modes=tile,bisect,click"
   ];
 }
