@@ -25,6 +25,7 @@
       vlc
       grimblast
       nwg-displays
+      nwg-look
       gparted
       gnome-disk-utility
       wf-recorder

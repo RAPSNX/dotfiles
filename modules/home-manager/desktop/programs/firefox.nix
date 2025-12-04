@@ -1,103 +1,189 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}: {
-  programs.firefox = lib.mkIf (!config.roles.workdevice) {
+{lib, ...}: {
+  programs.firefox = {
     enable = true;
-    package = pkgs.firefox-devedition;
+    profiles.default = {
+      name = "Default";
 
-    policies = {
-      DontCheckDefaultBrowser = true;
-      DisableTelemetry = true;
-      DisableFirefoxStudies = true;
-      DisablePocket = true;
-      DisableFirefoxScreenshots = true;
+      settings = {
+        "browser.urlbar.suggest.searches" = true; # Need this for basic search suggestions
+        "browser.urlbar.shortcuts.bookmarks" = false;
+        "browser.urlbar.shortcuts.history" = false;
+        "browser.urlbar.shortcuts.tabs" = false;
 
-      DisplayBookmarksToolbar = "always";
-      DisplayMenuBar = "never"; # Previously appeared when pressing alt
+        "browser.tabs.tabMinWidth" = 75; # Make tabs able to be smaller to prevent scrolling
 
-      OverrideFirstRunPage = "";
-      PictureInPicture.Enabled = false;
-      PromptForDownloadLocation = false;
+        "browser.urlbar.placeholderName" = "DuckDuckGo";
+        "browser.urlbar.placeholderName.private" = "DuckDuckGo";
 
-      HardwareAcceleration = true;
-      TranslateEnabled = false;
+        "browser.aboutConfig.showWarning" = false; # No warning when going to config
+        "browser.warnOnQuitShortcut" = false;
 
-      HttpsOnlyMode = "force_enabled";
+        "browser.tabs.loadInBackground" = true; # Load tabs automatically
+        "media.ffmpeg.vaapi.enabled" = true; # Enable hardware acceleration
 
-      Homepage.StartPage = "previous-session";
+        "browser.in-content.dark-mode" = true; # Use dark mode
+        "ui.systemUsesDarkTheme" = true;
 
-      UserMessaging = {
-        UrlbarInterventions = false;
-        SkipOnboarding = true;
+        "extensions.autoDisableScopes" = 0; # Automatically enable extensions
+        "extensions.update.enabled" = false;
+
+        "widget.use-xdg-desktop-portal.file-picker" = 0; # Use new gtk file picker instead of legacy one
+
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        "layers.acceleration.force-enabled" = true;
+        "gfx.webrender.all" = true;
+        "gfx.webrender.enabled" = true;
+        "layout.css.backdrop-filter.enabled" = true;
+        "svg.context-properties.content.enabled" = true;
       };
-
-      FirefoxSuggest = {
-        WebSuggestions = false;
-        SponsoredSuggestions = false;
-        ImproveSuggest = false;
-      };
-
-      EnableTrackingProtection = {
-        Value = true;
-        Cryptomining = true;
-        Fingerprinting = true;
-      };
-
-      FirefoxHome = {
-        Search = false;
-        TopSites = false;
-        SponsoredTopSites = false;
-        Highlights = false;
-        Pocket = false;
-        SponsoredPocket = false;
-        Snippets = false;
-      };
-    };
-
-    policies.Preferences = {
-      "browser.urlbar.suggest.searches" = true; # Need this for basic search suggestions
-      "browser.urlbar.shortcuts.bookmarks" = false;
-      "browser.urlbar.shortcuts.history" = false;
-      "browser.urlbar.shortcuts.tabs" = false;
-
-      "browser.tabs.tabMinWidth" = 75; # Make tabs able to be smaller to prevent scrolling
-
-      "browser.urlbar.placeholderName" = "DuckDuckGo";
-      "browser.urlbar.placeholderName.private" = "DuckDuckGo";
-
-      "browser.aboutConfig.showWarning" = false; # No warning when going to config
-      "browser.warnOnQuitShortcut" = false;
-
-      "browser.tabs.loadInBackground" = true; # Load tabs automatically
-      "media.ffmpeg.vaapi.enabled" = true; # Enable hardware acceleration
-
-      "browser.in-content.dark-mode" = true; # Use dark mode
-      "ui.systemUsesDarkTheme" = true;
-
-      "extensions.autoDisableScopes" = 0; # Automatically enable extensions
-      "extensions.update.enabled" = false;
-
-      "widget.use-xdg-desktop-portal.file-picker" = 0; # Use new gtk file picker instead of legacy one
-    };
-
-    profiles.dev-edition-default = {
-      isDefault = true;
 
       search = {
         force = true;
-        default = "ddg";
+        default = "Kagi";
+        order = [
+          "Kagi"
+          "NixOS Options"
+          "Nix Packages"
+          "GitHub"
+          "HackerNews"
+        ];
+        engines = {
+          "Kagi" = {
+            urls = [
+              {
+                template = "https://kagi.com/search";
+                params = [
+                  {
+                    name = "q";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            metaData.hideOneOffButton = true;
+          };
+
+          "Nix Packages" = {
+            icon = "https://nixos.org/_astro/flake-blue.Bf2X2kC4_Z1yqDoT.svg";
+            definedAliases = ["@np"];
+            urls = [
+              {
+                template = "https://search.nixos.org/packages";
+                params = [
+                  {
+                    name = "type";
+                    value = "packages";
+                  }
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                  {
+                    name = "channel";
+                    value = "unstable";
+                  }
+                ];
+              }
+            ];
+            metaData.hideOneOffButton = true;
+          };
+
+          "NixOS Options" = {
+            icon = "https://nixos.org/_astro/flake-blue.Bf2X2kC4_Z1yqDoT.svg";
+            definedAliases = ["@no"];
+            urls = [
+              {
+                template = "https://search.nixos.org/options";
+                params = [
+                  {
+                    name = "channel";
+                    value = "unstable";
+                  }
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            metaData.hideOneOffButton = true;
+          };
+
+          "SourceGraph" = {
+            icon = "https://sourcegraph.com/.assets/img/sourcegraph-mark.svg";
+            definedAliases = ["@sg"];
+
+            urls = [
+              {
+                template = "https://sourcegraph.com/search";
+                params = [
+                  {
+                    name = "q";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            metaData.hideOneOffButton = true;
+          };
+
+          "GitHub" = {
+            icon = "https://github.com/favicon.ico";
+            definedAliases = ["@gh"];
+
+            urls = [
+              {
+                template = "https://github.com/search";
+                params = [
+                  {
+                    name = "q";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            metaData.hideOneOffButton = true;
+          };
+
+          "Home Manager" = {
+            icon = "https://home-manager-options.extranix.com/images/home-manager-option-search2.png";
+            definedAliases = ["@hm"];
+
+            urls = [
+              {
+                template = "https://mipmip.github.io/home-manager-option-search/";
+                params = [
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            metaData.hideOneOffButton = true;
+          };
+
+          "HackerNews" = {
+            icon = "https://news.ycombinator.com/favicon.ico";
+            definedAliases = ["@hn"];
+
+            urls = [
+              {
+                template = "https://hn.algolia.com/";
+                params = [
+                  {
+                    name = "q";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            metaData.hideOneOffButton = true;
+          };
+        };
       };
 
-      search.engines = {
-        "google".metaData.hidden = true;
-        "bing".metaData.hidden = true;
-        "ebay".metaData.hidden = true;
-        "amazondotcom-us".metaData.hidden = true;
-        "wikipedia".metaData.hidden = true;
-      };
+      userChrome = lib.readFile ./userChrome.css;
     };
   };
 }

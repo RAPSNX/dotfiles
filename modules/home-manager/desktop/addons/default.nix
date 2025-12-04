@@ -4,7 +4,8 @@
     ./waybar
     ./wlogout
     ./qt.nix
-    ./gtk.nix
+    # TODO: remove if nwg-look works + add  docs
+    # ./gtk.nix
     ./fuzzel.nix
   ];
 }
