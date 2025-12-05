@@ -8,6 +8,7 @@
     "size 20% 50%, class:com.nextcloud.desktopclient.nextcloud"
     "move 78% 4%, class:com.nextcloud.desktopclient.nextcloud"
     "move 68% 4%, class:^(.*ZSTray.*)$"
+    "move 40% 40%, title:^(.*Mumble Server Connect.*)$"
   ];
 
   windowrulev2 = [
