@@ -15,20 +15,6 @@
         hyprlock = true;
         configOnly = true;
       };
-
-      autostart = [
-        # Programs
-        "[ workspace special:scratchy silent ] alacritty -t scratchy"
-
-        "systemd-run --user --unit voice mumble --tray"
-        "systemd-run --user --unit secrets keepassxc"
-
-        # Autoclose
-        "sleep 1 && killall /usr/bin/intune-portal"
-
-        # Unfocus last workspace
-        "sleep 1 && hyprctl dispatch workspace 1"
-      ];
     };
 
     targets.genericLinux = {

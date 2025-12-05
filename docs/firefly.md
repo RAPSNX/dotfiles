@@ -18,6 +18,16 @@ systemctl --user mask --now gpg-agent.service gpg-agent.socket \
   gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket
 ```
 
+### Copy user-certificate to firefox
+
+```bash
+cp .pki/nssdb/* /home/rapsn/.mozilla/firefox/default/
+```
+
+### GTK Theme
+
+Instead of configuring every theme myself, only the theme installation is managed via `nix`, to set the theme use `nwg-look`.
+
 ## Outside nix 😭
 - mumble (apt)
 - hyprland (apt ppa:piper)

@@ -64,7 +64,13 @@ in {
         };
 
         decoration = import ./config/decoration.nix;
-        exec-once = import ./config/autostart.nix {inherit pkgs;} ++ config.roles.autostart;
+
+        exec-once = [
+          "uwsm app -- ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+          "[ workspace special:scratchy silent ] alacritty -t scratchy"
+          "sleep 5 && hyprctl dispatch closewindow class:ZSTray"
+          "sleep 5 && uwsm app -- mumble --tray"
+        ];
 
         inherit (windows) windowrule windowrulev2;
         inherit (workspaces) workspace;
@@ -99,15 +105,8 @@ in {
 
     # environment.d defines environment variables for the user session, beyond shell level.
     # It is processed by `systemd --user`, basically after login.
-    # - Adds the nix-store-path to the `PATH` globally for user applications.
-    # - Adds XDG_DATA_DIRS globally to allign GTK themes and config dirs session wide.
     xdg.configFile."environment.d/envvars.conf".text = ''
       PATH="$HOME/.nix-profile/bin:$PATH"
-      XDG_DATA_DIRS=${concatStringsSep ":" [
-        "${config.home.homeDirectory}/.nix-profile/share"
-        "/usr/share"
-        "/nix/var/nix/profiles/default/share"
-      ]}
     '';
   };
 }
