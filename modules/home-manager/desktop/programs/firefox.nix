@@ -1,4 +1,11 @@
-{lib, ...}: {
+{pkgs, ...}: let
+  csshacks = pkgs.fetchFromGitHub {
+    owner = "MrOtherGuy";
+    repo = "firefox-csshacks";
+    rev = "bedf5da5134360f5031dbd5ea78f0ccb2937c99b";
+    sha256 = "sha256-XmBzgKFCHz3uE45NhUpbAYi4OP939wE8biufgudDzrc=";
+  };
+in {
   programs.firefox = {
     enable = true;
     profiles.default = {
@@ -36,6 +43,10 @@
         "layout.css.backdrop-filter.enabled" = true;
         "svg.context-properties.content.enabled" = true;
       };
+
+      userChrome = ''
+        @import url(${csshacks}/chrome/hide_tabs_toolbar_v2.css)
+      '';
 
       search = {
         force = true;
@@ -182,8 +193,6 @@
           };
         };
       };
-
-      userChrome = lib.readFile ./userChrome.css;
     };
   };
 }
