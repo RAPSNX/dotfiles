@@ -61,17 +61,17 @@
         "format": "{:%H:%M }"
     },
     "network": {
-	      "format-ethernet": "{ifname} ⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+	"format-ethernet": "{ifname} ⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
         "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"],
-	      "format-alt" : "󱛇",
+	"format-alt" : "󱛇",
         "format-disconnected" : "󰖪",
-	      "tooltip-format-wifi": "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+	"tooltip-format-wifi": "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
         "tooltip-format-ethernet": "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-	      "tooltip-format-disconnected": "Disconnected",
-	      "on-click": "~/.config/rofi/wifi/wifi.sh &",
+	"tooltip-format-disconnected": "Disconnected",
+	"on-click": "~/.config/rofi/wifi/wifi.sh &",
         "on-click-right": "~/.config/rofi/wifi/wifinew.sh &",
-	      "interval": 5,
-	      "nospacing": 1
+	"interval": 5,
+	"nospacing": 1
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",

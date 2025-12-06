@@ -19,7 +19,6 @@ in {
     ./nvim.nix
 
     # Security
-    ./gpg.nix
     ./sops.nix
     ./keyring.nix
 

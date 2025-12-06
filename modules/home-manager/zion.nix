@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   imports = [
     ./common
 
@@ -20,10 +16,6 @@
           hyprlock = true;
         };
       };
-
-      autostart = [
-        "[ workspace special:scratchy silent ] uwsm app -- ${pkgs.alacritty}/bin/alacritty -t scratchy"
-      ];
     };
     # hm config
     home = rec {

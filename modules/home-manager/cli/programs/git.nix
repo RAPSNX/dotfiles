@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  userEmail =
+  email =
     if config.roles.workdevice
     then "raphael.groemmer@stackit.cloud"
     else "github@rapsn.me";
@@ -15,11 +15,8 @@ in {
   programs = {
     git = {
       enable = true;
-      inherit userEmail;
       package = pkgs.gitFull;
-      userName = "RAPSNX";
 
-      delta.enable = true;
       ignores = [
         ".idea"
         ".vs"
@@ -34,7 +31,12 @@ in {
         "__sapper__" # svelte
       ];
 
-      extraConfig = {
+      settings = {
+        user = {
+          name = "RAPSNX";
+          inherit email;
+        };
+
         credential.helper = "${pkgs.gitFull}/bin/git-credential-libsecret";
         commit = {
           gpgsign = false;
@@ -66,6 +68,10 @@ in {
           };
         }
       ];
+    };
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
     };
   };
 }

@@ -8,13 +8,15 @@ buildGoModule rec {
   version = "2.12.0-dev";
 
   src = fetchFromGitHub {
-    owner = "gardener";
+    # owner = "gardener";
+    owner = "dergeberl";
     repo = "gardenctl-v2";
-    rev = "e268ad02130241b195571ebf5d1699688e0e595c";
-    hash = "sha256-j6+bwhItJV7hvwmtl/tUdxwVbrGcvwfMJhOpRX4nVz0=";
+    # rev = "v${version}";
+    rev = "adoptStackitProvider";
+    hash = "sha256-7sZwtAtn0Tw18k7CdGEpvIWSZtM3fD9aMRzkOQ/3h6M=";
   };
 
-  vendorHash = "sha256-t0KeSM98StlqtatxLDV0tSuLw/7aej4GBr+WM++dtpU=";
+  vendorHash = "sha256-uPWU5Wp1hoTZpDvZ3BuzhNtR4V2XAfKj+6ftZa5OO70=";
 
   subPackages = ["/"];
 

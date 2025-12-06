@@ -1,5 +1,6 @@
-{pkgs, ...}: {
+_: {
   home.packages = [
-    pkgs.nextcloud-client
+    # TODO: reactivate if needed
+    # pkgs.nextcloud-client
   ];
 }

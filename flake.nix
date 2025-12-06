@@ -1,14 +1,14 @@
 {
   description = "Nix Schmix";
 
+  # TODO: Check ENV & XDG config
+  # TODO: Check autostart programms and desktop (mumble)
+  # TODO: Check activation script stuff
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixGL = {
-      url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland-git = {
@@ -95,7 +95,7 @@
         extraSpecialArgs = {inherit inputs outputs;};
       };
       # Firefly workmachine
-      "raphael.groemmer@stackit.cloud@firefly" = lib.homeManagerConfiguration {
+      "rapsn@firefly" = lib.homeManagerConfiguration {
         modules = [./modules/home-manager/firefly.nix];
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit self inputs outputs;};

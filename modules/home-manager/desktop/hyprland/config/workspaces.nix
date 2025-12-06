@@ -18,17 +18,17 @@
     "bind = SUPER,9, workspace, 9"
 
     # Workspace window movement
-    "bind = ALT,1, movetoworkspace, 1"
-    "bind = ALT,2, movetoworkspace, 2"
-    "bind = ALT,3, movetoworkspace, 3"
-    "bind = ALT,4, movetoworkspace, 4"
-    "bind = ALT,5, movetoworkspace, 5"
-    "bind = ALT,6, movetoworkspace, 6"
+    "ALT,1, movetoworkspace, 1"
+    "ALT,2, movetoworkspace, 2"
+    "ALT,3, movetoworkspace, 3"
+    "ALT,4, movetoworkspace, 4"
+    "ALT,5, movetoworkspace, 5"
+    "ALT,6, movetoworkspace, 6"
 
     # Special workpace handling
-    "bind = SUPER,O, togglespecialworkspace, scratchy"
-    "bind = SUPER,M, togglespecialworkspace, aux"
-    "bind = SUPER SHIFT,O, movetoworkspace, special:scratchy"
-    "bind = SUPER SHIFT,M, movetoworkspace, special:aux"
+    "SUPER,O, togglespecialworkspace, scratchy"
+    "SUPER,M, togglespecialworkspace, aux"
+    "SUPER SHIFT,O, movetoworkspace, special:scratchy"
+    "SUPER SHIFT,M, movetoworkspace, special:aux"
   ];
 }
