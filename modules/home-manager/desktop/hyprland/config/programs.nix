@@ -1,11 +1,8 @@
 {
-  pkgs,
-  config,
-}: {
   bind = [
-    "SUPER,RETURN, exec, uwsm app -- ${(config.lib.nixGL.wrap pkgs.alacritty)}/bin/alacritty"
-    "SUPER,E, exec, uwsm app -- ${pkgs.fuzzel}/bin/fuzzel"
-    "SUPER,P, exec, ${pkgs.wlogout}/bin/wlogout"
+    "SUPER,RETURN, exec, uwsm app -- alacritty"
+    "SUPER,E, exec, uwsm app -- fuzzel"
+    "SUPER,P, exec, wlogout"
     "SUPER,Q, killactive"
 
     # Mumble

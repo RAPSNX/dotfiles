@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  config,
+  ...
+}: {
   imports = [
     ./common
 
@@ -6,26 +10,29 @@
     ./desktop
   ];
 
-  config = {
-    roles = {
-      workdevice = true;
+  roles = {
+    workdevice = true;
 
-      desktop.hyprland = {
+    desktop.hyprland = {
+      enable = true;
+      package = null;
+
+      hyprlock.enable = false;
+      hypridle = {
         enable = true;
-        hyprlock = true;
-        configOnly = true;
+        cmd = "${config.home.homeDirectory}/Projects/swaywm/swaylock/build/swaylock";
       };
     };
+  };
 
-    targets.genericLinux = {
-      enable = true;
-      gpu.enable = true;
-    };
+  targets.genericLinux = {
+    enable = true;
+    gpu.enable = true;
+  };
 
-    home = {
-      username = "rapsn";
-      homeDirectory = lib.mkDefault "/home/rapsn";
-      stateVersion = lib.mkDefault "22.05";
-    };
+  home = {
+    username = "rapsn";
+    homeDirectory = lib.mkDefault "/home/rapsn";
+    stateVersion = lib.mkDefault "22.05";
   };
 }

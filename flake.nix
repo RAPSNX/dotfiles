@@ -1,10 +1,6 @@
 {
   description = "Nix Schmix";
 
-  # TODO: Check ENV & XDG config
-  # TODO: Check autostart programms and desktop (mumble)
-  # TODO: Check activation script stuff
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
