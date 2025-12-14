@@ -9,7 +9,7 @@
     "SUPER,Z, exec, mumble rpc togglemute"
     "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
 
-    # Mouseless
-    "SUPER,SPACE, exec, wl-kbptr -o modes=tile,bisect,click"
+    # Notification center
+    "SUPER,N, exec, swaync-client -t"
   ];
 }

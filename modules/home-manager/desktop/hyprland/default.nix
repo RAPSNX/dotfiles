@@ -60,6 +60,11 @@ in {
             force_zero_scaling = true;
           };
 
+          monitor = [
+            "DP-8,1920x1080@60.0,auto,auto"
+            "DP-9,1920x1080@60.0,auto,auto"
+          ];
+
           input = {
             kb_layout = "eu";
             repeat_rate = 45;
@@ -82,10 +87,10 @@ in {
 
           bind = windows.bind ++ programs.bind ++ workspaces.bind;
 
-          source = [
-            "~/.config/hypr/monitors.conf"
-            "~/.config/hypr/workspaces.conf"
-          ];
+          # source = [
+          #   "~/.config/hypr/monitors.conf"
+          #   "~/.config/hypr/workspaces.conf"
+          # ];
         };
       };
 

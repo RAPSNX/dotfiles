@@ -21,8 +21,6 @@ in {
       gnugrep
       killall
 
-      wl-kbptr # mouseless tool
-
       pciutils
 
       # Inspection
