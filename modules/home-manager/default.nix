@@ -1,0 +1,8 @@
+{
+  imports = [
+    ./common
+
+    ./cli
+    ./desktop
+  ];
+}
