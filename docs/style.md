@@ -35,3 +35,9 @@
     - Imports all `Home` configuration for this `host`.
     - Defines **host specific configuration**
 
+
+// TODO: Define structure
+- `Module` design
+  - `option.nix`
+  - `default.nix`
+  - `imports = []`
