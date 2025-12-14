@@ -20,7 +20,7 @@ in
 
   options.roles.desktop.hyprland = {
     enable = mkEnableOption "Enable hyprland";
-    package = mkOption { type = types.nullOr types.pkgs; };
+    package = mkPackageOption pkgs "hyprland" {nullable = true;};
 
     hyprlock = {
       enable = mkEnableOption "Enable hyprlock";
@@ -45,7 +45,7 @@ in
         inherit (cfg) package;
         systemd.enable = false; # Disable for uswm
 
-        portalPackage = pkgs.xdg-desktop-portal-wlr;
+        # portalPackage = pkgs.xdg-desktop-portal-wlr;
         inherit (windows) extraConfig;
 
         settings = {
@@ -66,8 +66,11 @@ in
           };
 
           monitor = [
-            "DP-8,1920x1080@60.0,auto,auto"
-            "DP-9,1920x1080@60.0,auto,auto"
+            "DP-8,highres,auto,auto"
+            "DP-9,highres,auto,auto"
+
+            "DP-2,highres,0x0,auto"
+            "DP-1,highres,auto,auto"
           ];
 
           input = {
