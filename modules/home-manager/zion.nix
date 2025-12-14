@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ./common
 
@@ -9,10 +13,14 @@
   roles = {
     workdevice = false;
 
-    desktop = {
-      hyprland = {
+    desktop.hyprland = {
+      enable = true;
+      package = pkgs.hyprland;
+
+      hyprlock.enable = true;
+      hypridle = {
         enable = true;
-        hyprlock = true;
+        cmd = "hyprlock";
       };
     };
   };
