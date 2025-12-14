@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: {
   imports = [
@@ -21,6 +22,14 @@
       };
     };
   };
+
+  home.packages = with pkgs; let
+  in [
+    mypkgs.gardenctl
+    mypkgs.gardenlogin
+
+    brightnessctl
+  ];
 
   targets.genericLinux = {
     enable = true;
