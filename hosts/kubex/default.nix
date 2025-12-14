@@ -13,7 +13,10 @@
 
   # Host specific configuration
   hostConfiguration = {
-    boot.supportedFilesystems = ["zfs"];
+    boot = {
+      enable = true;
+      supportedFilesystems = ["zfs"];
+    };
 
     user = {
       name = "kubex";

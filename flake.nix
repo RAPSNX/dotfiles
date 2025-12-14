@@ -96,21 +96,20 @@
           specialArgs = { inherit inputs mylib; };
         };
       };
-
-      homeConfigurations = {
-        # Main workstation
-        "rap@zion" = homeManagerConfiguration {
-          modules = [ ./modules/home-manager/zion.nix ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs mylib; };
-        };
-
-        # Firefly workmachine
-        "rapsn@firefly" = homeManagerConfiguration {
-          modules = [ ./modules/home-manager/firefly.nix ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs mylib; };
-        };
+      # K3S home-lab
+      kubex = lib.nixosSystem {
+        modules = [./hosts/kubex];
+        specialArgs = {inherit inputs outputs;};
+      };
+      # Raspberry-pi 3
+      nixberry = lib.nixosSystem {
+        modules = [./hosts/nixberry];
+        specialArgs = {inherit inputs outputs;};
+      };
+      # ISO multi-tool
+      vinox = lib.nixosSystem {
+        modules = [./hosts/vinox];
+        specialArgs = {inherit inputs outputs;};
       };
     };
 

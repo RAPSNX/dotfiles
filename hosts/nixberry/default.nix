@@ -2,6 +2,7 @@
   lib,
   pkgs,
   inputs,
+  lib,
   ...
 }:
 {
@@ -22,6 +23,8 @@
       extraOptions = { };
       extraGroups = [ ];
     };
+
+    boot.enable = false;
 
     services = {
       tailscale = true;

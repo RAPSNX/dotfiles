@@ -34,6 +34,10 @@ nh os build --hostname kubex .
 nix build .#nixosConfigurations.vinox.config.system.build.isoImage
 
 # NixOS remote switch
+nh os switch --hostname kubex . -d always --target-host kubex
+nh os switch --hostname nixberry . -d always --target-host <IP>
+
+# Or
 nixos-rebuild switch --flake .#kubex --target-host 192.168.55.10 --sudo
 
 # HomeManager rebuilds (hostname & username autodetection)

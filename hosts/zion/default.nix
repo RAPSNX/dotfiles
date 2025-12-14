@@ -7,7 +7,8 @@
   # Host specific configuration
   hostConfiguration = {
     boot = {
-      armSupport = false;
+      enable = true;
+      armSupport = true;
       supportedFilesystems = ["ntfs"];
     };
 
