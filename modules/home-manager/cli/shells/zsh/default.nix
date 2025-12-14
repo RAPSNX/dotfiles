@@ -5,11 +5,6 @@
   ...
 }:
 with lib; {
-  imports = [
-    ./shellScripts.nix
-    ./starship.nix
-  ];
-
   home.packages = [pkgs.zsh-completions];
 
   catppuccin.zsh-syntax-highlighting.enable = true;
@@ -41,20 +36,15 @@ with lib; {
       share = true;
     };
 
-    # TODO: readd this
-    # # Gardenctl
-    # [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
-    # source <(gardenctl completion zsh)
-    # eval $(gardenctl kubectl-env zsh)
     initContent = mkMerge [
-      (mkOrder 500
-        '''')
+      (mkOrder 500 '''')
       (mkOrder 1000
         ''
           [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
+          source <(gardenctl completion zsh)
+          eval $(gardenctl kubectl-env zsh)
         '')
-      (mkOrder 1500
-        '''')
+      (mkOrder 1500 '''')
     ];
 
     shellAliases = {
