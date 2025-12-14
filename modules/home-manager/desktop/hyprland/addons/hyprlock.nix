@@ -7,7 +7,7 @@
 with lib; let
   cfg = config.roles.desktop.hyprland.hyprlock;
 in {
-  config = mkIf cfg {
+  config = mkIf cfg.enable {
     programs.hyprlock = {
       enable = true;
       package = pkgs.hyprlock;
@@ -39,28 +39,6 @@ in {
             outer_color = "rgb(24, 25, 38)";
             outline_thickness = 5;
             shadow_passes = 2;
-          }
-        ];
-      };
-    };
-
-    services.hypridle = {
-      enable = true;
-      settings = {
-        general = {
-          lock_cmd = "hyprlock";
-        };
-        listener = [
-          # autolock
-          {
-            timeout = 1200;
-            on-timeout = "hyprlock";
-          }
-          # display off
-          {
-            timeout = 9000;
-            on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on";
           }
         ];
       };

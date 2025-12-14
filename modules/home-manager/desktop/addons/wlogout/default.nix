@@ -4,7 +4,7 @@
     layout = [
       {
         label = "lock";
-        action = "hyprlock";
+        action = "loginctl lock-session";
         text = "Lock";
         keybind = "l";
       }

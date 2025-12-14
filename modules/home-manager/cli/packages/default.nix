@@ -21,8 +21,6 @@ in {
       gnugrep
       killall
 
-      wl-kbptr # mouseless tool
-
       pciutils
 
       # Inspection
@@ -61,8 +59,6 @@ in {
       wl-clipboard
 
       # Note taking
-      # TODO: broken
-      # obsidian
     ]
     ++ lib.optionals config.roles.workdevice [
       workpkgs.gardenctl

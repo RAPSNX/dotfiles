@@ -8,7 +8,7 @@
         pagers = [
           {
             colorArg = "always";
-            pager = "${config.programs.git.delta.package}/bin/delta --dark --paging=never";
+            pager = "${config.programs.delta.package}/bin/delta --dark --paging=never";
           }
         ];
       };

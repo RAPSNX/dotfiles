@@ -3,19 +3,29 @@
     # Special
     "special:scratchy"
     "special:aux"
+
+    # Assignment work (upper usb-c slot)
+    "1,monitor:DP-8,default:true"
+    "2,monitor:DP-8"
+    "3,monitor:DP-8"
+    "4,monitor:DP-9,default:true"
+    "5,monitor:DP-9"
+    "6,monitor:DP-9"
+
+    "1,monitor:DP-1"
   ];
 
   bind = [
     # Workspace selection
-    "bind = SUPER,1, workspace, 1"
-    "bind = SUPER,2, workspace, 2"
-    "bind = SUPER,3, workspace, 3"
-    "bind = SUPER,4, workspace, 4"
-    "bind = SUPER,5, workspace, 5"
-    "bind = SUPER,6, workspace, 6"
-    "bind = SUPER,7, workspace, 7"
-    "bind = SUPER,8, workspace, 8"
-    "bind = SUPER,9, workspace, 9"
+    "SUPER,1, workspace, 1"
+    "SUPER,2, workspace, 2"
+    "SUPER,3, workspace, 3"
+    "SUPER,4, workspace, 4"
+    "SUPER,5, workspace, 5"
+    "SUPER,6, workspace, 6"
+    "SUPER,7, workspace, 7"
+    "SUPER,8, workspace, 8"
+    "SUPER,9, workspace, 9"
 
     # Workspace window movement
     "ALT,1, movetoworkspace, 1"
