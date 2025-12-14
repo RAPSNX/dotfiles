@@ -1,5 +1,12 @@
 {pkgs, ...}: {
   catppuccin.alacritty.enable = true;
+
+  home.packages = with pkgs; [
+    nerd-fonts.caskaydia-cove
+  ];
+
+  fonts.fontconfig.enable = true;
+
   programs.alacritty = {
     enable = true;
     package = pkgs.alacritty;
