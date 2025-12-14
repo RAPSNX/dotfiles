@@ -4,10 +4,7 @@
   ...
 }: {
   imports = [
-    ./common
-
-    ./cli
-    ./desktop
+    ../../modules/home-manager
   ];
 
   roles = {

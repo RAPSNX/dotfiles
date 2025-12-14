@@ -113,4 +113,20 @@
         };
       };
     };
+
+    homeConfigurations = {
+      # Main workstation
+      "rap@zion" = lib.homeManagerConfiguration {
+        modules = [./hosts/zion/home.nix];
+        pkgs = pkgsFor.x86_64-linux;
+        extraSpecialArgs = {inherit inputs outputs;};
+      };
+      # Firefly workmachine
+      "rapsn@firefly" = lib.homeManagerConfiguration {
+        modules = [./hosts/firefly/home.nix];
+        pkgs = pkgsFor.x86_64-linux;
+        extraSpecialArgs = {inherit self inputs outputs;};
+      };
+    };
+  };
 }
