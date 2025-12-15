@@ -4,10 +4,13 @@
   lib,
   outputs,
   ...
-}: let
-  workpkgs = outputs.packages.${pkgs.system};
-in {
-  home.packages = with pkgs;
+}:
+let
+  workpkgs = outputs.packages.${pkgs.stdenv.hostPlatform.system};
+in
+{
+  home.packages =
+    with pkgs;
     [
       # Core utility
       coreutils # cp, mv, etc.

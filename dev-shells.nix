@@ -1,18 +1,21 @@
 {
-  pkgs ? import <nixpkgs> {},
+  pkgs ? import <nixpkgs> { },
   pre-commit-hooks,
   ...
-}: let
-  pre-commit-check = pre-commit-hooks.lib.${pkgs.system}.run {
+}:
+let
+  pre-commit-check = pre-commit-hooks.lib.${pkgs.stdenv.hostPlatform.system}.run {
     src = ./.;
     hooks = {
       statix.enable = true;
-      alejandra.enable = true;
+      nixfmt-rfc-style.enable = true;
       deadnix.enable = true;
     };
   };
-in {
-  default = with pkgs;
+in
+{
+  default =
+    with pkgs;
     mkShell {
       inherit (pre-commit-check) shellHook;
 
