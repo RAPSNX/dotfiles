@@ -33,6 +33,7 @@
     };
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
+    import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
