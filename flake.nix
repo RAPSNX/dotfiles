@@ -62,6 +62,7 @@
 
       forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
     in
+    with lib;
     {
       inherit lib;
 
@@ -71,25 +72,25 @@
 
       nixosConfigurations = {
         # Main workstation
-        zion = lib.nixosSystem {
+        zion = nixosSystem {
           modules = [ ./hosts/zion ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # K3S home-lab
-        kubex = lib.nixosSystem {
+        kubex = nixosSystem {
           modules = [ ./hosts/kubex ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # Raspberry-pi 3
-        nixberry = lib.nixosSystem {
+        nixberry = nixosSystem {
           modules = [ ./hosts/nixberry ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # ISO multi-tool
-        vinox = lib.nixosSystem {
+        vinox = nixosSystem {
           modules = [ ./hosts/vinox ];
           specialArgs = { inherit inputs mylib; };
         };
@@ -97,14 +98,14 @@
 
       homeConfigurations = {
         # Main workstation
-        "rap@zion" = lib.homeManagerConfiguration {
+        "rap@zion" = homeManagerConfiguration {
           modules = [ ./modules/home-manager/zion.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs mylib; };
         };
 
         # Firefly workmachine
-        "rapsn@firefly" = lib.homeManagerConfiguration {
+        "rapsn@firefly" = homeManagerConfiguration {
           modules = [ ./modules/home-manager/firefly.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs mylib; };
