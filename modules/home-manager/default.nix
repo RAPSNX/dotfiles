@@ -10,6 +10,7 @@
     ./common
     ./cli
     ./desktop
+    ./roles
 
     # nix settings
     ../nix.nix

@@ -25,9 +25,14 @@
 
   home.packages = with pkgs; let
   in [
+    # CLIs
     mypkgs.gardenctl
     mypkgs.gardenlogin
+    stackit-cli
+    openstackclient-full
+    vault-bin
 
+    # Tools
     brightnessctl
   ];
 
