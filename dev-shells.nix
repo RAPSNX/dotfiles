@@ -20,7 +20,7 @@ in {
         nh
         statix
         deadnix
-        alejandra
+        nixfmt-rfc-style
         nix-inspect
       ];
     };

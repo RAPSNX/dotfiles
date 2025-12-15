@@ -44,17 +44,22 @@
     inherit (self) outputs;
     lib = nixpkgs.lib // home-manager.lib;
 
-    systems = ["aarch64-linux" "x86_64-linux"];
-    pkgsFor = lib.genAttrs systems (system:
-      import nixpkgs {
-        inherit system;
-        overlays = [(import ./overlays)];
-      });
+    systems = [
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
+    pkgsFor = lib.genAttrs systems (
+      system:
+        import nixpkgs {
+          inherit system;
+          overlays = [(import ./overlays)];
+        }
+    );
     forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
   in {
     inherit lib;
 
-    formatter = forAllSystems (pkgs: pkgs.alejandra);
+    formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
     devShells = forAllSystems (pkgs: import ./dev-shells.nix {inherit pkgs pre-commit-hooks;});
     packages = forAllSystems (pkgs: import ./packages {inherit pkgs;});
 
