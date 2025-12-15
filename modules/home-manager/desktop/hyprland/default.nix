@@ -1,12 +1,16 @@
 {
   pkgs,
   lib,
+  mylib,
   config,
   ...
 }:
-with lib; let
+with lib;
+with mylib;
+let
   cfg = config.roles.desktop.hyprland;
-in {
+in
+{
   imports = [
     # Addons
     ./addons/hyprpaper.nix
@@ -16,22 +20,23 @@ in {
 
   options.roles.desktop.hyprland = {
     enable = mkEnableOption "Enable hyprland";
-    package = mkOption {type = types.nullOr types.pkgs;};
+    package = mkOption { type = types.nullOr types.pkgs; };
 
     hyprlock = {
       enable = mkEnableOption "Enable hyprlock";
     };
     hypridle = {
       enable = mkEnableOption "Enable hypridle";
-      cmd = mkOption {type = types.str;};
+      cmd = mkOpt types.str "Path to locking binary";
     };
   };
 
-  config = let
-    windows = import ./config/windows.nix;
-    programs = import ./config/programs.nix;
-    workspaces = import ./config/workspaces.nix;
-  in
+  config =
+    let
+      windows = import ./config/windows.nix;
+      programs = import ./config/programs.nix;
+      workspaces = import ./config/workspaces.nix;
+    in
     mkIf cfg.enable {
       catppuccin.hyprland.enable = true;
 
@@ -103,7 +108,10 @@ in {
         enable = true;
         config = {
           common = {
-            default = ["hyprland" "gtk"];
+            default = [
+              "hyprland"
+              "gtk"
+            ];
           };
         };
         extraPortals = with pkgs; [

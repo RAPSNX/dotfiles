@@ -34,68 +34,82 @@
     catppuccin.url = "github:catppuccin/nix";
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    home-manager,
-    pre-commit-hooks,
-    ...
-  }: let
-    inherit (self) outputs;
-    lib = nixpkgs.lib // home-manager.lib;
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      home-manager,
+      pre-commit-hooks,
+      ...
+    }:
+    let
+      inherit (self) outputs;
+      lib = nixpkgs.lib // home-manager.lib;
+      mylib = import ./lib { inherit lib; };
 
-    systems = ["aarch64-linux" "x86_64-linux"];
-    pkgsFor = lib.genAttrs systems (system:
-      import nixpkgs {
-        inherit system;
-        overlays = [(import ./overlays)];
-      });
-    forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
-  in {
-    inherit lib;
+      systems = [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
 
-    formatter = forAllSystems (pkgs: pkgs.alejandra);
-    devShells = forAllSystems (pkgs: import ./dev-shells.nix {inherit pkgs pre-commit-hooks;});
-    packages = forAllSystems (pkgs: import ./packages {inherit pkgs;});
+      pkgsFor = lib.genAttrs systems (
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = [ (import ./overlays) ];
+        }
+      );
 
-    nixosConfigurations = {
-      # Main workstation
-      zion = lib.nixosSystem {
-        modules = [./hosts/zion];
-        specialArgs = {inherit inputs outputs;};
+      forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
+    in
+    with lib;
+    {
+      inherit lib;
+
+      formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
+      devShells = forAllSystems (pkgs: import ./dev-shells.nix { inherit pkgs pre-commit-hooks; });
+      packages = forAllSystems (pkgs: import ./packages { inherit pkgs; });
+
+      nixosConfigurations = {
+        # Main workstation
+        zion = nixosSystem {
+          modules = [ ./hosts/zion ];
+          specialArgs = { inherit inputs mylib; };
+        };
+
+        # K3S home-lab
+        kubex = nixosSystem {
+          modules = [ ./hosts/kubex ];
+          specialArgs = { inherit inputs mylib; };
+        };
+
+        # Raspberry-pi 3
+        nixberry = nixosSystem {
+          modules = [ ./hosts/nixberry ];
+          specialArgs = { inherit inputs mylib; };
+        };
+
+        # ISO multi-tool
+        vinox = nixosSystem {
+          modules = [ ./hosts/vinox ];
+          specialArgs = { inherit inputs mylib; };
+        };
       };
-      # K3S home-lab
-      # FIXME: Fix refactoring for kubex, check nixpkgs-stable and diff before update.
-      kubex = lib.nixosSystem {
-        modules = [./hosts/kubex];
-        specialArgs = {inherit inputs outputs;};
-      };
-      # Raspberry-pi 3
-      # FIXME: Fix refactoring for kubex, check nixpkgs-stable and diff before update.
-      nixberry = lib.nixosSystem {
-        modules = [./hosts/nixberry];
-        specialArgs = {inherit inputs outputs;};
-      };
-      # ISO multi-tool
-      vinox = lib.nixosSystem {
-        modules = [./hosts/vinox];
-        specialArgs = {inherit inputs outputs;};
+
+      homeConfigurations = {
+        # Main workstation
+        "rap@zion" = homeManagerConfiguration {
+          modules = [ ./modules/home-manager/zion.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs mylib; };
+        };
+
+        # Firefly workmachine
+        "rapsn@firefly" = homeManagerConfiguration {
+          modules = [ ./modules/home-manager/firefly.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs mylib; };
+        };
       };
     };
-
-    homeConfigurations = {
-      # Main workstation
-      "rap@zion" = lib.homeManagerConfiguration {
-        modules = [./modules/home-manager/zion.nix];
-        pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs;};
-      };
-      # Firefly workmachine
-      "rapsn@firefly" = lib.homeManagerConfiguration {
-        modules = [./modules/home-manager/firefly.nix];
-        pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = {inherit self inputs outputs;};
-      };
-    };
-  };
 }
