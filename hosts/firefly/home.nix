@@ -3,13 +3,11 @@
   config,
   pkgs,
   ...
-}: {
-  imports = [
-    ../../modules/home-manager
-  ];
-
+}:
+{
   roles = {
-    workdevice = true;
+    work = true;
+    email = "raphael.groemmer@stackit.cloud";
 
     desktop.hyprland = {
       enable = true;
@@ -23,8 +21,7 @@
     };
   };
 
-  home.packages = with pkgs; let
-  in [
+  home.packages = with pkgs; [
     # CLIs
     mypkgs.gardenctl
     mypkgs.gardenlogin
@@ -32,7 +29,7 @@
     openstackclient-full
     vault-bin
 
-    # Tools
+    # Tools(inputs.import-tree.match ".*/default\\.nix" ./modules/home)
     brightnessctl
   ];
 

@@ -13,7 +13,6 @@
     };
     neonix = {
       url = "github:rgroemmer/neonix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     krewfile = {
       url = "github:brumhard/krewfile";
@@ -33,6 +32,7 @@
     };
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
+
     import-tree.url = "github:vic/import-tree";
   };
 
@@ -63,6 +63,18 @@
       );
 
       forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
+
+      # nixosModules = [
+      # ];
+
+      homeModules = [
+        inputs.catppuccin.homeModules.catppuccin
+        inputs.neonix.homeManagerModules.neonix
+        inputs.krewfile.homeManagerModules.krewfile
+        inputs.sops-nix.homeManagerModules.sops
+        (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
+        ./modules/nix.nix
+      ];
     in
     with lib;
     {
@@ -97,36 +109,21 @@
           specialArgs = { inherit inputs mylib; };
         };
       };
-      # K3S home-lab
-      kubex = lib.nixosSystem {
-        modules = [./hosts/kubex];
-        specialArgs = {inherit inputs outputs;};
-      };
-      # Raspberry-pi 3
-      nixberry = lib.nixosSystem {
-        modules = [./hosts/nixberry];
-        specialArgs = {inherit inputs outputs;};
-      };
-      # ISO multi-tool
-      vinox = lib.nixosSystem {
-        modules = [./hosts/vinox];
-        specialArgs = {inherit inputs outputs;};
-      };
-    };
 
-    homeConfigurations = {
-      # Main workstation
-      "rap@zion" = lib.homeManagerConfiguration {
-        modules = [./hosts/zion/home.nix];
-        pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs;};
-      };
-      # Firefly workmachine
-      "rapsn@firefly" = lib.homeManagerConfiguration {
-        modules = [./hosts/firefly/home.nix];
-        pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = {inherit self inputs outputs;};
+      homeConfigurations = {
+        # Main workstation
+        "rap@zion" = homeManagerConfiguration {
+          modules = [ ./hosts/zion/home.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs mylib; };
+        };
+
+        # Firefly workmachine
+        "rapsn@firefly" = homeManagerConfiguration {
+          modules = homeModules ++ [ ./hosts/firefly/home.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs mylib; };
+        };
       };
     };
-  };
 }
