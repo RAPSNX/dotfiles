@@ -14,7 +14,10 @@
 
   # Host specific configuration
   hostConfiguration = {
-    boot.supportedFilesystems = ["ntfs"];
+    boot = {
+      enable = true;
+      supportedFilesystems = ["ntfs"];
+    };
 
     user = {
       name = "root";

@@ -32,6 +32,8 @@
     };
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
+
+    import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
@@ -61,6 +63,18 @@
       );
 
       forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
+
+      # nixosModules = [
+      # ];
+
+      homeModules = [
+        inputs.catppuccin.homeModules.catppuccin
+        inputs.neonix.homeManagerModules.neonix
+        inputs.krewfile.homeManagerModules.krewfile
+        inputs.sops-nix.homeManagerModules.sops
+        (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
+        ./modules/nix.nix
+      ];
     in
     with lib;
     {
@@ -99,14 +113,14 @@
       homeConfigurations = {
         # Main workstation
         "rap@zion" = homeManagerConfiguration {
-          modules = [ ./modules/home-manager/zion.nix ];
+          modules = [ ./hosts/zion/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs mylib; };
         };
 
         # Firefly workmachine
         "rapsn@firefly" = homeManagerConfiguration {
-          modules = [ ./modules/home-manager/firefly.nix ];
+          modules = homeModules ++ [ ./hosts/firefly/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs mylib; };
         };
