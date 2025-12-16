@@ -12,7 +12,7 @@ let
   '';
 
   # kubeconfig selector
-  selc' = pkgs.writeShellScriptBin "selc'" ''
+  selc_ = pkgs.writeShellScriptBin "selc_'" ''
     #!/usr/bin/env bash
     BASE_PATH=$HOME/.config/kubeconfig
     YAMLS=$(find "$BASE_PATH" -name '*.yaml' | awk -F/ '{ print $NF }')
@@ -24,6 +24,6 @@ in
   home.packages = [
     nix-run
     nix-shell
-    selc'
+    selc_
   ];
 }
