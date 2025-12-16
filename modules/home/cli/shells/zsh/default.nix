@@ -68,7 +68,7 @@ with lib;
       k = "kubectl";
       kk = "k9s";
       kns = "kubectl ns";
-      selc = "source selc'";
+      selc = "source selc_";
 
       clean = "nix-collect-garbage -d && nix-store --gc && nix-store --verify --check-contents --repair";
     };
