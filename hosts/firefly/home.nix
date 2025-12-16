@@ -14,11 +14,21 @@
       package = null;
 
       monitor = [
-        "DP-8,highres,auto,auto"
-        "DP-9,highres,auto,auto"
+        "eDP-1,highres,0x0,auto"
 
-        "HDMI-A-1,highres,0x0,auto"
+        # Home monitors
+        "HDMI-A-1,highres,auto,auto"
         "DP-2,highres,auto,auto"
+      ];
+
+      workspaces = [
+        "1,monitor:DP-2,default:true"
+        "2,monitor:DP-2"
+        "3,monitor:DP-2"
+        "4,monitor:HDMI-A-1,default:true"
+        "5,monitor:HDMI-A-1"
+        "6,monitor:HDMI-A-1"
+        "7,monitor:eDP-1"
       ];
 
       extraConfig = ''
