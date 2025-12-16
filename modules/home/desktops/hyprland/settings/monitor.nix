@@ -1,21 +1,20 @@
 {
   lib,
+  mylib,
   config,
   ...
 }:
+with lib;
+with mylib;
 let
   cfg = config.roles.desktop.hyprland;
 in
 {
-  wayland.windowManager.hyprland.settings = lib.mkIf cfg.enable {
-    wayland.windowManager.hyprland.settings = {
-      monitor = [
-        "DP-8,highres,auto,auto"
-        "DP-9,highres,auto,auto"
+  options.roles.desktop.hyprland.monitor = with types; mkOpt (listOf str) "Monitor config as list.";
 
-        "DP-2,highres,0x0,auto"
-        "DP-1,highres,auto,auto"
-      ];
+  config = {
+    wayland.windowManager.hyprland.settings = lib.mkIf cfg.enable {
+      inherit (cfg) monitor;
     };
   };
 }

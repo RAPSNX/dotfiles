@@ -13,6 +13,19 @@
       enable = true;
       package = null;
 
+      monitor = [
+        "DP-8,highres,auto,auto"
+        "DP-9,highres,auto,auto"
+
+        "HDMI-A-1,highres,0x0,auto"
+        "DP-2,highres,auto,auto"
+      ];
+
+      extraConfig = ''
+        bindl = , switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@60, 0x0, 1"
+        bindl = , switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
+      '';
+
       hyprlock.enable = false;
       hypridle = {
         enable = true;

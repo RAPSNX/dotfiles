@@ -64,8 +64,11 @@
 
       forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
 
-      # nixosModules = [
-      # ];
+      nixosModules = [
+        inputs.catppuccin.nixosModules.catppuccin
+        (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
+        ./modules/nix.nix
+      ];
 
       homeModules = [
         inputs.catppuccin.homeModules.catppuccin
@@ -87,25 +90,25 @@
       nixosConfigurations = {
         # Main workstation
         zion = nixosSystem {
-          modules = [ ./hosts/zion ];
+          modules = nixosModules ++ [ ./hosts/zion ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # K3S home-lab
         kubex = nixosSystem {
-          modules = [ ./hosts/kubex ];
+          modules = nixosModules ++ [ ./hosts/kubex ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # Raspberry-pi 3
         nixberry = nixosSystem {
-          modules = [ ./hosts/nixberry ];
+          modules = nixosModules ++ [ ./hosts/nixberry ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # ISO multi-tool
         vinox = nixosSystem {
-          modules = [ ./hosts/vinox ];
+          modules = nixosModules ++ [ ./hosts/vinox ];
           specialArgs = { inherit inputs mylib; };
         };
       };
@@ -113,7 +116,7 @@
       homeConfigurations = {
         # Main workstation
         "rap@zion" = homeManagerConfiguration {
-          modules = [ ./hosts/zion/home.nix ];
+          modules = homeModules ++ [ ./hosts/zion/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs mylib; };
         };
