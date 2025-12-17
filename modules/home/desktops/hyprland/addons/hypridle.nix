@@ -23,7 +23,7 @@ in
           }
           # display off
           {
-            timeout = 130;
+            timeout = 3600;
             on-timeout = "hyprctl dispatch dpms off";
             on-resume = "hyprctl dispatch dpms on";
           }
