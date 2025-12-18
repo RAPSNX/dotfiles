@@ -13,12 +13,22 @@
       enable = true;
       package = null;
 
-      monitor = [
-        "eDP-1,highres,0x0,auto"
-
-        # Home monitors
-        "HDMI-A-1,highres,auto,auto"
-        "DP-2,highres,auto,auto"
+      monitors = [
+        # Monitor are automatically from left to right
+        {
+          name = "Samsung Electric Company LC27G7xT H4ZNC00167";
+          width = 2560;
+          hight = 1440;
+          hz = "144.0";
+          scale = 1.0;
+        }
+        {
+          name = "Dell Inc. AW2725Q G2QC174";
+          width = 3840;
+          hight = 2160;
+          hz = "143.99";
+          scale = 1.5;
+        }
       ];
 
       workspaces = [
@@ -32,7 +42,8 @@
       ];
 
       extraConfig = ''
-        bindl = , switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@60, 0x0, 1"
+        monitor=eDP-1,prefer,auto,1
+        bindl = , switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, prefer,auto, 1"
         bindl = , switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
       '';
 

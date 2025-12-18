@@ -10,13 +10,18 @@ let
   cfg = config.roles.desktop.hyprland;
 in
 {
+  options.roles.desktop.hyprland.workspaces =
+    with types;
+    mkOpt (listOf str) "Workspace config as list.";
+
   config = {
     wayland.windowManager.hyprland.settings = mkIf cfg.enable {
       workspace = [
         # Special
         "special:scratchy"
         "special:aux"
-      ];
+      ]
+      ++ cfg.workspaces;
 
       bind = [
         # Workspace selection
@@ -38,6 +43,7 @@ in
         "ALT,5, movetoworkspace, 5"
         "ALT,6, movetoworkspace, 6"
         "ALT,7, movetoworkspace, 7"
+        "ALT,8, movetoworkspace, 8"
 
         # Special workpace handling
         "SUPER,O, togglespecialworkspace, scratchy"
