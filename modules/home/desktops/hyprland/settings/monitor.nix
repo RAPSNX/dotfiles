@@ -28,7 +28,7 @@ in
           (acc: mon: {
             pos = builtins.floor (acc.pos + (mon.width / mon.scale));
             result = acc.result ++ [
-              "desc:${mon.name},${toString mon.width}x${toString mon.hight},${toString acc.pos}x0,${toString mon.scale}"
+              "desc:${mon.name},${toString mon.width}x${toString mon.hight}@${toString mon.hz},${toString acc.pos}x0,${toString mon.scale}"
             ];
           })
           {
