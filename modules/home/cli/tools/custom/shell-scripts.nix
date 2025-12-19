@@ -12,7 +12,7 @@ let
   '';
 
   # kubeconfig selector
-  selc_ = pkgs.writeShellScriptBin "selc_'" ''
+  selc_ = pkgs.writeShellScriptBin "selc_" ''
     #!/usr/bin/env bash
     BASE_PATH=$HOME/.config/kubeconfig
     YAMLS=$(find "$BASE_PATH" -name '*.yaml' | awk -F/ '{ print $NF }')
