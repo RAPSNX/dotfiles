@@ -45,7 +45,6 @@
       ...
     }:
     let
-      inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
       mylib = import ./lib { inherit lib; };
 
@@ -84,6 +83,7 @@
       inherit lib;
 
       formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
+
       devShells = forAllSystems (pkgs: import ./dev-shells.nix { inherit pkgs pre-commit-hooks; });
       packages = forAllSystems (pkgs: import ./packages { inherit pkgs; });
 
@@ -118,14 +118,14 @@
         "rap@zion" = homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/zion/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs mylib; };
+          extraSpecialArgs = { inherit inputs self mylib; };
         };
 
         # Firefly workmachine
         "rapsn@firefly" = homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/firefly/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs mylib; };
+          extraSpecialArgs = { inherit inputs self mylib; };
         };
       };
     };

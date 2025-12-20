@@ -45,5 +45,7 @@ in
       "/share/xdg-desktop-portal"
     ];
     services.openssh.enable = true;
+    nix.optimise.automatic = true;
+    system.stateVersion = "24.11";
   };
 }

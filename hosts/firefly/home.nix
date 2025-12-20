@@ -43,8 +43,12 @@
 
       extraConfig = ''
         monitor=eDP-1,prefer,auto,1
+
         bindl = , switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, prefer,auto, 1"
         bindl = , switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
+
+        exec-once = sleep 5 && uwsm app -- mumble --tray
+        exec-once = sleep 5 && hyprctl dispatch closewindow class:ZSTray
       '';
 
       hyprlock.enable = false;
