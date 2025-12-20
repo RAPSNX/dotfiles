@@ -57,6 +57,13 @@
         cmd = "${config.home.homeDirectory}/Projects/swaywm/swaylock/build/swaylock";
       };
     };
+    cli = {
+      zsh.zshrc = ''
+        [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
+        source <(gardenctl completion zsh)
+        eval $(gardenctl kubectl-env zsh)
+      '';
+    };
   };
 
   home.packages = with pkgs; [
