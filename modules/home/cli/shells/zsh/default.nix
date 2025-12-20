@@ -66,7 +66,7 @@ with lib;
       o = "openstack";
 
       k = "kubectl";
-      kk = "k9s";
+      kk = "k9s -c pods";
       kns = "kubectl ns";
       selc = "source selc_";
 
