@@ -21,7 +21,8 @@ in
     };
 
     input = {
-      kb_layout = "eu";
+      kb_layout = "eu,de";
+      kb_variant = ",neo_qwertz";
       repeat_rate = 45;
       repeat_delay = 150;
       accel_profile = "flat";
