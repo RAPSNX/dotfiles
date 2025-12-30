@@ -1,3 +1,0 @@
-{
-  programs.neonix.enable = true;
-}

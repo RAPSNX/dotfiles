@@ -7,6 +7,7 @@ with lib; let
   cfg = config.hostConfiguration.boot;
 in {
   options.hostConfiguration.boot = {
+    enable = mkEnableOption "Enable install / config of bootloader";
     armSupport = mkEnableOption "Enable arm cross-compiler support";
     supportedFilesystems = mkOption {
       type = with types; listOf str;
@@ -14,7 +15,7 @@ in {
     };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     boot = {
       inherit (cfg) supportedFilesystems;
       binfmt.emulatedSystems = mkIf cfg.armSupport ["aarch64-linux"];
