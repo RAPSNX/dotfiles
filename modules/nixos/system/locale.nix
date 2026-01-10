@@ -1,4 +1,5 @@
-{lib, ...}: {
+{ lib, ... }:
+{
   i18n = {
     defaultLocale = lib.mkDefault "en_US.UTF-8";
     extraLocaleSettings = {
@@ -17,7 +18,6 @@
   time.hardwareClockInLocalTime = true;
 
   console = {
-    font = "ter-v32b";
     keyMap = "us";
   };
 }
