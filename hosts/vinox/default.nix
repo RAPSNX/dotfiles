@@ -2,29 +2,29 @@
   lib,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix"
     "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
 
     ./installer.nix
     ./diagnostics.nix
-    ../../modules/nixos
   ];
 
   # Host specific configuration
   hostConfiguration = {
     boot = {
       enable = true;
-      supportedFilesystems = ["ntfs"];
+      supportedFilesystems = [ "ntfs" ];
     };
 
     user = {
       name = "root";
       initialHashedPassword = "";
-      extraOptions = {};
-      extraGroups = [];
-      keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGqKYXW07z0llbDKRIakLD1PjHe3HxK9iu6czXs+ZU7v"];
+      extraOptions = { };
+      extraGroups = [ ];
+      keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGqKYXW07z0llbDKRIakLD1PjHe3HxK9iu6czXs+ZU7v" ];
     };
   };
 
