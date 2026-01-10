@@ -17,6 +17,9 @@
     gnome-disk-utility
 
     # Explorer
-    xfce.thunar
+    thunar
+
+    # Note taking
+    obsidian
   ];
 }

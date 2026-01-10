@@ -1,7 +1,6 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   dot = pkgs.writeShellScriptBin "dot" ''
-    #!/usr/bin/env bash
-
     # Cleanup
     rm -rf dotfiles
     set -euo pipefail
@@ -37,7 +36,8 @@
     gum style --foreground 124 --bold --align left 'Knock, knock, Neo.' && sleep 1
     reboot
   '';
-in {
+in
+{
   environment.systemPackages = with pkgs; [
     dot # My interactive installer
     gum
