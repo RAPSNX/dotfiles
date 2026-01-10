@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   programs.chromium = {
     enable = true;
@@ -11,4 +14,5 @@
       "--disable-features=WaylandWpColorManagerV1"
     ];
   };
+
 }

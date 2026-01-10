@@ -5,20 +5,18 @@
 }:
 buildGoModule rec {
   pname = "gardenctl";
-  version = "2.12.0-dev";
+  version = "2.13.0";
 
   src = fetchFromGitHub {
-    # owner = "gardener";
-    owner = "dergeberl";
+    owner = "gardener";
     repo = "gardenctl-v2";
-    # rev = "v${version}";
-    rev = "adoptStackitProvider";
-    hash = "sha256-7sZwtAtn0Tw18k7CdGEpvIWSZtM3fD9aMRzkOQ/3h6M=";
+    rev = "v${version}";
+    hash = "sha256-hdXOgzRO3Nq81n8YH/RFWHTTR7TNXAw2RnDWOxNHySU=";
   };
 
-  vendorHash = "sha256-uPWU5Wp1hoTZpDvZ3BuzhNtR4V2XAfKj+6ftZa5OO70=";
+  vendorHash = "sha256-xscuOXZcOPOeWROFnSCYUO8AZ6GfQAwjzRVAtbSrsR4=";
 
-  subPackages = ["/"];
+  subPackages = [ "/" ];
 
   env.CGO_ENABLED = 0;
 
@@ -30,7 +28,7 @@ buildGoModule rec {
     "-X k8s.io/component-base/version.gitVersion=v${version}"
   ];
 
-  nativeBuildInputs = [installShellFiles];
+  nativeBuildInputs = [ installShellFiles ];
 
   postInstall = ''
     mv $out/bin/{gardenctl-v2,${pname}}

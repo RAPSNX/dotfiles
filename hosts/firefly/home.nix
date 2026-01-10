@@ -9,6 +9,11 @@
     work = true;
     email = "raphael.groemmer@stackit.cloud";
 
+    apparmor-gen = with pkgs; [
+      config.programs.chromium.finalPackage
+      obsidian
+    ];
+
     desktop.hyprland = {
       enable = true;
       package = null;

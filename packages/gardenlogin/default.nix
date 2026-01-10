@@ -5,16 +5,15 @@
 }:
 buildGoModule rec {
   pname = "gardenlogin";
-  version = "0.6.0";
+  version = "0.8.0";
 
   src = fetchFromGitHub {
     owner = "gardener";
     repo = "gardenlogin";
     rev = "v${version}";
-    hash = "sha256-qvRJeOoi4/tN0Mty3xqDyTnRfkkscwenM2IRZCNB+Us=";
+    hash = "sha256-Qb++u6Mug1NPGxp2iAtAy34m7eukE0vVPRc6h7OXeQ0=";
   };
-
-  vendorHash = "sha256-hQKLbO6+4yDnAof81+5YWm3mIfIGWmK01rFA1+oOC4I=";
+  vendorHash = "sha256-/0oZkLhKyHmHf+nfIU6fp0Cf24vxLYXmeWc+q8rz3s0=";
 
   env.CGO_ENABLED = 0;
 
@@ -26,7 +25,7 @@ buildGoModule rec {
     "-X k8s.io/component-base/version.gitVersion=v${version}"
   ];
 
-  nativeBuildInputs = [installShellFiles];
+  nativeBuildInputs = [ installShellFiles ];
 
   postInstall = ''
     ln -s $out/bin/${pname} $out/bin/kubectl-${pname}
