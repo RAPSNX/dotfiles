@@ -8,7 +8,13 @@ let
 in
 {
   wayland.windowManager.hyprland.settings = lib.mkIf cfg.enable {
-    windowrule = [
+    windowrulev2 = [
+      "workspace 4, class:^(firefox_firefox)$"
+      "workspace 5, class:^(chromium-browser)$"
+
+      "workspace special:aux silent, class:^(.*mumble.*)$"
+      "workspace special:aux silent, class:^(.*keepassxc.*)$"
+
       # Force floating
       "float, class:steam"
       "float, class:com.nextcloud.desktopclient.nextcloud"
@@ -18,14 +24,6 @@ in
       "move 78% 4%, class:com.nextcloud.desktopclient.nextcloud"
       "move 68% 4%, class:^(.*ZSTray.*)$"
       "move 40% 40%, title:^(.*Mumble Server Connect.*)$"
-    ];
-
-    windowrulev2 = [
-      "workspace 4, class:^(firefox_firefox)$"
-      "workspace 5, class:^(chromium-browser)$"
-
-      "workspace special:aux silent, class:^(.*mumble.*)$"
-      "workspace special:aux silent, class:^(.*keepassxc.*)$"
     ];
 
     bind = [
