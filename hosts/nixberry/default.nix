@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }: {
   imports = [
@@ -18,6 +19,8 @@
       extraOptions = {};
       extraGroups = [];
     };
+
+    boot.enable = false;
 
     services = {
       tailscale = true;
@@ -46,4 +49,6 @@
   environment.systemPackages = with pkgs; [neovim];
 
   nix.settings.trusted-users = ["@wheel"]; # need for remote build
+
+  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

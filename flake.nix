@@ -32,6 +32,8 @@
     };
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
+
+    import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
@@ -43,7 +45,6 @@
       ...
     }:
     let
-      inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
       mylib = import ./lib { inherit lib; };
 
@@ -61,37 +62,53 @@
       );
 
       forAllSystems = f: lib.genAttrs systems (system: f pkgsFor.${system});
+
+      nixosModules = [
+        inputs.catppuccin.nixosModules.catppuccin
+        (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
+        ./modules/nix.nix
+      ];
+
+      homeModules = [
+        inputs.catppuccin.homeModules.catppuccin
+        inputs.neonix.homeManagerModules.neonix
+        inputs.krewfile.homeManagerModules.krewfile
+        inputs.sops-nix.homeManagerModules.sops
+        (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
+        ./modules/nix.nix
+      ];
     in
     with lib;
     {
       inherit lib;
 
       formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
+
       devShells = forAllSystems (pkgs: import ./dev-shells.nix { inherit pkgs pre-commit-hooks; });
       packages = forAllSystems (pkgs: import ./packages { inherit pkgs; });
 
       nixosConfigurations = {
         # Main workstation
         zion = nixosSystem {
-          modules = [ ./hosts/zion ];
+          modules = nixosModules ++ [ ./hosts/zion ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # K3S home-lab
         kubex = nixosSystem {
-          modules = [ ./hosts/kubex ];
+          modules = nixosModules ++ [ ./hosts/kubex ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # Raspberry-pi 3
         nixberry = nixosSystem {
-          modules = [ ./hosts/nixberry ];
+          modules = nixosModules ++ [ ./hosts/nixberry ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # ISO multi-tool
         vinox = nixosSystem {
-          modules = [ ./hosts/vinox ];
+          modules = nixosModules ++ [ ./hosts/vinox ];
           specialArgs = { inherit inputs mylib; };
         };
       };
@@ -99,16 +116,16 @@
       homeConfigurations = {
         # Main workstation
         "rap@zion" = homeManagerConfiguration {
-          modules = [ ./modules/home-manager/zion.nix ];
+          modules = homeModules ++ [ ./hosts/zion/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs mylib; };
+          extraSpecialArgs = { inherit inputs self mylib; };
         };
 
         # Firefly workmachine
         "rapsn@firefly" = homeManagerConfiguration {
-          modules = [ ./modules/home-manager/firefly.nix ];
+          modules = homeModules ++ [ ./hosts/firefly/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs mylib; };
+          extraSpecialArgs = { inherit inputs self mylib; };
         };
       };
     };

@@ -4,16 +4,16 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.hostConfiguration.roles.k3s;
   getConfig = pkgs.writeShellScriptBin "getConfig" ''
-    #!/usr/bin/env bash
-
     mkdir -p ~/.kube/
     sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
     sudo chown k3s:users ~/.kube/config
   '';
-in {
+in
+{
   imports = [
     ./service.nix
     ./network.nix
@@ -36,7 +36,7 @@ in {
     };
 
     # Link zfs to be in PATH for openebs-provisioner
-    system.activationScripts.link-zsh = lib.stringAfter ["var"] ''
+    system.activationScripts.link-zsh = lib.stringAfter [ "var" ] ''
       ln -sf /run/current-system/sw/bin/zfs /usr/bin/zfs
     '';
 
