@@ -52,9 +52,9 @@ in
 
       search = {
         force = true;
-        default = "Kagi";
+        default = "ddg";
         order = [
-          "Kagi"
+          "ddg"
           "NixOS Options"
           "Nix Packages"
           "GitHub"

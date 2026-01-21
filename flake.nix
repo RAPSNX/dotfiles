@@ -12,7 +12,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     neonix = {
-      url = "github:rgroemmer/neonix";
+      url = "github:rgroemmer/neonix/plugin-enhancement";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     krewfile = {
       url = "github:brumhard/krewfile";
