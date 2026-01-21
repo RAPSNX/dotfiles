@@ -43,3 +43,19 @@ Keep the slice as clean as possible:
 │   │ │ │ ├─77102 /run/current-system/sw/bin/Hyprland
 │   │ │ │ └─77200 Xwayland :0 -rootless -core -listenfd 54 -listenfd 55 -displayfd 107 -wm 104
 ```
+
+## Nix follows
+
+```
+    neonix = {
+      url = "github:rgroemmer/neonix/plugin-enhancement";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+```
+
+This will follow the actual flakes `nixpkgs`, neonix by itself uses `nixvim` from its own inputs, which is not part
+of `nixpkgs`.
+If the flakes `nixpkgs` is to new, plugins and packages from it will be "to new" for the rather outdated `nixvim` from neonix repo.
+This can lead to problems starting nvim, this can be fixed by update the `neonix` flake accordingly.
+
+> There is also a nix (lix?) bug, which does not update the `flake.lock` when a follows is removed.
