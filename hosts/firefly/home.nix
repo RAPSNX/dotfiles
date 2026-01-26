@@ -16,7 +16,7 @@
 
     desktop.hyprland = {
       enable = true;
-      package = null;
+      package = pkgs.hyprland;
 
       monitors = [
         # Monitor are automatically from left to right
