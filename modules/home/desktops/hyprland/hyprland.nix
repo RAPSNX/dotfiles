@@ -36,7 +36,7 @@ in
       inherit (cfg) package;
 
       plugins = with pkgs; [
-        hyprlandPlugins.hyprspace
+        hyprlandPlugins.hyprexpo
       ];
 
       systemd.enable = false; # Disable for uswm
