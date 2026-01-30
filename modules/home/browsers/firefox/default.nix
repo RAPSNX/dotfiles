@@ -61,21 +61,6 @@ in
           "HackerNews"
         ];
         engines = {
-          "Kagi" = {
-            urls = [
-              {
-                template = "https://kagi.com/search";
-                params = [
-                  {
-                    name = "q";
-                    value = "{searchTerms}";
-                  }
-                ];
-              }
-            ];
-            metaData.hideOneOffButton = true;
-          };
-
           "Nix Packages" = {
             icon = "https://nixos.org/_astro/flake-blue.Bf2X2kC4_Z1yqDoT.svg";
             definedAliases = [ "@np" ];
@@ -122,24 +107,6 @@ in
             metaData.hideOneOffButton = true;
           };
 
-          "SourceGraph" = {
-            icon = "https://sourcegraph.com/.assets/img/sourcegraph-mark.svg";
-            definedAliases = [ "@sg" ];
-
-            urls = [
-              {
-                template = "https://sourcegraph.com/search";
-                params = [
-                  {
-                    name = "q";
-                    value = "{searchTerms}";
-                  }
-                ];
-              }
-            ];
-            metaData.hideOneOffButton = true;
-          };
-
           "GitHub" = {
             icon = "https://github.com/favicon.ico";
             definedAliases = [ "@gh" ];
@@ -164,28 +131,10 @@ in
 
             urls = [
               {
-                template = "https://mipmip.github.io/home-manager-option-search/";
+                template = "https://home-manager-options.extranix.com/?&release=master";
                 params = [
                   {
                     name = "query";
-                    value = "{searchTerms}";
-                  }
-                ];
-              }
-            ];
-            metaData.hideOneOffButton = true;
-          };
-
-          "HackerNews" = {
-            icon = "https://news.ycombinator.com/favicon.ico";
-            definedAliases = [ "@hn" ];
-
-            urls = [
-              {
-                template = "https://hn.algolia.com/";
-                params = [
-                  {
-                    name = "q";
                     value = "{searchTerms}";
                   }
                 ];
