@@ -7,6 +7,7 @@
 }:
 with lib;
 with mylib;
+with pkgs;
 let
   cfg = config.roles.desktop.hyprland;
 in
@@ -35,14 +36,14 @@ in
       enable = true;
       inherit (cfg) package;
 
-      plugins = with pkgs; [
-        hyprlandPlugins.hyprexpo
+      plugins = with hyprlandPlugins; [
+        hyprexpo
       ];
 
       systemd.enable = false; # Disable for uswm
     };
 
-    home.packages = with pkgs; [
+    home.packages = [
       hyprland-qtutils
       slurp
     ];
@@ -57,7 +58,7 @@ in
           ];
         };
       };
-      extraPortals = with pkgs; [
+      extraPortals = [
         xdg-desktop-portal-wlr
         xdg-desktop-portal-hyprland
       ];
