@@ -13,6 +13,7 @@
       "node-shell"
       "ns"
       "ctx"
+      "klock"
     ];
   };
 }

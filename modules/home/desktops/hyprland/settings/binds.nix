@@ -20,6 +20,9 @@ in
 
       # Notification center
       "SUPER,N, exec, swaync-client -t"
+
+      # Plugins
+      "SUPER, g, hyprexpo:expo, toggle"
     ];
   };
 }
