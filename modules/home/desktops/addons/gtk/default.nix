@@ -8,7 +8,7 @@
     enable = true;
 
     theme = {
-      name = "Catppuccin-GTK-Purple-Dark";
+      name = "Catppuccin-GTK-Mauve-Dark";
       package = pkgs.magnetic-catppuccin-gtk.override {
         tweaks = [ "black" ];
         accent = [ "mauve" ];

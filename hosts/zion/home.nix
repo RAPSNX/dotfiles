@@ -40,9 +40,9 @@
         "7,monitor:eDP-1"
       ];
 
-      extraConfig = '''';
+      extraConfig = "";
 
-      hyprlock.enable = false;
+      hyprlock.enable = true;
       hypridle = {
         enable = true;
         cmd = "${pkgs.hyprlock}/bin/hyprlock";

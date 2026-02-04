@@ -26,7 +26,14 @@ cp .pki/nssdb/* /home/rapsn/.mozilla/firefox/default/
 
 ### GTK Theme
 
-Instead of configuring every theme myself, only the theme installation is managed via `nix`, to set the theme use `nwg-look`.
+`nwg-look` can be used to set the theme for multiple setting files simultanouly.
+Important is that the exact theme **name** is set via `gsetting`.
+
+`nwg-look` can be used to see what the actual name is, to persist configure it in home-manager `gtk.theme.name`.
+
+```bash
+dconf read /org/gnome/desktop/interface/gtk-theme # Read the actual name
+```
 
 ## Outside nix 😭
 - mumble (apt)
