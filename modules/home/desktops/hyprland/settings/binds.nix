@@ -9,8 +9,8 @@ in
 {
   wayland.windowManager.hyprland.settings = lib.mkIf cfg.enable {
     bind = [
-      "SUPER,RETURN, exec, uwsm app -- alacritty"
-      "SUPER,E, exec, uwsm app -- fuzzel"
+      "SUPER,RETURN, exec, alacritty"
+      "SUPER,E, exec, fuzzel"
       "SUPER,P, exec, wlogout"
       "SUPER,Q, killactive"
 
