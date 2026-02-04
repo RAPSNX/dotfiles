@@ -44,11 +44,12 @@ with types;
       };
 
       initContent = mkMerge [
-        (mkOrder 500 '''')
+        (mkOrder 500 "")
         (mkOrder 1000 ''
+          export GOPATH=$(go env GOPATH)
           ${config.roles.cli.zsh.zshrc}
         '')
-        (mkOrder 1500 '''')
+        (mkOrder 1500 "")
       ];
 
       shellAliases = {
