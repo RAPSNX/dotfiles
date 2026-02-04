@@ -30,7 +30,7 @@ sudo efibootmgr --create \
   --loader '\EFI\systemd\systemd-bootx64.efi' \ # Mind the backslashes
 ```
 
-## UWSM
+## UWSM (legacy not used anymore)
 
 ### start apps
 Use `uswm app -- <app-name>` to start apps.
