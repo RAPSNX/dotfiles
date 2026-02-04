@@ -83,7 +83,7 @@
     {
       inherit lib;
 
-      formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
+      formatter = forAllSystems (pkgs: pkgs.nixfmt);
 
       devShells = forAllSystems (pkgs: import ./dev-shells.nix { inherit pkgs pre-commit-hooks; });
       packages = forAllSystems (pkgs: import ./packages { inherit pkgs; });
