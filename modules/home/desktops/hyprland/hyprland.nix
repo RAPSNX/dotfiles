@@ -40,7 +40,7 @@ in
         hyprexpo
       ];
 
-      systemd.enable = false; # Disable for uswm
+      # systemd.enable = false; # Disable for uswm
     };
 
     home.packages = [

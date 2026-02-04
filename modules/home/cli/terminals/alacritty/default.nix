@@ -42,7 +42,7 @@
             family = fontname;
             style = "Italic";
           };
-          size = 13;
+          size = 12;
         };
 
       mouse.bindings = [
