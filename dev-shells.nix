@@ -8,7 +8,7 @@ let
     src = ./.;
     hooks = {
       statix.enable = true;
-      nixfmt-rfc-style.enable = true;
+      nixfmt.enable = true;
       deadnix.enable = true;
     };
   };
@@ -23,7 +23,7 @@ in
         nh
         statix
         deadnix
-        nixfmt-rfc-style
+        nixfmt
         nix-inspect
       ];
     };
