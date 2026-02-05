@@ -66,6 +66,7 @@
 
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
+        inputs.sops-nix.nixosModules.sops
         (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
         ./modules/nix.nix
       ];
