@@ -3,6 +3,7 @@
   mylib,
   config,
   pkgs,
+  inputs,
   ...
 }:
 with lib;
@@ -47,5 +48,12 @@ in
     services.openssh.enable = true;
     nix.optimise.automatic = true;
     system.stateVersion = "24.11";
+
+    # TODO: make common packages as module
+    environment.systemPackages = [
+      inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}.mini
+      pkgs.jq
+      pkgs.tmux
+    ];
   };
 }
