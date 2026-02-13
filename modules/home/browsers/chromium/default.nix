@@ -9,8 +9,7 @@
     commandLineArgs = [
       "--enable-features=UseOzonePlatform"
       "--ozone-platform=wayland"
-      "--enable-wayland-ime"
-      "--disable-gpu"
+      "--enable-features=VaapiVideoDecodeLinuxGL,VaapiVideoEncoder,Vulkan,VulkanFromANGLE,DefaultANGLEVulkan,VaapiIgnoreDriverChecks,VaapiVideoDecoder,PlatformHEVCDecoderSupport,UseMultiPlaneFormatForHardwareVideo"
     ];
   };
 
