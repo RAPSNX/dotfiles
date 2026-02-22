@@ -22,7 +22,7 @@ in
       "SUPER,N, exec, swaync-client -t"
 
       # Plugins
-      "SUPER, g, hyprexpo:expo, toggle"
+      # "SUPER, g, hyprexpo:expo, toggle"
     ];
   };
 }

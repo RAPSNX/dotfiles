@@ -7,7 +7,7 @@
 {
   roles = {
     work = true;
-    email = "raphael.groemmer@stackit.cloud";
+    email = "raphael.groemmer@digits.schwarz";
 
     apparmor-gen = with pkgs; [
       config.programs.chromium.finalPackage

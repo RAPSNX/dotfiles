@@ -4,5 +4,6 @@
     ./boot.nix
     ./user.nix
     ./locale.nix
+    ./zsh.nix
   ];
 }
