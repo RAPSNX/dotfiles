@@ -64,6 +64,12 @@
           };
         }
         {
+          condition = "gitdir:~/Projects/rapsnx/**";
+          contents = {
+            user.email = "github@rapsn.me";
+          };
+        }
+        {
           condition = "gitdir:~/Projects/schwarzit/**";
           contents = {
             user.name = "Raphael Groemmer";

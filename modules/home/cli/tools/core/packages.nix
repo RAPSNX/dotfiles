@@ -27,6 +27,7 @@
     nmap
     netcat
     tcpdump
+    iproute2
 
     # Text processing
     jq
