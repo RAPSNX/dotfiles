@@ -48,6 +48,10 @@
         cmd = "${pkgs.hyprlock}/bin/hyprlock";
       };
     };
+
+    desktop.niri = {
+      enable = true;
+    };
   };
 
   home = {
