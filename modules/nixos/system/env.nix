@@ -1,20 +1,40 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  inputs,
+  ...
+}:
+{
   environment = {
-    systemPackages = with pkgs; [
-      dnsutils # dig, nslookup, etc.
-      inetutils # ping, traceroute, etc.
+    systemPackages =
+      with pkgs;
+      [
+        dnsutils # dig, nslookup, etc.
+        inetutils # ping, traceroute, etc.
 
-      # Cpu & Networking tools
-      htop
-      curl
+        # Cpu & Networking tools
+        htop
+        curl
 
-      # TODO: Add neonix mini to all non desktops
+        # Tooling
+        git
+        curl
+        fzf
+        file
 
-      # Programs
-      git
+        jq
+        yq-go
+        gawk
+        gnused
 
-      fzf
-    ];
+        p7zip
+        gnumake
+      ]
+      ++ lib.optionals (!config.hostConfig.roles.desktop) [
+        inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}.mini
+        jq
+        tmux
+      ];
     variables = {
       EDITOR = "vim";
       VISUAL = "vim";

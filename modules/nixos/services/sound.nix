@@ -3,10 +3,12 @@
   config,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.services.sound;
-in {
-  options.hostConfiguration.services.sound = mkEnableOption "Enable sound.";
+with lib;
+let
+  cfg = config.hostConfig.services.sound;
+in
+{
+  options.hostConfig.services.sound = mkEnableOption "Enable sound.";
 
   config = mkIf cfg {
     services = {

@@ -6,7 +6,7 @@
 }:
 with lib;
 let
-  cfg = config.hostConfiguration.roles.k3s;
+  cfg = config.hostConfig.roles.k3s;
   getConfig = pkgs.writeShellScriptBin "getConfig" ''
     mkdir -p ~/.kube/
     sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
@@ -19,7 +19,7 @@ in
     ./network.nix
   ];
 
-  options.hostConfiguration.roles.k3s = mkEnableOption "Enable k3s cluster configuration.";
+  options.hostConfig.roles.k3s = mkEnableOption "Enable k3s cluster configuration.";
 
   config = mkIf cfg {
     environment = {

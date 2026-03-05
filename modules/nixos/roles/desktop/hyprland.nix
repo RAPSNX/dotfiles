@@ -6,7 +6,7 @@
 }:
 with lib;
 let
-  cfg = config.hostConfiguration.roles.desktop;
+  cfg = config.hostConfig.roles.desktop;
 in
 {
   config = mkIf cfg {

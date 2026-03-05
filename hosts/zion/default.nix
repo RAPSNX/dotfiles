@@ -5,7 +5,7 @@
   ];
 
   # Host specific configuration
-  hostConfiguration = {
+  hostConfig = {
     boot = {
       enable = true;
       armSupport = true;
