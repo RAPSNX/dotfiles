@@ -34,6 +34,16 @@
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
 
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nfsm = {
+      # Niri fullscreen manager
+      url = "github:gvolpe/nfsm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     import-tree.url = "github:vic/import-tree";
   };
 
@@ -54,11 +64,15 @@
         "x86_64-linux"
       ];
 
+      overlays = [
+        (import ./overlays)
+        inputs.niri.overlays.niri
+      ];
+
       pkgsFor = lib.genAttrs systems (
         system:
         import nixpkgs {
-          inherit system;
-          overlays = [ (import ./overlays) ];
+          inherit system overlays;
         }
       );
 
@@ -67,6 +81,7 @@
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
         inputs.sops-nix.nixosModules.sops
+        inputs.niri.nixosModules.niri
         (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
         ./modules/nix.nix
       ];
@@ -76,6 +91,7 @@
         inputs.neonix.homeManagerModules.neonix
         inputs.krewfile.homeManagerModules.krewfile
         inputs.sops-nix.homeManagerModules.sops
+        inputs.niri.homeModules.niri
         (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
         ./modules/nix.nix
       ];

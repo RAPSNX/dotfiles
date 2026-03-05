@@ -12,7 +12,10 @@ in
   config = mkIf cfg {
     programs.hyprland = {
       enable = true;
+      withUWSM = false;
     };
+
+    programs.niri.enable = true;
 
     services.greetd = {
       enable = true;
@@ -22,7 +25,7 @@ in
           --time \
           --remember \
           --theme 'border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red' \
-          --cmd start-hyprland
+          --cmd  niri
       '';
     };
   };
