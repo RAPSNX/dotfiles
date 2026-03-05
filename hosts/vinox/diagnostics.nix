@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   environment.systemPackages = with pkgs; [
     # General
     util-linux
@@ -44,17 +45,5 @@
     usbutils
     pciutils
     hardinfo2
-
-    # Tooling
-    git
-    curl
-
-    jq
-    yq-go
-    gawk
-    gnused
-
-    p7zip
-    gnumake
   ];
 }

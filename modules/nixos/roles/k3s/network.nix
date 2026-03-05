@@ -3,9 +3,11 @@
   lib,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.k3s;
-in {
+with lib;
+let
+  cfg = config.hostConfig.roles.k3s;
+in
+{
   config = mkIf cfg {
     networking = {
       firewall.allowedTCPPorts = [

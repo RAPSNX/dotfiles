@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.desktop;
-in {
+with lib;
+let
+  cfg = config.hostConfig.roles.desktop;
+in
+{
   config = mkIf cfg {
     nixpkgs.config.joypixels.acceptLicense = true;
     fonts = {
@@ -30,7 +32,7 @@ in {
           lcdfilter = "light";
         };
         defaultFonts = {
-          emoji = ["Joypixels"];
+          emoji = [ "Joypixels" ];
         };
       };
     };

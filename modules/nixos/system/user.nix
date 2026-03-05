@@ -3,16 +3,15 @@
   mylib,
   config,
   pkgs,
-  inputs,
   ...
 }:
 with lib;
 with mylib;
 let
-  cfg = config.hostConfiguration.user;
+  cfg = config.hostConfig.user;
 in
 {
-  options.hostConfiguration.user = with types; {
+  options.hostConfig.user = with types; {
     name = mkOpt str "Name of user.";
     initialHashedPassword = mkOpt str "Password of user.";
     keys = mkOpt (listOf str) "Public SSH keys of user.";
@@ -48,12 +47,5 @@ in
     services.openssh.enable = true;
     nix.optimise.automatic = true;
     system.stateVersion = "24.11";
-
-    # TODO: make common packages as module
-    environment.systemPackages = [
-      inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}.mini
-      pkgs.jq
-      pkgs.tmux
-    ];
   };
 }

@@ -3,10 +3,12 @@
   config,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.services.printing;
-in {
-  options.hostConfiguration.services.printing = mkEnableOption "Enable printing service.";
+with lib;
+let
+  cfg = config.hostConfig.services.printing;
+in
+{
+  options.hostConfig.services.printing = mkEnableOption "Enable printing service.";
 
   config = mkIf cfg {
     services = {

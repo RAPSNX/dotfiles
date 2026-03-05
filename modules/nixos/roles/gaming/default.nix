@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.gaming;
-in {
-  options.hostConfiguration.roles.gaming = mkEnableOption "Enable NixOS gaming environment.";
+with lib;
+let
+  cfg = config.hostConfig.roles.gaming;
+in
+{
+  options.hostConfig.roles.gaming = mkEnableOption "Enable NixOS gaming environment.";
 
   config = mkIf cfg {
     services.ratbagd.enable = true; # Daemon to configure gaming mice, GUI piper comes through HM.
@@ -18,8 +20,8 @@ in {
       steam = {
         enable = true;
         package = pkgs.steam.override {
-          extraPkgs = p:
-            with p; [
+          extraPkgs =
+            p: with p; [
               mangohud # Fps widget ingame
               gamemode
             ];

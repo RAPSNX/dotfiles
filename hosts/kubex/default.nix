@@ -11,8 +11,7 @@
     ./disko.nix
   ];
 
-  # Host specific configuration
-  hostConfiguration = {
+  hostConfig = {
     boot = {
       enable = true;
       supportedFilesystems = [ "zfs" ];
@@ -32,12 +31,9 @@
     roles = {
       k3s = true;
     };
-  };
-
-  # TODO: make to module
-  sops.age = {
-    generateKey = true;
-    keyFile = "/home/kubex/.config/sops/age/keys.txt";
+    services = {
+      sops = true;
+    };
   };
 
   sops.secrets.ssh_config = {

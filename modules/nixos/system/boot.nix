@@ -5,10 +5,10 @@
 }:
 with lib;
 let
-  cfg = config.hostConfiguration.boot;
+  cfg = config.hostConfig.boot;
 in
 {
-  options.hostConfiguration.boot = {
+  options.hostConfig.boot = {
     enable = mkEnableOption "Enable install / config of bootloader";
     armSupport = mkEnableOption "Enable arm cross-compiler support";
     supportedFilesystems = mkOption {
