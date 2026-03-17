@@ -18,7 +18,7 @@ in
         listener = [
           # autolock
           {
-            timeout = 120;
+            timeout = 300;
             on-timeout = "loginctl lock-session";
           }
           # display off
