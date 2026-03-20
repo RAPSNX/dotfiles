@@ -6,6 +6,7 @@
 {
   gtk = lib.mkForce {
     enable = true;
+    colorScheme = "dark";
 
     theme = {
       name = "Catppuccin-GTK-Mauve-Dark";
