@@ -58,12 +58,6 @@
 
       includes = [
         {
-          condition = "gitdir:~/Projects/rgroemmer/**";
-          contents = {
-            user.email = "github@rapsn.me";
-          };
-        }
-        {
           condition = "gitdir:~/Projects/rapsnx/**";
           contents = {
             user.email = "github@rapsn.me";
