@@ -35,12 +35,6 @@ in
     wayland.windowManager.hyprland = {
       enable = true;
       inherit (cfg) package;
-
-      # plugins = with hyprlandPlugins; [
-      #   hyprexpo
-      # ];
-
-      # systemd.enable = false; # Disable for uswm
     };
 
     home.packages = [
@@ -48,21 +42,29 @@ in
       slurp
     ];
 
-    xdg.portal = {
-      enable = true;
-      config = {
-        common = {
-          default = [
-            "hyprland"
-            "gtk"
-          ];
-        };
-      };
-      extraPortals = [
-        xdg-desktop-portal-wlr
-        xdg-desktop-portal-hyprland
-      ];
-    };
+    # systemd.user = {
+    #   enable = true;
+    #   # This could be removed if https://github.com/nix-community/home-manager/pull/8541 gets merged
+    #   # Inside xdg.portal they do exactly the same thing, that is: packages = [ pkgs.xdg-desktop-portal ] ++ config.xdg.portal.extraPortals;
+    #   # and this MR just adds systemd.user.packages = packages;
+    #   packages = [
+    #     pkgs.xdg-desktop-portal
+    #     pkgs.xdg-desktop-portal-wlr
+    #   ];
+    # };
+    # #
+    # xdg.portal = {
+    #   enable = true;
+    #   extraPortals = with pkgs; [
+    #     xdg-desktop-portal-hyprland
+    #     xdg-desktop-portal-wlr
+    #   ];
+    #   config.common = {
+    #     default = [
+    #       "wlr"
+    #     ];
+    #   };
+    # };
 
     # environment.d defines environment variables for the user session, beyond shell level.
     # It is processed by `systemd --user`, basically after login.
