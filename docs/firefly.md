@@ -16,6 +16,9 @@ rsync -av --update  ~/.mozilla/firefox/default ~/Nextcloud/Home/Backups/firefox_
 
 ```bash
 nh home switch -c nix@firefly . --show-activation-logs
+
+# TODO: Remove when lix breaking changes are integrated into nixpkgs || move to official nix
+nh home switch -c nix@firefly . --show-activation-logs -- --extra-deprecated-features tokens-no-whitespace --extra-deprecated-features rec-set-merges --extra-deprecated-features broken-string-escape
 ```
 
 4. Create `hyprland` desktop file.
