@@ -140,7 +140,7 @@
         };
 
         # Firefly workmachine
-        "rapsn@firefly" = homeManagerConfiguration {
+        "nix@firefly" = homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/firefly/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs self mylib; };

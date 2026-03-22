@@ -5,6 +5,13 @@
   ...
 }:
 {
+
+  home = {
+    username = "raphaelgroemmer";
+    homeDirectory = lib.mkDefault "/home/${config.home.username}";
+    stateVersion = lib.mkDefault "22.05";
+  };
+
   roles = {
     work = true;
     email = "raphael.groemmer@digits.schwarz";
@@ -86,11 +93,5 @@
   targets.genericLinux = {
     enable = true;
     gpu.enable = true;
-  };
-
-  home = {
-    username = "rapsn";
-    homeDirectory = lib.mkDefault "/home/rapsn";
-    stateVersion = lib.mkDefault "22.05";
   };
 }
