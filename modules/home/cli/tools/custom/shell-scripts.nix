@@ -11,7 +11,7 @@ let
 
   # kubeconfig selector
   selc_ = pkgs.writeShellScriptBin "selc_" ''
-    BASE_PATH=$HOME/.config/kubeconfig
+    BASE_PATH=$HOME/.config/kubeconfigs
     YAMLS=$(find "$BASE_PATH" -name '*.yaml' | awk -F/ '{ print $NF }')
     KUBECONFIG=$(fzf <<<"$YAMLS")
     export KUBECONFIG=$BASE_PATH/$KUBECONFIG

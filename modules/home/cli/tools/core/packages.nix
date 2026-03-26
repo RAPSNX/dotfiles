@@ -49,5 +49,8 @@
 
     # Clipboard
     wl-clipboard
+
+    # Compilers
+    gcc
   ];
 }
