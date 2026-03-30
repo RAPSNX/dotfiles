@@ -78,5 +78,10 @@ dconf read /org/gnome/desktop/interface/gtk-theme # Read the actual name
 Those programs are installed via apt, since they do not work within `nix`.
 
 ```bash
-sudo apt install xdg-desktop-portal-wlr mumble
+sudo apt update
+sudo apt -y install \
+  xdg-desktop-portal-wlr \
+  mumble \
+  swaylock \
+  podman
 ```
