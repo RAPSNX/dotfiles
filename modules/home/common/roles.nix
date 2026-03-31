@@ -14,6 +14,11 @@ with types;
     email = mkOpt str "Email address of the user.";
 
     apparmor-gen = mkOpt' (listOf package) [ ] "List of packages to create apparmor rule for userns.";
+
+    desktop.monitors = {
+      main = mkOpt str "Identifier of main monitor.";
+      left = mkOpt str "Identifier of left monitor.";
+    };
   };
 
   config =
