@@ -98,28 +98,10 @@ in
           "[ workspace special:scratchy silent ] alacritty -t scratchy"
         ];
 
-        workspace = with config.roles.desktop.monitors; [
+        workspace = [
           # Special
           "special:scratchy"
           "special:aux"
-
-          # Pinning
-          "1,monitor:, monitor:desc:${main},default:true"
-          "2,monitor:, monitor:desc:${main},"
-          "3,monitor:, monitor:desc:${main},"
-
-          "4,monitor:, monitor:desc:${left},default:true"
-          "5,monitor:, monitor:desc:${left},"
-          "6,monitor:, monitor:desc:${left},"
-
-          # TODO: Check if this works in office
-          "1,monitor:, monitor:DP-8,default:true"
-          "2,monitor:, monitor:DP-8"
-          "3,monitor:, monitor:DP-8"
-
-          "4,monitor:, monitor:DP-9,default:true"
-          "5,monitor:, monitor:DP-9"
-          "6,monitor:, monitor:DP-9"
         ];
 
         windowrule = [
