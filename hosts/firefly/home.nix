@@ -22,11 +22,6 @@
     ];
 
     desktop = {
-      monitors = {
-        main = "Dell Inc. AW2725Q G2QC174";
-        left = "Samsung Electric Company LC27G7xT H4ZNC00167";
-      };
-
       hyprland = {
         enable = true;
         package = pkgs.hyprland;
@@ -34,7 +29,7 @@
         hyprlock.enable = true;
         hypridle = {
           enable = true;
-          cmd = "${config.home.homeDirectory}/Projects/swaywm/swaylock/build/swaylock";
+          cmd = "/usr/bin/swaylock";
         };
       };
     };
