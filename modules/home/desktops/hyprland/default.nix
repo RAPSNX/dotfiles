@@ -93,16 +93,19 @@ in
 
         # Autostart
         exec-once = [
-          # TODO: check if needed?
-          # "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+          # TODO: could be a home.nix setting
+          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" # Needed for thunar
           "[ workspace special:scratchy silent ] alacritty -t scratchy"
         ];
 
-        workspace = [
-          # Special
-          "special:scratchy"
-          "special:aux"
-        ];
+        bind = import ./keybinds.nix;
+
+        # TODO: needed?
+        # workspace = [
+        #   # Special
+        #   "special:scratchy"
+        #   "special:aux"
+        # ];
 
         windowrule = [
           "match:class ^(firefox)$, workspace 4"
@@ -115,8 +118,6 @@ in
           "match:class steam, float yes"
           "match:class ^(.*nextcloud.*)$, float yes"
         ];
-
-        bind = import ./keybinds.nix;
 
         extraConfig = ''
           # Resize mouse

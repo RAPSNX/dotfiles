@@ -25,7 +25,7 @@ in
           --time \
           --remember \
           --theme 'border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red' \
-          --cmd  niri
+          --cmd start-hyprland
       '';
     };
   };
