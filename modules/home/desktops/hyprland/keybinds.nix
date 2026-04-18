@@ -55,10 +55,12 @@
   "SUPER SHIFT,O, movetoworkspace, special:scratchy"
   "SUPER SHIFT,M, movetoworkspace, special:aux"
 
-  # Special
+  # -- Programs
 
   # Mumble
   "SUPER,Z, exec, mumble rpc togglemute"
   "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
 
+  # Emoji picker
+  "SUPER,period, exec, rofimoji"
 ]
