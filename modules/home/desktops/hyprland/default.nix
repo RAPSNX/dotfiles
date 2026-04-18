@@ -12,7 +12,7 @@ let
   cfg = config.roles.desktop.hyprland;
 in
 {
-  options.roles.desktop.hyprland = {
+  options.roles.desktop.hyprland = with types; {
     enable = mkEnableOption "Enable hyprland";
 
     package = mkPackageOption pkgs "hyprland" {
@@ -25,8 +25,10 @@ in
 
     hypridle = {
       enable = mkEnableOption "Enable hypridle";
-      cmd = mkOption { type = types.str; };
+      cmd = mkOpt str "Path to binary";
     };
+
+    workspaces = mkOpt str "Workspace config";
   };
 
   imports = [
@@ -39,6 +41,7 @@ in
     home.packages = [
       hyprland-qtutils
       slurp
+      rofimoji
     ];
 
     # environment.d defines environment variables for the user session, beyond shell level.
@@ -46,6 +49,8 @@ in
     xdg.configFile."environment.d/envvars.conf".text = ''
       PATH="$HOME/.nix-profile/bin:$PATH"
     '';
+
+    xdg.configFile."hypr/workspaces.conf".text = cfg.workspaces;
 
     catppuccin.hyprland.enable = true;
     wayland.windowManager.hyprland = {
@@ -99,13 +104,9 @@ in
         ];
 
         bind = import ./keybinds.nix;
-
-        # TODO: needed?
-        # workspace = [
-        #   # Special
-        #   "special:scratchy"
-        #   "special:aux"
-        # ];
+        source = [
+          "${config.xdg.configHome}/hypr/workspaces.conf"
+        ];
 
         windowrule = [
           "match:class ^(firefox)$, workspace 4"

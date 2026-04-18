@@ -30,6 +30,11 @@ sudo efibootmgr --create \
   --loader '\EFI\systemd\systemd-bootx64.efi' \ # Mind the backslashes
 ```
 
+## Monitor setup
+
+All possible monitor configurations are configured via `kanshi`, which maches automatically the correct profile.
+`/modules/home/desktops/addons/kanshi`
+
 ## Nix follows
 
 ```
@@ -43,5 +48,11 @@ This will follow the actual flakes `nixpkgs`, neonix by itself uses `nixvim` fro
 of `nixpkgs`.
 If the flakes `nixpkgs` is to new, plugins and packages from it will be "to new" for the rather outdated `nixvim` from neonix repo.
 This can lead to problems starting nvim, this can be fixed by update the `neonix` flake accordingly.
-
 > There is also a nix (lix?) bug, which does not update the `flake.lock` when a follows is removed.
+
+## Neonix
+
+TODO 
+`neonix` my own `nvim` distro, needs to have its own `nixpkgs`, so no `nixpkgs.follows` should be configured.
+Because `nixvim` should be aligned with the deps.
+

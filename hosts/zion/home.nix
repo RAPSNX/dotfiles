@@ -25,6 +25,15 @@
           enable = true;
           cmd = "${pkgs.hyprlock}/bin/hyprlock";
         };
+
+        workspaces = ''
+          workspace=1, monitor:DP-1, default:true
+          workspace=2, monitor:DP-1
+          workspace=3, monitor:DP-1
+          workspace=4, monitor:DP-2, default:true
+          workspace=5, monitor:DP-2
+          workspace=6, monitor:DP-2
+        '';
       };
     };
 
