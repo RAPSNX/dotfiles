@@ -27,8 +27,6 @@ in
       enable = mkEnableOption "Enable hypridle";
       cmd = mkOpt str "Path to binary";
     };
-
-    workspaces = mkOpt str "Workspace config";
   };
 
   imports = [
@@ -49,8 +47,6 @@ in
     xdg.configFile."environment.d/envvars.conf".text = ''
       PATH="$HOME/.nix-profile/bin:$PATH"
     '';
-
-    xdg.configFile."hypr/workspaces.conf".text = cfg.workspaces;
 
     catppuccin.hyprland.enable = true;
     wayland.windowManager.hyprland = {
@@ -106,6 +102,7 @@ in
 
         bind = import ./keybinds.nix;
         source = [
+          "${config.xdg.configHome}/hypr/monitors.conf"
           "${config.xdg.configHome}/hypr/workspaces.conf"
         ];
 
