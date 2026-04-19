@@ -4,9 +4,32 @@
   ...
 }:
 {
-  home.packages = with pkgs; [
-    gh
-  ];
+  home.packages =
+    let
+      # Search through release notes
+      ghr-grep = pkgs.writeShellScriptBin "ghr-grep" ''
+        set -euo pipefail
+        usage='usage: ghr-grep org/repo <count> "search_term"'
+        repo="''${1:?$usage}"
+        count="''${2:?$usage}"
+        search_term="''${3:?$usage}"
+        release_tags=$(gh release list -R "$repo" --limit "$count" | awk '{print $1}')
+
+        for tag in $release_tags; do
+            body="$(gh release view "$tag" -R "$repo" --json body -q .body)"
+            if grep -qi -- "$search_term" <<<"$body"; then
+                echo -e "\033[0;32m=== $tag ===\033[0m"
+                grep -i -- "$search_term" <<<"$body"
+                echo
+            fi
+        done
+      '';
+    in
+    with pkgs;
+    [
+      gh
+      ghr-grep
+    ];
 
   programs = {
     git = {

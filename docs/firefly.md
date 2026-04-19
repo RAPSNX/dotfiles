@@ -3,22 +3,27 @@
 1. Firefox profile
 
 ```bash
+# TODO: Add this to home.nix
 rsync -av --update  ~/.mozilla/firefox/default ~/Nextcloud/Home/Backups/firefox_profile/
 ```
 
-2. Check atuin `key` -> bitwarden
+2. Check atuin `key` match with the key in vault.
 
 # Install device
-1. Install `lix` or `nix`
-2. Clone dotfiles
-  1. Change username if needed in `home.nix`
-3. Switch config
+1. Install `nix` (May disable any VPN)
 
 ```bash
-nh home switch -c nix@firefly . --show-activation-logs
+Verify command on nixos.org/download
+sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
+```
 
-# TODO: Remove when lix breaking changes are integrated into nixpkgs || move to official nix
-nh home switch -c nix@firefly . --show-activation-logs -- --extra-deprecated-features tokens-no-whitespace --extra-deprecated-features rec-set-merges --extra-deprecated-features broken-string-escape
+2. Clone dotfiles
+  1. Change username `home.nix`, if necessary.
+3. Switch config via `devshells` target.
+
+```bash
+nix develop
+switch-firefly
 ```
 
 4. Create `hyprland` desktop file.
@@ -34,6 +39,7 @@ Type=Application" | sudo tee /usr/share/wayland-sessions/hyprland.desktop
 5. Copy user-certificate to firefox
 
 ```bash
+# TODO: Add this to home.nix (as activation script for example)
 ln -sf ~/.pki/nssdb/* ~/.mozilla/firefox/default/
 ```
 
@@ -63,11 +69,9 @@ Comma-separated list of URLs:
 
 ### GTK Theme
 
-`nwg-look` can be used to set the theme for multiple setting files simultanouly.
-Important is that the exact theme **name** is set via `gsetting`.
-
-`nwg-look` can be used to see what the actual name is, to persist configure it in home-manager `gtk.theme.name`.
-Also `gtk.colorScheme = dark`, should enable most GTK apps to use dark by default.
+`nwg-look` is used to configure theme in multiple locations.
+Run it, ensure to remove the check of `GTK4` files in preferences.
+Set `widgets -> colorScheme -> prefer dark`.
 
 ```bash
 dconf read /org/gnome/desktop/interface/gtk-theme # Read the actual name
@@ -78,6 +82,8 @@ dconf read /org/gnome/desktop/interface/gtk-theme # Read the actual name
 Those programs are installed via apt, since they do not work within `nix`.
 
 ```bash
+# TODO: Check why hyprlock not working
+sudo add-apt-repository ppa:cppiber/hyprland
 sudo apt update
 sudo apt -y install \
   xdg-desktop-portal-wlr \
