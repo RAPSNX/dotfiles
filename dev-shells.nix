@@ -12,6 +12,16 @@ let
       deadnix.enable = true;
     };
   };
+
+  # Makefile like targets
+  switch-firefly = pkgs.writeShellScriptBin "switch-firefly" ''
+    NIX_CONFIG="experimental-features = nix-command flakes" \
+      nh home switch -c nix@firefly . --show-activation-logs
+  '';
+
+  switch-zion = pkgs.writeShellScriptBin "switch-zion" ''
+    nh os switch && nh home switch
+  '';
 in
 {
   default =
@@ -21,6 +31,11 @@ in
 
       packages = [
         nh
+        switch-firefly
+        switch-zion
+
+        hello
+
         statix
         deadnix
         nixfmt

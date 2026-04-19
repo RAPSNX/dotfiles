@@ -52,7 +52,16 @@ This can lead to problems starting nvim, this can be fixed by update the `neonix
 
 ## Neonix
 
-TODO 
-`neonix` my own `nvim` distro, needs to have its own `nixpkgs`, so no `nixpkgs.follows` should be configured.
-Because `nixvim` should be aligned with the deps.
+`neonix` needs to have its own `nixpkgs`, so no `nixpkgs.follows` is configured.
+Instead this should be updated on its own, because if nixpkgs in dotfiles is to new, all dependencies and plugins of 
+nvim may not work anymore with the `neonix` upstream configuration.
+
+## Monitor / Workspace setup
+
+`kanshi` is used to match all possible desktop / office setups via profiles.
+These profiles have the primary and secondary display configured, and will execute a script to adapt the workspace pinning.
+This will write its config to `~/.config/hypr/workspaces.conf`, same as `nwg-desktop`.
+`nwg-desktop` can still be used for both monitor and workspace dynamic configuration.
+
+**To actually change the monitor config, the `kanshi` systemd service needs to be stopped.**
 
