@@ -4,7 +4,9 @@
   ...
 }:
 {
-  gtk = lib.mkForce {
+  # TODO: Check if this force is necessary
+  # gtk = lib.mkForce {
+  gtk = {
     enable = true;
     colorScheme = "dark";
 
@@ -20,6 +22,8 @@
       name = "Papirus-Dark";
       package = pkgs.catppuccin-papirus-folders;
     };
+
+    gtk4.theme = null; # Legacy default due to stateVersion
   };
 
   home =
