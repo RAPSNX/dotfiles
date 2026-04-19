@@ -56,6 +56,7 @@ in
     wayland.windowManager.hyprland = {
       enable = true;
       inherit (cfg) package;
+      systemd.enable = true;
 
       settings = {
         general = {
