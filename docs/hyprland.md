@@ -3,150 +3,96 @@
 General docs for hyprland.
 
 ## Keymap
-# Hyprland
-
-General docs for hyprland.
-
-## Keymap
-
----
-
 <table>
 <tr>
 <td valign="top" width="50%">
 
-### 🖥️ General
+## Common
 
-| Keybinding      | Action                      |
-| --------------- | --------------------------- |
-| `SUPER + ENTER` | Open terminal (*alacritty*) |
-| `SUPER + E`     | App launcher (*fuzzel*)     |
-| `SUPER + P`     | Logout menu (*wlogout*)     |
-| `SUPER + Q`     | Kill active window          |
-| `SUPER + N`     | Toggle notifications        |
+| Key | Action |
+|---|---|
+| `Super+Enter` | Terminal |
+| `Super+E` | Launcher |
+| `Super+P` | Logout menu |
+| `Super+Q` | Kill window |
+| `Super+N` | Notifications |
+| `Super+.` | Emoji picker |
 
----
+## Window
 
-### 🪟 Window Management
+| Key | Action |
+|---|---|
+| `Super+F` | Fullscreen `1` |
+| `Super+Shift+F` | Fullscreen |
+| `Super+U` | Floating |
+| `Super+T` | Toggle split |
+| `Super+Mouse1` | Move |
+| `Super+Mouse2` | Resize |
 
-| Keybinding          | Action            |
-| ------------------- | ----------------- |
-| `SUPER + F`         | Toggle fullscreen |
-| `SUPER + SHIFT + F` | Force fullscreen  |
-| `SUPER + U`         | Toggle floating   |
-| `SUPER + T`         | Toggle split      |
+## Focus / Move
 
----
+| Key | Action |
+|---|---|
+| `Super+H` | Focus left |
+| `Super+J` | Focus down |
+| `Super+K` | Focus up |
+| `Super+L` | Focus right |
+| `Super+Shift+H` | Move left |
+| `Super+Shift+J` | Move down |
+| `Super+Shift+K` | Move up |
+| `Super+Shift+L` | Move right |
 
-### 🧭 Focus Movement
+## Workspaces
 
-| Keybinding  | Direction |
-| ----------- | --------- |
-| `SUPER + H` | Left      |
-| `SUPER + J` | Down      |
-| `SUPER + K` | Up        |
-| `SUPER + L` | Right     |
-
----
-
-### 🚚 Move Windows
-
-| Keybinding          | Action     |
-| ------------------- | ---------- |
-| `SUPER + SHIFT + H` | Move left  |
-| `SUPER + SHIFT + J` | Move down  |
-| `SUPER + SHIFT + K` | Move up    |
-| `SUPER + SHIFT + L` | Move right |
+| Key | Action |
+|---|---|
+| `Super+1…9` | Go to `1…9` |
+| `Alt+1…8` | Move to `1…8` |
 
 </td>
 <td valign="top" width="50%">
 
-### 🗂️ Workspaces
-
-**Switch**
-
-| Keybinding     | Action        |
-| -------------- | ------------- |
-| `SUPER + 1..9` | Workspace 1–9 |
-
-**Move**
-
-| Keybinding   | Action              |
-| ------------ | ------------------- |
-| `ALT + 1..8` | Move to workspace   |
-
----
-
-### 🧪 Special Workspaces
-
-| Keybinding          | Action            |
-| ------------------- | ----------------- |
-| `SUPER + O`         | Toggle scratchy   |
-| `SUPER + M`         | Toggle aux        |
-| `SUPER + SHIFT + O` | Move to scratchy  |
-| `SUPER + SHIFT + M` | Move to aux       |
-
----
-
-### ⚙️ Programs
-
-| Keybinding          | Action        |
-| ------------------- | ------------- |
-| `SUPER + Z`         | Mute (Mumble) |
-| `SUPER + SHIFT + Z` | Deaf (Mumble) |
-| `SUPER + .`         | Emoji picker  |
-
----
-
-### 🖱️ Mouse
-
-| Keybinding            | Action        |
-| --------------------- | ------------- |
-| `SUPER + Left Click`  | Move window   |
-| `SUPER + Right Click` | Resize window |
-
----
-
-### 📐 Resize Mode
-
-`SUPER + R`
-
-| Keybinding        | Action      |
-| ----------------- | ----------- |
-| `H / J / K / L`   | Resize big  |
-| `SHIFT + H/J/K/L` | Resize fine |
-| `ENTER / ESC`     | Exit        |
-
----
-
-### 🧩 Window Mode
-
-`SUPER + Z`
+## Special WS
 
 | Key | Action |
-| --- | ------ |
-| Q   | WS 1   |
-| W   | WS 2   |
-| E   | WS 3   |
-| R   | WS 4   |
+|---|---|
+| `Super+O` | Toggle `scratchy` |
+| `Super+M` | Toggle `aux` |
+| `Super+Shift+O` | Move to `scratchy` |
+| `Super+Shift+M` | Move to `aux` |
 
-**Firefox**
+## Programs
 
-| Keybinding  | Action         |
-| ----------- | -------------- |
-| `B`         | Move Firefox   |
-| `SHIFT + B` | Silent to WS 3 |
+| Key | Action |
+|---|---|
+| `Super+Z` | Mumble mute |
+| `Super+Shift+Z` | Mumble deaf |
 
-Exit: `ENTER / ESC`
+## Resize Mode
+
+Enter: `Super+R`
+
+| Key | Action |
+|---|---|
+| `H` / `J` | −/+ width |
+| `K` / `L` | −/+ height |
+| `Shift+H/J/K/L` | Small resize |
+| `Enter` / `Esc` | Exit |
+
+## Window Mode
+
+Enter: `Super+Z`
+
+| Key | Action |
+|---|---|
+| `Q` / `W` | Move to WS `1` / `2` |
+| `E` / `R` | Move to WS `3` / `4` |
+| `B` | Firefox here |
+| `Shift+B` | Firefox → WS `3` |
+| `Enter` / `Esc` | Exit |
+
+> `Super+Z` also toggles Mumble mute.
 
 </td>
 </tr>
 </table>
-
----
-
-## ℹ️ Notes
-
-- `SUPER` = Windows key  
-- Vim-style navigation (`H/J/K/L`)  
-- Submaps behave like modal layers  
