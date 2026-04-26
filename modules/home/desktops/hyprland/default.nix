@@ -19,6 +19,8 @@ in
       nullable = true;
     };
 
+    autostart = mkOpt (listOf str) "autostart";
+
     hyprlock = {
       enable = mkEnableOption "Enable hyprlock";
     };
@@ -103,10 +105,9 @@ in
 
         # Autostart
         exec-once = [
-          # TODO: could be a home.nix setting
-          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" # Needed for thunar
           "[ workspace special:scratchy silent ] alacritty -t scratchy"
-        ];
+        ]
+        ++ cfg.autostart;
 
         windowrule = [
           "match:class ^(firefox)$, workspace 3"

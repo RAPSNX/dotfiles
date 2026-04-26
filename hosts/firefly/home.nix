@@ -31,6 +31,12 @@
           enable = true;
           cmd = "/usr/bin/swaylock";
         };
+        autostart = [
+          "mumble"
+          "firefox"
+          "chromium"
+          "ddcutil --display 2 setvcp 60 0x06" # Focus secondary display
+        ];
       };
     };
 
