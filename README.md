@@ -24,28 +24,41 @@ It follows a structure to keep related configurations together, but not too much
 # On fresh systems
 nix develop
 
-# NixOS rebuilds (hostname autodetection)
+# Dedicated devshell targets
+switch-zion
+switch-firefly
+```
+
+<details>
+    <summary> 🔽 Details</summary>
+<br>
+
+```bash
+# nh switch (hostname autodetection)
 nh os switch .
+nh home switch .
 
-# NixOS build with custom hostname
+# nh switch with custom hostname
 nh os build --hostname kubex .
+nh home switch -c nix@firefly .
 
-# NixOS build installer iso image
+# nix build installer iso
 nix build .#nixosConfigurations.vinox.config.system.build.isoImage
 
-# NixOS remote switch
+# nh remote switch
 nh os switch --hostname kubex . -d always --target-host kubex
 nh os switch --hostname nixberry . -d always --target-host <IP>
 
-# Or
+# nix remote switch
 nixos-rebuild switch --flake .#kubex --target-host 192.168.55.10 --sudo
 
-# HomeManager rebuilds (hostname & username autodetection)
-nh home switch .
-
-# HomeManager build with custom hostname
-# TODO:!
+# enable experimental-features
+export NIX_CONFIG="experimental-features = nix-command flakes"
+# OR
+--extra-experimental-features "nix-command flakes"
 ```
+
+</details>
 
 <details>
     <summary>💽 Disko</summary>
@@ -62,6 +75,11 @@ sudo nixos-install --flake .#zion
 ```
 
 </details>
+
+## :open_book: Docs
+
+- [Hyprland - Keymap](./docs/hyprland.md#keymap)
+- [NVIM - Keymap](https://github.com/RAPSNX/neonix/tree/main/docs/keymap.md)
 
 ## Licenses
 

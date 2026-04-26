@@ -73,7 +73,7 @@ in
         "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
 
         # Emoji picker
-        "SUPER,period, exec, rofimoji"
+        "SUPER,period, exec, rofimoji --action copy --action type"
       ];
 
       extraConfig = ''
