@@ -49,5 +49,8 @@
 
     # Clipboard
     wl-clipboard
+
+    # Monitor / I2C com
+    ddcutil
   ];
 }
