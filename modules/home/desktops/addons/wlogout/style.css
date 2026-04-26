@@ -21,7 +21,10 @@ window {
   background-color: @background;
 }
 
-button {
+button,
+button:hover,
+button:active,
+button:hover:active {
   background-color: @background-alt1;
   color: @foreground;
   border: 1px solid @background-alt2;
@@ -29,10 +32,13 @@ button {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30%;
+  box-shadow: none;
+  text-shadow: none;
+  transition: none;
+  outline-style: none;
 }
 
-button:focus,
-button:hover {
+button:focus {
   background-color: @lavender;
   color: @background;
   outline-style: none;

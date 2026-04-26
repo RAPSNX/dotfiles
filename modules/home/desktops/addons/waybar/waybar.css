@@ -34,11 +34,21 @@ window#waybar.hidden {
   color: #cdd6f4;
 }
 
+#submap {
+  border-radius: 8px;
+  margin: 6px 3px;
+  padding: 6px 12px;
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  margin-right: 40px;
+}
+
 #workspaces button:nth-child(1) {
   margin-left: 40px;
 }
-/* Extra rechter Margin bei Workspace 3 */
-#workspaces button:nth-child(3) {
+
+/* Extra rechter Margin bei Workspace 2 */
+#workspaces button:nth-child(2) {
   margin-right: 40px;
 }
 
