@@ -46,7 +46,7 @@ General docs for hyprland.
 </td>
 <td valign="top" width="50%">
 
-## Special Workspaces
+## Special Workspaces     -#-
 
 | Key | Action |
 |---|---|
