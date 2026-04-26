@@ -100,7 +100,7 @@ in
 
 
         # Window mode
-        bind = SUPER, Z, submap, windows
+        bind = SUPER, W, submap, windows
 
         submap = windows
           bind = , Q, movetoworkspace, 1
