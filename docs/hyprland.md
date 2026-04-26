@@ -13,18 +13,18 @@ General docs for hyprland.
 |---|---|
 | `Super+Enter` | Terminal |
 | `Super+E` | Launcher |
-| `Super+P` | Logout |
-| `Super+Q` | Kill window |
-| `Super+N` | Notifications |
+| `Super+P` | Wlogout |
+| `Super+Q` | Kill active |
+| `Super+N` | Notification Center |
 | `Super+.` | Emoji picker |
 
 ## Window
 
 | Key | Action |
 |---|---|
-| `Super+F` | Fullscreen `1` |
-| `Super+Shift+F` | Fullscreen |
-| `Super+U` | Floating |
+| `Super+F` | Fullscreen |
+| `Super+Shift+F` | Full-Fullscreen |
+| `Super+U` | Toggle floating |
 | `Super+T` | Toggle split |
 | `Super+Mouse1` | Move |
 | `Super+Mouse2` | Resize |
@@ -46,14 +46,14 @@ General docs for hyprland.
 </td>
 <td valign="top" width="50%">
 
-## Special Workspaces     -#-
+## Special Workspaces
 
 | Key | Action |
 |---|---|
 | `Super+O` | Toggle `scratchy` |
 | `Super+M` | Toggle `aux` |
-| `Super+Shift+O` | Move `scratchy` |
-| `Super+Shift+M` | Move `aux` |
+| `Super+Shift+O` | Move active to `scratchy` |
+| `Super+Shift+M` | Move active to `aux` |
 
 ## Programs
 
@@ -79,9 +79,9 @@ Enter: `Super+W`
 
 | Key | Action |
 |---|---|
-| `Q/W/E/R` | Move → WS `1–4` |
-| `B` | Firefox here |
-| `Shift+B` | Firefox → WS `3` |
+| `Q/W/E/R` | Move window to workspace |
+| `B` | Get firefox |
+| `Shift+B` | Send firefox back to `3` |
 | `Enter` / `Esc` | Exit |
 
 </td>

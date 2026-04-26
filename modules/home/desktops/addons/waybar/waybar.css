@@ -40,7 +40,7 @@ window#waybar.hidden {
   padding: 6px 12px;
   background-color: #1e1e2e;
   color: #cdd6f4;
-  margin-right: 40px;
+  margin-left: 140px;
 }
 
 #workspaces button:nth-child(1) {
