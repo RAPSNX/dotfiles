@@ -106,6 +106,8 @@ in
         # Autostart
         exec-once = [
           "[ workspace special:scratchy silent ] alacritty -t scratchy"
+
+          "[ workspace special:aux silent ] sleep 2 && chromium --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga"
         ]
         ++ cfg.autostart;
 
