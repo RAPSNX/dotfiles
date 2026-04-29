@@ -4,12 +4,11 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.roles.desktop.hyprland.hyprlock;
 in
 {
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.hyprlock = {
       enable = true;
       package = pkgs.hyprlock;

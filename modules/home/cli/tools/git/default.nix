@@ -25,9 +25,8 @@
         done
       '';
     in
-    with pkgs;
     [
-      gh
+      pkgs.gh
       ghr-grep
     ];
 

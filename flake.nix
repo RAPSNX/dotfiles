@@ -89,7 +89,6 @@
         ./modules/nix.nix
       ];
     in
-    with lib;
     {
       inherit lib;
 
@@ -100,25 +99,25 @@
 
       nixosConfigurations = {
         # Main workstation
-        zion = nixosSystem {
+        zion = lib.nixosSystem {
           modules = nixosModules ++ [ ./hosts/zion ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # K3S home-lab
-        kubex = nixosSystem {
+        kubex = lib.nixosSystem {
           modules = nixosModules ++ [ ./hosts/kubex ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # Raspberry-pi 3
-        nixberry = nixosSystem {
+        nixberry = lib.nixosSystem {
           modules = nixosModules ++ [ ./hosts/nixberry ];
           specialArgs = { inherit inputs mylib; };
         };
 
         # ISO multi-tool
-        vinox = nixosSystem {
+        vinox = lib.nixosSystem {
           modules = nixosModules ++ [ ./hosts/vinox ];
           specialArgs = { inherit inputs mylib; };
         };
@@ -126,14 +125,14 @@
 
       homeConfigurations = {
         # Main workstation
-        "rap@zion" = homeManagerConfiguration {
+        "rap@zion" = lib.homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/zion/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs self mylib; };
         };
 
         # Firefly workmachine
-        "nix@firefly" = homeManagerConfiguration {
+        "nix@firefly" = lib.homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/firefly/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs self mylib; };

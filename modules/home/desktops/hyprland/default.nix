@@ -5,29 +5,26 @@
   config,
   ...
 }:
-with lib;
-with mylib;
-with pkgs;
 let
   cfg = config.roles.desktop.hyprland;
 in
 {
-  options.roles.desktop.hyprland = with types; {
-    enable = mkEnableOption "Enable hyprland";
+  options.roles.desktop.hyprland = {
+    enable = lib.mkEnableOption "Enable hyprland";
 
-    package = mkPackageOption pkgs "hyprland" {
+    package = lib.mkPackageOption pkgs "hyprland" {
       nullable = true;
     };
 
-    autostart = mkOpt (listOf str) "autostart";
+    autostart = mylib.mkOpt (lib.types.listOf lib.types.str) "autostart";
 
     hyprlock = {
-      enable = mkEnableOption "Enable hyprlock";
+      enable = lib.mkEnableOption "Enable hyprlock";
     };
 
     hypridle = {
-      enable = mkEnableOption "Enable hypridle";
-      cmd = mkOpt str "Path to binary";
+      enable = lib.mkEnableOption "Enable hypridle";
+      cmd = mylib.mkOpt lib.types.str "Path to binary";
     };
   };
 
@@ -40,7 +37,7 @@ in
 
   config = lib.mkIf cfg.enable {
 
-    home.packages = [
+    home.packages = with pkgs; [
       hyprland-qtutils
       slurp
       rofimoji

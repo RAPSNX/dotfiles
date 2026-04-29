@@ -3,14 +3,13 @@
   config,
   ...
 }:
-with lib;
 let
   cfg = config.hostConfig.services.bluetooth;
 in
 {
-  options.hostConfig.services.bluetooth = mkEnableOption "Enable bluetooth features.";
+  options.hostConfig.services.bluetooth = lib.mkEnableOption "Enable bluetooth features.";
 
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     hardware.bluetooth.enable = true;
     services.blueman.enable = true;
   };

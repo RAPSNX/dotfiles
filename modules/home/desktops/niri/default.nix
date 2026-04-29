@@ -1,19 +1,15 @@
 {
-  pkgs,
   lib,
-  mylib,
   config,
   ...
 }:
-with lib;
-with mylib;
-with pkgs;
 let
   cfg = config.roles.desktop.niri;
+  actions = config.lib.niri.actions;
 in
 {
   options.roles.desktop.niri = {
-    enable = mkEnableOption "Enable hyprland";
+    enable = lib.mkEnableOption "Enable hyprland";
   };
 
   config = lib.mkIf cfg.enable {
@@ -106,29 +102,29 @@ in
           }
         ];
 
-        binds = with config.lib.niri.actions; {
+        binds = {
           "Mod+Return".action.spawn = [ "alacritty" ];
           "Mod+E".action.spawn = [ "fuzzel" ];
           "Mod+P".action.spawn = [ "wlogout" ];
 
-          "Mod+Q".action = close-window;
-          "Mod+F".action = fullscreen-window;
+          "Mod+Q".action = actions."close-window";
+          "Mod+F".action = actions."fullscreen-window";
 
-          "Mod+H".action = focus-column-or-monitor-left;
-          "Mod+L".action = focus-column-or-monitor-right;
-          "Mod+J".action = focus-window-or-workspace-down;
-          "Mod+K".action = focus-window-or-workspace-up;
+          "Mod+H".action = actions."focus-column-or-monitor-left";
+          "Mod+L".action = actions."focus-column-or-monitor-right";
+          "Mod+J".action = actions."focus-window-or-workspace-down";
+          "Mod+K".action = actions."focus-window-or-workspace-up";
 
           # Smart movement: move within monitor, then to adjacent monitor when at edge
-          "Mod+Shift+H".action = consume-or-expel-window-left;
-          "Mod+Shift+L".action = consume-or-expel-window-right;
+          "Mod+Shift+H".action = actions."consume-or-expel-window-left";
+          "Mod+Shift+L".action = actions."consume-or-expel-window-right";
 
           # then reorder inside the column (up/down)
-          "Mod+Shift+K".action = move-window-up;
-          "Mod+Shift+J".action = move-window-down;
+          "Mod+Shift+K".action = actions."move-window-up";
+          "Mod+Shift+J".action = actions."move-window-down";
 
-          "Mod+R".action = switch-preset-column-width;
-          "Mod+Shift+R".action = switch-preset-column-width-back;
+          "Mod+R".action = actions."switch-preset-column-width";
+          "Mod+Shift+R".action = actions."switch-preset-column-width-back";
 
           "Mod+1".action.focus-workspace = "term";
           "Mod+2".action.focus-workspace = "code";

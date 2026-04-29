@@ -4,14 +4,13 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.hostConfig.roles.gaming;
 in
 {
-  options.hostConfig.roles.gaming = mkEnableOption "Enable NixOS gaming environment.";
+  options.hostConfig.roles.gaming = lib.mkEnableOption "Enable NixOS gaming environment.";
 
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     services.ratbagd.enable = true; # Daemon to configure gaming mice, GUI piper comes through HM.
 
     programs = {

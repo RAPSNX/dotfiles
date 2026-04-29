@@ -4,12 +4,11 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.hostConfig.roles.desktop;
 in
 {
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     programs.hyprland = {
       enable = true;
       withUWSM = false;

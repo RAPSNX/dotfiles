@@ -3,12 +3,11 @@
   config,
   ...
 }:
-with lib;
 let
   cfg = config.roles.desktop.hyprland.hypridle;
 in
 {
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.hypridle = {
       enable = true;
       settings = {

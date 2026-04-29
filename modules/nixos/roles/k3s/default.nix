@@ -4,7 +4,6 @@
   config,
   ...
 }:
-with lib;
 let
   cfg = config.hostConfig.roles.k3s;
   getConfig = pkgs.writeShellScriptBin "getConfig" ''
@@ -19,9 +18,9 @@ in
     ./network.nix
   ];
 
-  options.hostConfig.roles.k3s = mkEnableOption "Enable k3s cluster configuration.";
+  options.hostConfig.roles.k3s = lib.mkEnableOption "Enable k3s cluster configuration.";
 
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     environment = {
       shellAliases = {
         k = "kubectl";

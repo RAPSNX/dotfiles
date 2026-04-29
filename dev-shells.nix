@@ -24,19 +24,17 @@ let
   '';
 in
 {
-  default =
-    with pkgs;
-    mkShell {
-      inherit (pre-commit-check) shellHook;
+  default = pkgs.mkShell {
+    inherit (pre-commit-check) shellHook;
 
-      packages = [
-        nh
-        switch-firefly
-        switch-zion
-        statix
-        deadnix
-        nixfmt
-        nix-inspect
-      ];
-    };
+    packages = with pkgs; [
+      nh
+      switch-firefly
+      switch-zion
+      statix
+      deadnix
+      nixfmt
+      nix-inspect
+    ];
+  };
 }

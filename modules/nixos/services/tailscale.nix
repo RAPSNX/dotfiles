@@ -3,14 +3,13 @@
   config,
   ...
 }:
-with lib;
 let
   cfg = config.hostConfig.services.tailscale;
 in
 {
-  options.hostConfig.services.tailscale = mkEnableOption "Enable tailscaled.";
+  options.hostConfig.services.tailscale = lib.mkEnableOption "Enable tailscaled.";
 
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     services.tailscale.enable = true;
   };
 }
