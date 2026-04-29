@@ -30,6 +30,7 @@
         p7zip
         gnumake
       ]
+      # TODO: wtf?
       ++ lib.optionals (!config.hostConfig.roles.desktop) [
         inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}.mini
         jq
