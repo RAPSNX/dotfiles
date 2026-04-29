@@ -56,8 +56,6 @@
     stackit-cli
     openstackclient-full
     vault-bin
-
-    # Tools(inputs.import-tree.match ".*/default\\.nix" ./modules/home)
     brightnessctl
   ];
 
