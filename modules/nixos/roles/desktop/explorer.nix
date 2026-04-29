@@ -4,14 +4,13 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.hostConfig.roles.desktop;
 in
 {
-  options.hostConfig.roles.desktop = mkEnableOption "Enable hyprland and desktop features.";
+  options.hostConfig.roles.desktop = lib.mkEnableOption "Enable hyprland and desktop features.";
 
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     programs = {
       thunar = {
         enable = true;

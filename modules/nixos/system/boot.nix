@@ -3,24 +3,23 @@
   config,
   ...
 }:
-with lib;
 let
   cfg = config.hostConfig.boot;
 in
 {
   options.hostConfig.boot = {
-    enable = mkEnableOption "Enable install / config of bootloader";
-    armSupport = mkEnableOption "Enable arm cross-compiler support";
-    supportedFilesystems = mkOption {
-      type = with types; listOf str;
+    enable = lib.mkEnableOption "Enable install / config of bootloader";
+    armSupport = lib.mkEnableOption "Enable arm cross-compiler support";
+    supportedFilesystems = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
       default = [ ];
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     boot = {
       inherit (cfg) supportedFilesystems;
-      binfmt.emulatedSystems = mkIf cfg.armSupport [ "aarch64-linux" ];
+      binfmt.emulatedSystems = lib.mkIf cfg.armSupport [ "aarch64-linux" ];
 
       consoleLogLevel = 3;
       initrd.verbose = false;

@@ -5,11 +5,8 @@
   config,
   ...
 }:
-with lib;
-with mylib;
-with types;
 {
-  options.roles.cli.zsh.zshrc = mkOpt' str "" "Extra content for zshrc";
+  options.roles.cli.zsh.zshrc = mylib.mkOpt' lib.types.str "" "Extra content for zshrc";
 
   config = {
     home.packages = [ pkgs.zsh-completions ];
@@ -43,13 +40,13 @@ with types;
         share = true;
       };
 
-      initContent = mkMerge [
-        (mkOrder 500 "")
-        (mkOrder 1000 ''
+      initContent = lib.mkMerge [
+        (lib.mkOrder 500 "")
+        (lib.mkOrder 1000 ''
           export GOPATH=$(go env GOPATH)
           ${config.roles.cli.zsh.zshrc}
         '')
-        (mkOrder 1500 "")
+        (lib.mkOrder 1500 "")
       ];
 
       shellAliases = {
@@ -86,10 +83,10 @@ with types;
         ];
       };
 
-      plugins = with pkgs; [
+      plugins = [
         {
           name = "zsh-autopair";
-          src = fetchFromGitHub {
+          src = pkgs.fetchFromGitHub {
             owner = "hlissner";
             repo = "zsh-autopair";
             rev = "34a8bca0c18fcf3ab1561caef9790abffc1d3d49";
@@ -100,7 +97,7 @@ with types;
         {
           name = "zsh-nix-shell";
           file = "nix-shell.plugin.zsh";
-          src = "${zsh-nix-shell}/share/zsh-nix-shell";
+          src = "${pkgs.zsh-nix-shell}/share/zsh-nix-shell";
         }
       ];
     };

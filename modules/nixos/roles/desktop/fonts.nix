@@ -4,12 +4,11 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.hostConfig.roles.desktop;
 in
 {
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     nixpkgs.config.joypixels.acceptLicense = true;
     fonts = {
       enableDefaultPackages = false;
