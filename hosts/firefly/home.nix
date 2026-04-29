@@ -16,9 +16,9 @@
     work = true;
     email = "raphael.groemmer@digits.schwarz";
 
-    apparmor-gen = with pkgs; [
-      config.programs.chromium.finalPackage
-      obsidian
+    apparmor-gen = [
+      pkgs.config.programs.chromium.finalPackage
+      pkgs.obsidian
     ];
 
     desktop = {
@@ -48,15 +48,19 @@
     };
   };
 
-  home.packages = with pkgs; [
-    # CLIs
-    mypkgs.gardenctl
-    mypkgs.gardenlogin
-    stackit-cli
-    openstackclient-full
-    vault-bin
-    brightnessctl
-  ];
+  home.packages = builtins.attrValues {
+    inherit (pkgs)
+      stackit-cli
+      openstackclient-full
+      vault-bin
+      brightnessctl
+      ;
+
+    inherit (pkgs.mypkgs)
+      gardenctl
+      gardenlogin
+      ;
+  };
 
   targets.genericLinux = {
     enable = true;

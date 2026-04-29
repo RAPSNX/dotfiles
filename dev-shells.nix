@@ -27,14 +27,19 @@ in
   default = pkgs.mkShell {
     inherit (pre-commit-check) shellHook;
 
-    packages = with pkgs; [
-      nh
-      switch-firefly
-      switch-zion
-      statix
-      deadnix
-      nixfmt
-      nix-inspect
-    ];
+    packages = builtins.attrValues {
+      inherit (pkgs)
+        nh
+        statix
+        deadnix
+        nixfmt
+        nix-inspect
+        ;
+
+      inherit
+        switch-firefly
+        switch-zion
+        ;
+    };
   };
 }
