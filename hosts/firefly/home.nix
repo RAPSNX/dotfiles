@@ -32,10 +32,9 @@
           cmd = "/usr/bin/swaylock";
         };
         autostart = [
-          "mumble"
+          "sleep 3 && mumble" # Need to sleep for tray icon
           "firefox"
           "chromium"
-          "ddcutil --display 2 setvcp 60 0x06" # Focus secondary display
         ];
       };
     };
