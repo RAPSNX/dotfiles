@@ -17,6 +17,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # TODO: WIP - Niri is currently in a trial phase.
+    # This config needs to be updated in a seperate PR, when niri got evaluated.
     programs.niri = {
       enable = true;
 
@@ -50,8 +52,6 @@ in
               x = 0;
               y = 0;
             };
-          };
-          "DP-1" = {
           };
         };
 
