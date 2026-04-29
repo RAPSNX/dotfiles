@@ -33,9 +33,6 @@ in
         nh
         switch-firefly
         switch-zion
-
-        hello
-
         statix
         deadnix
         nixfmt
