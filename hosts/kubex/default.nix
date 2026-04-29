@@ -31,16 +31,6 @@
     roles = {
       k3s = true;
     };
-    services = {
-      sops = true;
-    };
-  };
-
-  sops.secrets.ssh_config = {
-    sopsFile = ./secrets.yaml;
-    path = "/home/kubex/.ssh/config";
-    mode = "600";
-    owner = "kubex";
   };
 
   networking = {

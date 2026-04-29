@@ -7,6 +7,5 @@
     ./tailscale.nix
     ./printer.nix
     ./bluetooth.nix
-    ./sops.nix
   ];
 }

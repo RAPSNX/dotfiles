@@ -18,10 +18,6 @@
       url = "github:brumhard/krewfile";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -79,7 +75,6 @@
 
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
-        inputs.sops-nix.nixosModules.sops
         inputs.niri.nixosModules.niri
         (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
         ./modules/nix.nix
@@ -89,7 +84,6 @@
         inputs.catppuccin.homeModules.catppuccin
         inputs.neonix.homeManagerModules.neonix
         inputs.krewfile.homeManagerModules.krewfile
-        inputs.sops-nix.homeManagerModules.sops
         inputs.niri.homeModules.niri
         (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
         ./modules/nix.nix
