@@ -14,7 +14,7 @@ let
     BASE_PATH=$HOME/.config/kubeconfigs
     YAMLS=$(find "$BASE_PATH" -name '*.yaml' | awk -F/ '{ print $NF }')
     KUBECONFIG=$(fzf <<<"$YAMLS")
-    export KUBECONFIG=$BASE_PATH/$KUBECONFIG
+    printf 'export KUBECONFIG=%q\n' "$BASE_PATH/$KUBECONFIG"
   '';
 in
 {
