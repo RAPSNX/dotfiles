@@ -74,6 +74,9 @@ in
 
         # Emoji picker
         "SUPER,period, exec, rofimoji --action copy --action type"
+
+        # Emoji picker
+        "SUPER,I, exec, systemctl restart --user kanshi.service"
       ];
 
       extraConfig = ''
@@ -100,7 +103,7 @@ in
 
 
         # Window mode
-        bind = SUPER, W, submap, windows
+        bind = SUPER, G, submap, windows
 
         submap = windows
           bind = , Q, movetoworkspace, 1

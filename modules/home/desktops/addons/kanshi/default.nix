@@ -51,14 +51,15 @@
             outputs = [
               {
                 criteria = "DP-1";
+                scale = 1.5;
                 position = "2560,0";
                 mode = "3840x2160@143.99Hz";
               }
               {
                 criteria = "HDMI-A-1";
-                scale = 1.0;
+                scale = 1.5;
                 position = "0,0";
-                mode = "2560x1440@144.00Hz";
+                mode = "3840x2160@120.00Hz";
               }
               {
                 criteria = "eDP-1";
@@ -71,7 +72,7 @@
 
         {
           profile = {
-            name = "firefly-office";
+            name = "firefly-office-sb";
             outputs = [
               {
                 criteria = "DP-8";
@@ -80,6 +81,23 @@
               {
                 criteria = "DP-9";
                 position = "1920,0";
+              }
+              {
+                criteria = "eDP-1";
+                status = "disable";
+              }
+            ];
+            exec = "${lib.getExe workspaceSetup} DP-8 DP-9";
+          };
+        }
+
+        {
+          profile = {
+            name = "firefly-office-digits";
+            outputs = [
+              {
+                criteria = "DP-2";
+                mode = "3440x1440@99.98Hz";
               }
               {
                 criteria = "eDP-1";
