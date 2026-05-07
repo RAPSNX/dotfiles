@@ -17,7 +17,7 @@
     email = "raphael.groemmer@digits.schwarz";
 
     apparmor-gen = [
-      pkgs.config.programs.chromium.finalPackage
+      config.programs.chromium.finalPackage
       pkgs.obsidian
     ];
 
