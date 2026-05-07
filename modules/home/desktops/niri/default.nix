@@ -5,7 +5,7 @@
 }:
 let
   cfg = config.roles.desktop.niri;
-  actions = config.lib.niri.actions;
+  inherit (config.lib.niri) actions;
 in
 {
   options.roles.desktop.niri = {
