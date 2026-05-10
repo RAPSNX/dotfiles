@@ -57,9 +57,9 @@
               }
               {
                 criteria = "HDMI-A-1";
-                scale = 1.5;
+                scale = 1.0;
                 position = "0,0";
-                mode = "3840x2160@120.00Hz";
+                mode = "2560x1440@144.00Hz";
               }
               {
                 criteria = "eDP-1";
@@ -121,9 +121,9 @@
               }
               {
                 criteria = "DP-2";
-                scale = 1.5;
+                scale = 1.0;
                 position = "0,0";
-                mode = "3840x2160@120.00Hz";
+                mode = "2560x1440@240.00Hz";
               }
             ];
             exec = "${lib.getExe workspaceSetup} DP-1 DP-2";
