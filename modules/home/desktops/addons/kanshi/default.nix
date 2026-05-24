@@ -26,109 +26,78 @@
         ${hyprctl} dispatch workspace 4 &&
         ${hyprctl} dispatch workspace 1
       '';
+      mkProfile =
+        {
+          name,
+          primary,
+          secondary ? primary,
+          additional ? [ ],
+        }:
+        {
+          profile = {
+            inherit name;
+            outputs = [
+              primary
+              secondary
+            ]
+            ++ additional;
+            exec = "${lib.getExe workspaceSetup} ${primary.criteria} ${secondary.criteria}";
+          };
+        };
     in
     {
       enable = true;
       systemdTarget = "hyprland-session.target";
 
       settings = [
-        # ----- FIREFLY ----- #
-        {
-          profile = {
-            name = "firefly-undocked";
-            outputs = [
-              {
-                criteria = "eDP-1";
-                scale = 1.0;
-              }
-            ];
-          };
-        }
+        # TODO: is this needed? eDP-1 is handled via lit, and always active -> instead no secondary is used
+        # (mkProfile {
+        #   name = "firefly-undocked";
+        #   primary = {
+        #     criteria = "eDP-1";
+        #     scale = 1.0;
+        #   };
+        # })
 
-        {
-          profile = {
-            name = "firefly-home";
-            outputs = [
-              {
-                criteria = "DP-1";
-                scale = 1.5;
-                position = "2560,0";
-                mode = "3840x2160@143.99Hz";
-              }
-              {
-                criteria = "HDMI-A-1";
-                scale = 1.0;
-                position = "0,0";
-                mode = "2560x1440@144.00Hz";
-              }
-              {
-                criteria = "eDP-1";
-                status = "disable";
-              }
-            ];
-            exec = "${lib.getExe workspaceSetup} DP-1 HDMI-A-1";
+        (mkProfile {
+          name = "firefly-home";
+          primary = {
+            criteria = "DP-1";
+            scale = 1.5;
+            position = "2560,0";
+            mode = "3840x2160@143.99Hz";
           };
-        }
+          secondary = {
+            criteria = "HDMI-A-1";
+            scale = 1.0;
+            position = "0,0";
+            mode = "2560x1440@144.00Hz";
+          };
+        })
 
-        {
-          profile = {
-            name = "firefly-office-sb";
-            outputs = [
-              {
-                criteria = "DP-8";
-                position = "0,0";
-              }
-              {
-                criteria = "DP-9";
-                position = "1920,0";
-              }
-              {
-                criteria = "eDP-1";
-                status = "disable";
-              }
-            ];
-            exec = "${lib.getExe workspaceSetup} DP-8 DP-9";
+        (mkProfile {
+          name = "firefly-office";
+          primary = {
+            criteria = "DP-2";
+            mode = "3440x1440@99.98Hz";
           };
-        }
+        })
 
-        {
-          profile = {
-            name = "firefly-office-digits";
-            outputs = [
-              {
-                criteria = "DP-2";
-                mode = "3440x1440@99.98Hz";
-              }
-              {
-                criteria = "eDP-1";
-                status = "disable";
-              }
-            ];
-            exec = "${lib.getExe workspaceSetup} DP-8 DP-9";
+        (mkProfile {
+          name = "zion-home";
+          primary = {
+            criteria = "DP-2";
+            scale = 1.5;
+            position = "2560,0";
+            mode = "3840x2160@239.99Hz";
           };
-        }
-
-        # ----- ZION ----- #
-        {
-          profile = {
-            name = "zion-home";
-            outputs = [
-              {
-                criteria = "DP-1";
-                scale = 1.5;
-                position = "2560,0";
-                mode = "3840x2160@239.99Hz";
-              }
-              {
-                criteria = "DP-2";
-                scale = 1.0;
-                position = "0,0";
-                mode = "2560x1440@240.00Hz";
-              }
-            ];
-            exec = "${lib.getExe workspaceSetup} DP-1 DP-2";
+          secondary = {
+            criteria = "DP-1";
+            scale = 1.0;
+            position = "0,0";
+            mode = "2560x1440@240.00Hz";
           };
-        }
+        })
       ];
     };
 }
