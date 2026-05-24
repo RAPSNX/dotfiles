@@ -30,17 +30,19 @@
         {
           name,
           primary,
-          secondary ? primary,
+          secondary ? { },
           additional ? [ ],
         }:
+        let
+          hasSecondary = secondary != { };
+        in
         {
           profile = {
             inherit name;
-            outputs = [
-              primary
-              secondary
-            ]
-            ++ additional;
+
+            outputs = [ primary ] ++ lib.optional hasSecondary secondary ++ additional;
+          }
+          // lib.optionalAttrs hasSecondary {
             exec = "${lib.getExe workspaceSetup} ${primary.criteria} ${secondary.criteria}";
           };
         };

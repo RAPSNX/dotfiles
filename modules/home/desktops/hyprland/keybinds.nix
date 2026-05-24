@@ -50,16 +50,6 @@ in
         "SUPER,8, workspace, 8"
         "SUPER,9, workspace, 9"
 
-        # Workspace window movement
-        "ALT,1, movetoworkspace, 1"
-        "ALT,2, movetoworkspace, 2"
-        "ALT,3, movetoworkspace, 3"
-        "ALT,4, movetoworkspace, 4"
-        "ALT,5, movetoworkspace, 5"
-        "ALT,6, movetoworkspace, 6"
-        "ALT,7, movetoworkspace, 7"
-        "ALT,8, movetoworkspace, 8"
-
         # Workpace handling sratchy
         "SUPER,O, togglespecialworkspace, scratchy"
         "SUPER,M, togglespecialworkspace, aux"
