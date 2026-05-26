@@ -52,28 +52,19 @@
       systemdTarget = "hyprland-session.target";
 
       settings = [
-        # TODO: is this needed? eDP-1 is handled via lit, and always active -> instead no secondary is used
-        # (mkProfile {
-        #   name = "firefly-undocked";
-        #   primary = {
-        #     criteria = "eDP-1";
-        #     scale = 1.0;
-        #   };
-        # })
-
         (mkProfile {
           name = "firefly-home";
           primary = {
             criteria = "DP-1";
             scale = 1.5;
             position = "2560,0";
-            mode = "3840x2160@143.99Hz";
+            mode = "3840x2160@239.99Hz";
           };
           secondary = {
-            criteria = "HDMI-A-1";
+            criteria = "DP-2";
             scale = 1.0;
             position = "0,0";
-            mode = "2560x1440@144.00Hz";
+            mode = "2560x1440@239.96Hz";
           };
         })
 
@@ -84,6 +75,7 @@
             mode = "3440x1440@99.98Hz";
           };
         })
+        # TODO: Firefly meeting room
 
         (mkProfile {
           name = "zion-home";
