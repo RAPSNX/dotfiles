@@ -117,6 +117,12 @@ in
           bind = , return, submap, reset
           bind = , escape, submap, reset
         submap = reset
+
+        # Lid closed: disable internal laptop display
+        bindl = , switch:on:Lid Switch, exec, hyprctl keyword monitor "eDP-1, disable"
+
+        # Lid opened: enable internal laptop display again
+        bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, 1920x1080@60, 0x0, 1"
       '';
     };
   };
