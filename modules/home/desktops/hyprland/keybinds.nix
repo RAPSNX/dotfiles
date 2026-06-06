@@ -122,7 +122,7 @@ in
         bindl = , switch:on:Lid Switch, exec, hyprctl keyword monitor "eDP-1, disable"
 
         # Lid opened: enable internal laptop display again
-        bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, 1920x1080@60, 0x0, 1"
+        bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, 1920x1200@60, 0x0, 1"
       '';
     };
   };
