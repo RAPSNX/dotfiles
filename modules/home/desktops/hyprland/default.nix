@@ -47,7 +47,6 @@ in
       PATH="$HOME/.nix-profile/bin:$PATH"
     '';
 
-    catppuccin.hyprland.enable = true;
     wayland.windowManager.hyprland = {
       enable = true;
       inherit (cfg) package;

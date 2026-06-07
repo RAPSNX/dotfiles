@@ -114,8 +114,6 @@ let
   };
 in
 {
-  catppuccin.k9s.enable = true;
-
   programs.k9s = {
     enable = true;
     plugins = defaultPlugins // lib.optionalAttrs config.roles.work workPlugins;

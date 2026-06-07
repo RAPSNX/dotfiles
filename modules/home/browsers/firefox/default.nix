@@ -13,6 +13,8 @@ in
     profiles.default = {
       name = "Default";
 
+      extensions.force = true;
+
       settings = {
         "browser.urlbar.suggest.searches" = true; # Need this for basic search suggestions
         "browser.urlbar.shortcuts.bookmarks" = false;

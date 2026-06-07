@@ -13,8 +13,6 @@
       inherit (pkgs) zsh-completions;
     };
 
-    catppuccin.zsh-syntax-highlighting.enable = true;
-
     programs.zsh = {
       enable = true;
 

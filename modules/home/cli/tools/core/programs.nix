@@ -1,9 +1,9 @@
 {
-  catppuccin = {
-    bat.enable = true;
-    fzf.enable = true;
-    btop.enable = true;
-  };
+  # catppuccin = {
+  #   bat.enable = true;
+  #   fzf.enable = true;
+  #   btop.enable = true;
+  # };
 
   programs = {
     bat.enable = true;
