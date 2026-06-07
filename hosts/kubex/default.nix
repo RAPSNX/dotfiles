@@ -43,7 +43,9 @@
       PROMPT = "%m@%n> ";
       RPROMPT = "%D %T";
     };
-    systemPackages = [ pkgs.restic ];
+    systemPackages = builtins.attrValues {
+      inherit (pkgs) restic;
+    };
   };
 
   nix.settings.trusted-users = [ "@wheel" ]; # need for remote build

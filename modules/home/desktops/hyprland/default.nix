@@ -37,11 +37,9 @@ in
 
   config = lib.mkIf cfg.enable {
 
-    home.packages = with pkgs; [
-      hyprland-qtutils
-      slurp
-      rofimoji
-    ];
+    home.packages = builtins.attrValues {
+      inherit (pkgs) hyprland-qtutils rofimoji slurp;
+    };
 
     # environment.d defines environment variables for the user session, beyond shell level.
     # It is processed by `systemd --user`, basically after login.

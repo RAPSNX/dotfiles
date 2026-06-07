@@ -1,49 +1,45 @@
 { pkgs, ... }:
 {
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = builtins.attrValues {
     # General
-    util-linux
-    coreutils-full
-    dmidecode
+    inherit (pkgs) util-linux coreutils-full dmidecode;
 
-    gnome-system-monitor
+    inherit (pkgs) gnome-system-monitor;
 
     # Disks
-    nwipe # Disk wiper
-    gparted # Partitioning
-    smartmontools # Disk health
-    gsmartcontrol
-    iotop
-    nvme-cli
-    fio # I/O Benchmark
-    gnome-disk-utility
+    inherit (pkgs)
+      nwipe
+      gparted
+      smartmontools
+      gsmartcontrol
+      iotop
+      nvme-cli
+      fio
+      gnome-disk-utility
+      ;
 
     # Networking
-    wireshark
-    iputils
-    tshark
-    iperf3
-    netcat-gnu
-    nmap
-    tcpdump
-    ethtool
+    inherit (pkgs)
+      wireshark
+      iputils
+      tshark
+      iperf3
+      netcat-gnu
+      nmap
+      tcpdump
+      ethtool
+      ;
 
     # Memory
-    memtester
-    memtest86plus
+    inherit (pkgs) memtester memtest86plus;
 
     # CPU
-    sysbench # General benchmark
-    stress
-    cpuid
+    inherit (pkgs) sysbench stress cpuid;
 
     # Copy
-    rclone
-    rsync
+    inherit (pkgs) rclone rsync;
 
     # Hardware
-    usbutils
-    pciutils
-    hardinfo2
-  ];
+    inherit (pkgs) usbutils pciutils hardinfo2;
+  };
 }

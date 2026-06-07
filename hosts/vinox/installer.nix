@@ -38,9 +38,8 @@ let
   '';
 in
 {
-  environment.systemPackages = with pkgs; [
-    dot # My interactive installer
-    gum
-    alacritty
-  ];
+  environment.systemPackages = builtins.attrValues {
+    inherit dot; # My interactive installer
+    inherit (pkgs) alacritty gum;
+  };
 }

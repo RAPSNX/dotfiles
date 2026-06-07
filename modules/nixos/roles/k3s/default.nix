@@ -25,13 +25,13 @@ in
       shellAliases = {
         k = "kubectl";
       };
-      systemPackages = with pkgs; [
-        getConfig
-        kubectl
+      systemPackages = builtins.attrValues {
+        inherit getConfig;
+        inherit (pkgs) kubectl;
 
         # Storage
-        zfs
-      ];
+        inherit (pkgs) zfs;
+      };
     };
 
     # Link zfs to be in PATH for openebs-provisioner

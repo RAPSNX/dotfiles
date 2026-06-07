@@ -9,7 +9,9 @@
   options.roles.cli.zsh.zshrc = mylib.mkOpt' lib.types.str "" "Extra content for zshrc";
 
   config = {
-    home.packages = [ pkgs.zsh-completions ];
+    home.packages = builtins.attrValues {
+      inherit (pkgs) zsh-completions;
+    };
 
     catppuccin.zsh-syntax-highlighting.enable = true;
 
