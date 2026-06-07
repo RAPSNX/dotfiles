@@ -17,6 +17,11 @@ sudo cat /home/rap/.config/sops/age/keys.txt | grep "public key"
 sops updatekeys secrets/secrets.yaml
 ```
 
+## Github action
+
+There are Github Actions, to check and build every host against a `PR`.
+For each new host there needs to be config for the pipeline.
+
 # TODO(docs): Add sops-nix docs, add & edit secrets
 
 # TODO(docs): Add workdevice manual steps, ppa hyprland and uwsm
