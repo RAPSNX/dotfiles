@@ -5,7 +5,10 @@
   programs.home-manager.enable = true;
   xdg.enable = true;
 
-  catppuccin.enable = true;
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+  };
 
   news = {
     display = "silent";

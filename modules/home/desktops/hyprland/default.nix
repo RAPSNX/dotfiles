@@ -47,6 +47,8 @@ in
       PATH="$HOME/.nix-profile/bin:$PATH"
     '';
 
+    # TODO: remove this when changed to lua
+    catppuccin.hyprland.enable = false;
     wayland.windowManager.hyprland = {
       enable = true;
       inherit (cfg) package;
