@@ -1,60 +1,51 @@
-{pkgs, ...}: {
-  environment.systemPackages = with pkgs; [
-    # General
-    util-linux
-    coreutils-full
-    dmidecode
+{ pkgs, ... }:
+{
+  environment.systemPackages = builtins.attrValues {
+    inherit (pkgs)
+      # General
+      util-linux
+      coreutils-full
+      dmidecode
 
-    gnome-system-monitor
+      gnome-system-monitor
 
-    # Disks
-    nwipe # Disk wiper
-    gparted # Partitioning
-    smartmontools # Disk health
-    gsmartcontrol
-    iotop
-    nvme-cli
-    fio # I/O Benchmark
-    gnome-disk-utility
+      # Disks
+      nwipe
+      gparted
+      smartmontools
+      gsmartcontrol
+      iotop
+      nvme-cli
+      fio
+      gnome-disk-utility
 
-    # Networking
-    wireshark
-    iputils
-    tshark
-    iperf3
-    netcat-gnu
-    nmap
-    tcpdump
-    ethtool
+      # Networking
+      wireshark
+      iputils
+      tshark
+      iperf3
+      netcat-gnu
+      nmap
+      tcpdump
+      ethtool
 
-    # Memory
-    memtester
-    memtest86plus
+      # Memory
+      memtester
+      memtest86plus
 
-    # CPU
-    sysbench # General benchmark
-    stress
-    cpuid
+      # CPU
+      sysbench
+      stress
+      cpuid
 
-    # Copy
-    rclone
-    rsync
+      # Copy
+      rclone
+      rsync
 
-    # Hardware
-    usbutils
-    pciutils
-    hardinfo2
-
-    # Tooling
-    git
-    curl
-
-    jq
-    yq-go
-    gawk
-    gnused
-
-    p7zip
-    gnumake
-  ];
+      # Hardware
+      usbutils
+      pciutils
+      hardinfo2
+      ;
+  };
 }

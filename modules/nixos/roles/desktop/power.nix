@@ -3,10 +3,11 @@
   config,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.desktop;
-in {
-  config = mkIf cfg {
+let
+  cfg = config.hostConfig.roles.desktop;
+in
+{
+  config = lib.mkIf cfg {
     powerManagement.enable = false;
     systemd.targets = {
       sleep.enable = false;

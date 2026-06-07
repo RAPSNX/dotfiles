@@ -4,12 +4,13 @@
   pkgs,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.gaming;
-in {
-  options.hostConfiguration.roles.gaming = mkEnableOption "Enable NixOS gaming environment.";
+let
+  cfg = config.hostConfig.roles.gaming;
+in
+{
+  options.hostConfig.roles.gaming = lib.mkEnableOption "Enable NixOS gaming environment.";
 
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     services.ratbagd.enable = true; # Daemon to configure gaming mice, GUI piper comes through HM.
 
     programs = {
@@ -18,24 +19,29 @@ in {
       steam = {
         enable = true;
         package = pkgs.steam.override {
-          extraPkgs = p:
-            with p; [
-              mangohud # Fps widget ingame
-              gamemode
-            ];
+          extraPkgs =
+            p:
+            builtins.attrValues {
+              inherit (p)
+                gamemode
+                mangohud # Fps widget ingame
+                ;
+            };
         };
         gamescopeSession.enable = true;
         # Compatiblility tools accessable for steam
-        extraCompatPackages = with pkgs; [
-          proton-ge-bin
-        ];
+        extraCompatPackages = builtins.attrValues {
+          inherit (pkgs) proton-ge-bin;
+        };
       };
     };
 
-    environment.systemPackages = with pkgs; [
-      winetricks # DLL libary collection
-      wineWowPackages.waylandFull # OpenSouce implementation of WinAPI
-      adwsteamgtk # Gnome theme for steam
-    ];
+    environment.systemPackages = builtins.attrValues {
+      inherit (pkgs)
+        adwsteamgtk # Gnome theme for steam
+        winetricks # DLL libary collection
+        ;
+      inherit (pkgs.wineWowPackages) waylandFull; # OpenSouce implementation of WinAPI
+    };
   };
 }

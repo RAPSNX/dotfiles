@@ -123,6 +123,25 @@ Prev is the package before this overlay, may after some other overlays from upst
 
 This overlay function will be executed while instantiating `<nixpkgs>`, `prev` is the `pkgs` instance with correct `system`, before the overlay is applied.
 
+## Nix `with`, its confusing
+For readablity `with` comes handy to reduce repetitive in attribute statements.
+But it also has a lot of problems and is confusing, in particular when having multiple `with` globaly.
+This is considerd as **bad practice** and entirely avoided.
+Even more it should be avoided completely see [best-practices#with-scopes](https://nix.dev/guides/best-practices#with-scopes)
+
+```nix
+packages = builtins.attrValues {
+  inherit (pkgs)
+    curl
+    jq
+    ;
+  inherit (something)
+    anything
+    ;
+};
+```
+
+
 ## Update custom packages (derivation)
 
 1. Bump version, set all `hash`es to empty sting `""`.

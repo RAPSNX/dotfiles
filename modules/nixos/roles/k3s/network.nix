@@ -3,10 +3,11 @@
   lib,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.k3s;
-in {
-  config = mkIf cfg {
+let
+  cfg = config.hostConfig.roles.k3s;
+in
+{
+  config = lib.mkIf cfg {
     networking = {
       firewall.allowedTCPPorts = [
         6443 # k3s: required so that pods can reach the API server (running on port 6443 by default)

@@ -2,18 +2,20 @@
   inputs,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     inputs.disko.nixosModules.disko
 
     ./hardware-configuration.nix
     ./disko.nix
-    ../../modules/nixos
   ];
 
-  # Host specific configuration
-  hostConfiguration = {
-    boot.supportedFilesystems = ["zfs"];
+  hostConfig = {
+    boot = {
+      enable = true;
+      supportedFilesystems = [ "zfs" ];
+    };
 
     user = {
       name = "kubex";
@@ -22,8 +24,8 @@
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKX8MmA9KdHCny6rKCGZlyd/J5qCXh+YDM0/3ZGDmfyaAAAABHNzaDo= yubi@rapsn.me"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGqKYXW07z0llbDKRIakLD1PjHe3HxK9iu6czXs+ZU7v techkey@rapsn"
       ];
-      extraOptions = {};
-      extraGroups = [];
+      extraOptions = { };
+      extraGroups = [ ];
     };
 
     roles = {
@@ -41,8 +43,8 @@
       PROMPT = "%m@%n> ";
       RPROMPT = "%D %T";
     };
-    systemPackages = [pkgs.restic];
+    systemPackages = [ pkgs.restic ];
   };
 
-  nix.settings.trusted-users = ["@wheel"]; # need for remote build
+  nix.settings.trusted-users = [ "@wheel" ]; # need for remote build
 }

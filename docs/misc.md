@@ -30,16 +30,38 @@ sudo efibootmgr --create \
   --loader '\EFI\systemd\systemd-bootx64.efi' \ # Mind the backslashes
 ```
 
-## UWSM
+## Monitor setup
 
-### start apps
-Use `uswm app -- <app-name>` to start apps.
-This will start the app in a seperate `systemd` scope, which is part of the `app.slice`.
-If not, the process will be part of the `session.slice`, which can result in termination of the user session.
+All possible monitor configurations are configured via `kanshi`, which maches automatically the correct profile.
+They configured for exact matches, not only monitor outputs.
 
-Keep the slice as clean as possible:
-```bash
-│   │ │ ├─wayland-wm@hyprland\x2duwsm.desktop.service
-│   │ │ │ ├─77102 /run/current-system/sw/bin/Hyprland
-│   │ │ │ └─77200 Xwayland :0 -rootless -core -listenfd 54 -listenfd 55 -displayfd 107 -wm 104
+## Nix follows
+
 ```
+    neonix = {
+      url = "github:rgroemmer/neonix/plugin-enhancement";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+```
+
+This will follow the actual flakes `nixpkgs`, neonix by itself uses `nixvim` from its own inputs, which is not part
+of `nixpkgs`.
+If the flakes `nixpkgs` is to new, plugins and packages from it will be "to new" for the rather outdated `nixvim` from neonix repo.
+This can lead to problems starting nvim, this can be fixed by update the `neonix` flake accordingly.
+> There is also a nix (lix?) bug, which does not update the `flake.lock` when a follows is removed.
+
+## Neonix
+
+`neonix` needs to have its own `nixpkgs`, so no `nixpkgs.follows` is configured.
+Instead this should be updated on its own, because if nixpkgs in dotfiles is to new, all dependencies and plugins of 
+nvim may not work anymore with the `neonix` upstream configuration.
+
+## Monitor / Workspace setup
+
+`kanshi` is used to match all possible desktop / office setups via profiles.
+These profiles have the primary and secondary display configured, and will execute a script to adapt the workspace pinning.
+This will write its config to `~/.config/hypr/workspaces.conf`, same as `nwg-desktop`.
+`nwg-desktop` can still be used for both monitor and workspace dynamic configuration.
+
+**To actually change the monitor config, the `kanshi` systemd service needs to be stopped.**
+

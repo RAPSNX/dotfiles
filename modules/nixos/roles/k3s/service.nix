@@ -4,10 +4,11 @@
   lib,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.k3s;
-in {
-  config = mkIf cfg {
+let
+  cfg = config.hostConfig.roles.k3s;
+in
+{
+  config = lib.mkIf cfg {
     services.k3s = {
       enable = true;
       role = "server";

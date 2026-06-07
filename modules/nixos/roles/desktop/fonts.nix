@@ -4,18 +4,19 @@
   pkgs,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.desktop;
-in {
-  config = mkIf cfg {
+let
+  cfg = config.hostConfig.roles.desktop;
+in
+{
+  config = lib.mkIf cfg {
     nixpkgs.config.joypixels.acceptLicense = true;
     fonts = {
       enableDefaultPackages = false;
       fontDir.enable = true;
-      packages = with pkgs; [
-        nerd-fonts.caskaydia-cove
-        joypixels
-      ];
+      packages = builtins.attrValues {
+        inherit (pkgs) joypixels;
+        inherit (pkgs.nerd-fonts) caskaydia-cove;
+      };
 
       fontconfig = {
         antialias = true;
@@ -30,7 +31,7 @@ in {
           lcdfilter = "light";
         };
         defaultFonts = {
-          emoji = ["Joypixels"];
+          emoji = [ "Joypixels" ];
         };
       };
     };

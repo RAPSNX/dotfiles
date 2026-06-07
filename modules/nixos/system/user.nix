@@ -5,18 +5,16 @@
   pkgs,
   ...
 }:
-with lib;
-with mylib;
 let
-  cfg = config.hostConfiguration.user;
+  cfg = config.hostConfig.user;
 in
 {
-  options.hostConfiguration.user = with types; {
-    name = mkOpt str "Name of user.";
-    initialHashedPassword = mkOpt str "Password of user.";
-    keys = mkOpt (listOf str) "Public SSH keys of user.";
-    extraGroups = mkOpt' (listOf str) [ ] "Additional groups for the user.";
-    extraOptions = mkOpt attrs "Additional options for the user.";
+  options.hostConfig.user = {
+    name = mylib.mkOpt lib.types.str "Name of user.";
+    initialHashedPassword = mylib.mkOpt lib.types.str "Password of user.";
+    keys = mylib.mkOpt (lib.types.listOf lib.types.str) "Public SSH keys of user.";
+    extraGroups = mylib.mkOpt' (lib.types.listOf lib.types.str) [ ] "Additional groups for the user.";
+    extraOptions = mylib.mkOpt lib.types.attrs "Additional options for the user.";
   };
 
   config = {
@@ -25,7 +23,7 @@ in
 
       shell = pkgs.zsh;
 
-      initialHashedPassword = mkForce cfg.initialHashedPassword;
+      initialHashedPassword = lib.mkForce cfg.initialHashedPassword;
       openssh.authorizedKeys.keys = cfg.keys;
 
       extraGroups = [
@@ -45,5 +43,7 @@ in
       "/share/xdg-desktop-portal"
     ];
     services.openssh.enable = true;
+    nix.optimise.automatic = true;
+    system.stateVersion = "24.11";
   };
 }

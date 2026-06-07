@@ -1,18 +1,15 @@
 {
-  lib,
-  pkgs,
   inputs,
+  lib,
   ...
 }:
 {
   imports = [
     inputs.nixos-hardware.nixosModules.raspberry-pi-3
-
-    ../../modules/nixos
   ];
 
   # Host specific configuration
-  hostConfiguration = {
+  hostConfig = {
     user = {
       name = "rap";
       initialHashedPassword = "$y$j9T$8uQSJbY6w9kjXnj74JKjA1$pWYgNf.gb497suX//oIw6aggEPoD2Xv1kvMKZfDTOU/";
@@ -22,6 +19,8 @@
       extraOptions = { };
       extraGroups = [ ];
     };
+
+    boot.enable = false;
 
     services = {
       tailscale = true;
@@ -47,11 +46,7 @@
     }
   ];
 
-  environment.systemPackages = with pkgs; [ neovim ];
-
   nix.settings.trusted-users = [ "@wheel" ]; # need for remote build
-
-  boot.loader.systemd-boot.enable = lib.mkForce false;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

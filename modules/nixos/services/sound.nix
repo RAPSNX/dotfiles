@@ -3,12 +3,13 @@
   config,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.services.sound;
-in {
-  options.hostConfiguration.services.sound = mkEnableOption "Enable sound.";
+let
+  cfg = config.hostConfig.services.sound;
+in
+{
+  options.hostConfig.services.sound = lib.mkEnableOption "Enable sound.";
 
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     services = {
       pulseaudio.enable = false;
       pipewire = {

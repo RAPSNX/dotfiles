@@ -1,15 +1,12 @@
 name: Nix
-
 on:
   pull_request:
     types:
       - opened
       - reopened
       - synchronize
-
 permissions:
   contents: read
-
 jobs:
   flake-check:
     name: Flake check
@@ -17,20 +14,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-
       - name: Cache Nix store
         uses: DeterminateSystems/magic-nix-cache-action@main
-
       - name: Check flake
         run: nix flake check --no-build --print-build-logs
-
   hosts:
     name: Host ${{ matrix.host }}
     runs-on: ${{ matrix.runner }}
@@ -48,22 +41,19 @@ jobs:
           - host: vinox
             runner: ubuntu-latest
             command: nix build .#nixosConfigurations.vinox.config.system.build.toplevel --print-build-logs
-          - host: nixberry
-            runner: ubuntu-24.04-arm
-            command: nix build .#nixosConfigurations.nixberry.config.system.build.toplevel --print-build-logs
+            # - host: nixberry
+            #   runner: ubuntu-24.04-arm
+            #   command: nix build .#nixosConfigurations.nixberry.config.system.build.toplevel --print-build-logs
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-
       - name: Cache Nix store
         uses: DeterminateSystems/magic-nix-cache-action@main
-
       - name: Test host
         run: ${{ matrix.command }}

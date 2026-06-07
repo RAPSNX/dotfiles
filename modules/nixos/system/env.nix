@@ -1,20 +1,35 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}:
+{
   environment = {
-    systemPackages = with pkgs; [
-      dnsutils # dig, nslookup, etc.
-      inetutils # ping, traceroute, etc.
-
-      # Cpu & Networking tools
-      htop
-      curl
-
-      # TODO: Add neonix mini to all non desktops
-
-      # Programs
-      git
-
-      fzf
-    ];
+    systemPackages =
+      lib.attrValues {
+        inherit (pkgs)
+          curl
+          dnsutils
+          file
+          fzf
+          gawk
+          git
+          gnumake
+          gnused
+          htop
+          inetutils
+          jq
+          p7zip
+          yq-go
+          ;
+      }
+      # TODO: wtf?
+      ++ lib.optionals (!config.hostConfig.roles.desktop) (lib.attrValues {
+        inherit (inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}) mini;
+        inherit (pkgs) jq tmux;
+      });
     variables = {
       EDITOR = "vim";
       VISUAL = "vim";

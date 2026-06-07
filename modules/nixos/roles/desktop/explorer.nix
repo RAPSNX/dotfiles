@@ -4,20 +4,25 @@
   pkgs,
   ...
 }:
-with lib; let
-  cfg = config.hostConfiguration.roles.desktop;
-in {
-  options.hostConfiguration.roles.desktop = mkEnableOption "Enable hyprland and desktop features.";
+let
+  cfg = config.hostConfig.roles.desktop;
+in
+{
+  options.hostConfig.roles.desktop = lib.mkEnableOption "Enable hyprland and desktop features.";
 
-  config = mkIf cfg {
+  config = lib.mkIf cfg {
     programs = {
       thunar = {
         enable = true;
-        plugins = with pkgs.xfce; [
-          thunar-archive-plugin
-          thunar-volman
-        ];
+        plugins = builtins.attrValues {
+          inherit (pkgs) thunar-archive-plugin thunar-volman;
+        };
       };
+      xfconf.enable = true;
+    };
+
+    environment.systemPackages = builtins.attrValues {
+      inherit (pkgs) file-roller;
     };
 
     services = {

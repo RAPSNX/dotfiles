@@ -1,14 +1,15 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   imports = [
     ./hardware-configuration.nix
-    ../../modules/nixos
   ];
 
   # Host specific configuration
-  hostConfiguration = {
+  hostConfig = {
     boot = {
-      armSupport = false;
-      supportedFilesystems = ["ntfs"];
+      enable = true;
+      armSupport = true;
+      supportedFilesystems = [ "ntfs" ];
     };
 
     user = {
@@ -16,11 +17,12 @@
       extraGroups = [
         "networkmanager"
         "wireshark"
+        "i2c"
       ];
       extraOptions = {
         initialHashedPassword = "$y$j9T$DZQaaK3xGqarN8KE8qnw..$dvgiS7dso5LboGRRf0dcyct/LQUFp4J0LUo2ZRRdTr8";
       };
-      keys = [];
+      keys = [ ];
     };
 
     services = {
@@ -52,7 +54,7 @@
   };
 
   environment = {
-    systemPackages = with pkgs; [qt6.qtwayland];
+    systemPackages = [ pkgs.qt6.qtwayland ];
 
     sessionVariables = {
       WLR_NO_HARDWARE_CURSORS = "1";
@@ -60,7 +62,9 @@
     };
   };
 
-  services.udev.packages = with pkgs; [
-    qmk-udev-rules
+  hardware.i2c.enable = true;
+
+  services.udev.packages = [
+    pkgs.qmk-udev-rules
   ];
 }
