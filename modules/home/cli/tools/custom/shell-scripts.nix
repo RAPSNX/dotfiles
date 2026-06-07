@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   # nix helpers
   nix-run = pkgs.writeShellScriptBin "nr" ''
@@ -11,16 +11,36 @@ let
 
   # kubeconfig selector
   selc_ = pkgs.writeShellScriptBin "selc_" ''
-    BASE_PATH=$HOME/.config/kubeconfigs
-    YAMLS=$(find "$BASE_PATH" -name '*.yaml' | awk -F/ '{ print $NF }')
-    KUBECONFIG=$(fzf <<<"$YAMLS")
-    export KUBECONFIG="$BASE_PATH/$KUBECONFIG"
+    fail() {
+      printf 'selc: %s\n' "$1" >&2
+      return 1 2>/dev/null || exit 1
+    }
+
+    BASE_PATH="''${KUBECONFIG_DIR:-$HOME/.config/kubeconfig}"
+    if [ ! -d "$BASE_PATH" ] && [ -d "$HOME/.config/kubeconfigs" ]; then
+      BASE_PATH="$HOME/.config/kubeconfigs"
+    fi
+
+    [ -d "$BASE_PATH" ] || fail "kubeconfig directory not found: $BASE_PATH"
+
+    KUBECONFIG_NAME=$(
+      find "$BASE_PATH" -maxdepth 1 -type f \( -name '*.yaml' -o -name '*.yml' \) -printf '%f\n' \
+        | sort \
+        | fzf --prompt='kubeconfig> '
+    )
+
+    [ -n "$KUBECONFIG_NAME" ] || fail "no kubeconfig selected"
+
+    export KUBECONFIG="$BASE_PATH/$KUBECONFIG_NAME"
+    printf 'KUBECONFIG=%s\n' "$KUBECONFIG"
   '';
 in
 {
-  home.packages = [
-    nix-run
-    nix-shell
-    selc_
-  ];
+  home.packages = lib.attrValues {
+    inherit
+      nix-run
+      nix-shell
+      selc_
+      ;
+  };
 }

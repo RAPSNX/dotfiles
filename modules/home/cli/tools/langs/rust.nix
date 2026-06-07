@@ -6,10 +6,9 @@
 }:
 {
   config = lib.mkIf (!config.roles.work) {
-    home.packages = with pkgs; [
-      rustup
-      clang
-    ];
+    home.packages = lib.attrValues {
+      inherit (pkgs) clang rustup;
+    };
     home.sessionPath = [ "$HOME/.cargo/bin" ];
   };
 }

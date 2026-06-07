@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   services.gnome-keyring = {
     enable = true;
@@ -7,8 +7,7 @@
       "secrets"
     ];
   };
-  home.packages = with pkgs; [
-    gcr
-    seahorse
-  ];
+  home.packages = lib.attrValues {
+    inherit (pkgs) gcr seahorse;
+  };
 }

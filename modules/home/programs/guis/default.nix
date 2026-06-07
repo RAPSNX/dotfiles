@@ -1,25 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
-  home.packages = with pkgs; [
+  home.packages = lib.attrValues {
     # Audio
-    pavucontrol
-    spek
-    vlc
+    inherit (pkgs) pavucontrol spek vlc;
 
     # Screenshot / Recording
-    grimblast
-    wf-recorder
+    inherit (pkgs) grimblast wf-recorder;
 
     # Tools
-    nwg-displays
-    nwg-look
-    gparted
-    gnome-disk-utility
+    inherit (pkgs) nwg-displays nwg-look gparted gnome-disk-utility;
 
     # Explorer
-    thunar
+    inherit (pkgs) thunar;
 
     # Note taking
-    obsidian
-  ];
+    inherit (pkgs) obsidian;
+  };
 }
