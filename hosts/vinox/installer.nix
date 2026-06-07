@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   dot = pkgs.writeShellScriptBin "dot" ''
     # Cleanup
@@ -38,9 +38,8 @@ let
   '';
 in
 {
-  environment.systemPackages = with pkgs; [
-    dot # My interactive installer
-    gum
-    alacritty
-  ];
+  environment.systemPackages = lib.attrValues {
+    inherit dot; # My interactive installer
+    inherit (pkgs) alacritty gum;
+  };
 }

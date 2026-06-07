@@ -1,6 +1,7 @@
 {
   pkgs ? import <nixpkgs> { },
   pre-commit-hooks,
+  lib ? pkgs.lib,
   ...
 }:
 let
@@ -27,7 +28,7 @@ in
   default = pkgs.mkShell {
     inherit (pre-commit-check) shellHook;
 
-    packages = builtins.attrValues {
+    packages = lib.attrValues {
       inherit (pkgs)
         nh
         statix

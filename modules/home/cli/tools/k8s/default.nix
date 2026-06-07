@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./k9s.nix
@@ -6,16 +6,11 @@
     ./kubecolor.nix
   ];
 
-  home.packages = with pkgs; [
+  home.packages = lib.attrValues {
     # OCI tooling
-    podman-tui
-    docker-compose
-    dive
-    crane
+    inherit (pkgs) podman-tui docker-compose dive crane;
 
     # Kubernetes tooling
-    kubectl
-    kubernetes-helm
-    fluxcd
-  ];
+    inherit (pkgs) kubectl kubernetes-helm fluxcd;
+  };
 }

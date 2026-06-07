@@ -48,7 +48,7 @@
     };
   };
 
-  home.packages = builtins.attrValues {
+  home.packages = lib.attrValues {
     inherit (pkgs)
       stackit-cli
       openstackclient-full

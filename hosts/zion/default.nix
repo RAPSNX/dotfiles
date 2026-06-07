@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -54,7 +54,9 @@
   };
 
   environment = {
-    systemPackages = with pkgs; [ qt6.qtwayland ];
+    systemPackages = lib.attrValues {
+      inherit (pkgs.qt6) qtwayland;
+    };
 
     sessionVariables = {
       WLR_NO_HARDWARE_CURSORS = "1";
@@ -64,7 +66,7 @@
 
   hardware.i2c.enable = true;
 
-  services.udev.packages = with pkgs; [
-    qmk-udev-rules
-  ];
+  services.udev.packages = lib.attrValues {
+    inherit (pkgs) qmk-udev-rules;
+  };
 }

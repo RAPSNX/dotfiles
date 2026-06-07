@@ -14,10 +14,9 @@ in
     programs = {
       thunar = {
         enable = true;
-        plugins = with pkgs; [
-          thunar-archive-plugin
-          thunar-volman
-        ];
+        plugins = lib.attrValues {
+          inherit (pkgs) thunar-archive-plugin thunar-volman;
+        };
       };
       xfconf.enable = true;
     };
