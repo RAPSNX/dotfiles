@@ -13,9 +13,11 @@
       docker-compose
       dive
       crane
-      ;
 
-    # Kubernetes tooling
-    inherit (pkgs) kubectl kubernetes-helm fluxcd;
+      # Kubernetes tooling
+      kubectl
+      kubernetes-helm
+      fluxcd
+      ;
   };
 }

@@ -14,44 +14,45 @@
       killall
       pciutils
       parallel
-      ;
 
-    # Inspection
-    inherit (pkgs) htop;
+      # Inspection
+      htop
 
-    # Network tools
-    inherit (pkgs) inetutils curl wget;
+      # Network tools
+      inetutils
+      curl
+      wget
 
-    # Network inspection
-    inherit (pkgs)
+      # Network inspection
       termshark
       nmap
       netcat
       tcpdump
       iproute2
-      ;
 
-    # Text processing
-    inherit (pkgs) jq yq-go gawk;
+      # Text processing
+      jq
+      yq-go
+      gawk
 
-    # Find utils
-    inherit (pkgs) fd ripgrep;
+      # Find utils
+      fd
+      ripgrep
 
-    # Copy tools
-    inherit (pkgs) rclone;
+      # Copy tools
+      rclone
 
-    # SSH / Security
-    inherit (pkgs)
+      # SSH / Security
       openssh
       libfido2
       keepassxc
       sops
+
+      # Clipboard
+      wl-clipboard
+
+      # Monitor / I2C com
+      ddcutil
       ;
-
-    # Clipboard
-    inherit (pkgs) wl-clipboard;
-
-    # Monitor / I2C com
-    inherit (pkgs) ddcutil;
   };
 }

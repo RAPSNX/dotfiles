@@ -54,9 +54,7 @@
   };
 
   environment = {
-    systemPackages = builtins.attrValues {
-      inherit (pkgs.qt6) qtwayland;
-    };
+    systemPackages = [ pkgs.qt6.qtwayland ];
 
     sessionVariables = {
       WLR_NO_HARDWARE_CURSORS = "1";
@@ -66,7 +64,7 @@
 
   hardware.i2c.enable = true;
 
-  services.udev.packages = builtins.attrValues {
-    inherit (pkgs) qmk-udev-rules;
-  };
+  services.udev.packages = [
+    pkgs.qmk-udev-rules
+  ];
 }
