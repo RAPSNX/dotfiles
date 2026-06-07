@@ -44,21 +44,11 @@
         outputs:
         "${lib.getExe workspaceSetup} ${lib.escapeShellArgs (map (output: output.criteria) outputs)}";
 
-      # mkProfile creates a profile from the config, always injects a wildcard entry to match all other outputs.
-      # this way other outputs are "unmanaged" and can be handled with for example lid events.
       mkProfile =
         { name, outputs }:
-        let
-          finalOutputs = outputs ++ [
-            {
-              criteria = "*";
-            }
-          ];
-        in
         {
           profile = {
-            inherit name;
-            outputs = finalOutputs;
+            inherit name outputs;
             exec = mkExec outputs;
           };
         };
@@ -96,10 +86,34 @@
               mode = "3440x1440@99.98Hz";
               scale = 1.0;
             }
+            {
+              criteria = "*";
+            }
           ];
         })
 
         # TODO: Add meeting room here
+
+        (mkProfile {
+          name = "home-firefly";
+          outputs = [
+            {
+              criteria = "Dell Inc. AW2725Q G2QC174";
+              scale = 1.5;
+              position = "2560,0";
+              mode = "3840x2160@239.99Hz";
+            }
+            {
+              criteria = "Samsung Electric Company LC27G7xT H4ZNC00167";
+              scale = 1.0;
+              position = "0,0";
+              mode = "2560x1440@239.96Hz";
+            }
+            {
+              criteria = "*";
+            }
+          ];
+        })
 
         (mkProfile {
           name = "home";
