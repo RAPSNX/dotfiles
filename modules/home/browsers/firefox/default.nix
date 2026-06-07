@@ -146,4 +146,21 @@ in
       };
     };
   };
+
+  xdg.mimeApps.enable = true;
+  xdg.mimeApps.defaultApplications =
+    let
+      browser = "firefox.desktop";
+    in
+    {
+      "text/html" = browser;
+      "application/xhtml+xml" = browser;
+      "application/xml" = browser;
+      "application/pdf" = browser;
+
+      "x-scheme-handler/http" = browser;
+      "x-scheme-handler/https" = browser;
+      "x-scheme-handler/about" = browser;
+      "x-scheme-handler/unknown" = browser;
+    };
 }
