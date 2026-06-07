@@ -33,7 +33,7 @@ sudo efibootmgr --create \
 ## Monitor setup
 
 All possible monitor configurations are configured via `kanshi`, which maches automatically the correct profile.
-`/modules/home/desktops/addons/kanshi`
+They configured for exact matches, not only monitor outputs.
 
 ## Nix follows
 
