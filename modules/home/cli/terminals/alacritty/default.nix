@@ -2,9 +2,9 @@
 {
   catppuccin.alacritty.enable = true;
 
-  home.packages = builtins.attrValues {
-    inherit (pkgs.nerd-fonts) caskaydia-cove;
-  };
+  home.packages = [
+    pkgs.nerd-fonts.caskaydia-cove
+  ];
 
   fonts.fontconfig.enable = true;
 
