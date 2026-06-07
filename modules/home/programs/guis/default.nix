@@ -2,18 +2,26 @@
 {
   home.packages = builtins.attrValues {
     # Audio
-    inherit (pkgs) pavucontrol spek vlc;
+    inherit (pkgs)
+      pavucontrol
+      spek
+      vlc
 
-    # Screenshot / Recording
-    inherit (pkgs) grimblast wf-recorder;
+      # Screenshot / Recording
+      grimblast
+      wf-recorder
 
-    # Tools
-    inherit (pkgs) nwg-displays nwg-look gparted gnome-disk-utility;
+      # Tools
+      nwg-displays
+      nwg-look
+      gparted
+      gnome-disk-utility
 
-    # Explorer
-    inherit (pkgs) thunar;
+      # Explorer
+      thunar
 
-    # Note taking
-    inherit (pkgs) obsidian;
+      # Note taking
+      obsidian
+      ;
   };
 }
