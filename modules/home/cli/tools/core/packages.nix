@@ -1,56 +1,34 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
+  home.packages = builtins.attrValues {
     # Core utility
-    coreutils # cp, mv, etc.
-    dnsutils # dig, nslookup, etc.
-    gnumake
-    gnutar
-    gzip
-    unzip
-    gnused
-    gnugrep
-    killall
-    pciutils
-    parallel
+    inherit (pkgs) coreutils dnsutils gnumake gnutar gzip unzip gnused gnugrep killall pciutils parallel;
 
     # Inspection
-    htop
+    inherit (pkgs) htop;
 
     # Network tools
-    inetutils
-    curl
-    wget
+    inherit (pkgs) inetutils curl wget;
 
     # Network inspection
-    termshark
-    nmap
-    netcat
-    tcpdump
-    iproute2
+    inherit (pkgs) termshark nmap netcat tcpdump iproute2;
 
     # Text processing
-    jq
-    yq-go
-    gawk
+    inherit (pkgs) jq yq-go gawk;
 
     # Find utils
-    fd
-    ripgrep
+    inherit (pkgs) fd ripgrep;
 
     # Copy tools
-    rclone
+    inherit (pkgs) rclone;
 
     # SSH / Security
-    openssh
-    libfido2
-    keepassxc
-    sops
+    inherit (pkgs) openssh libfido2 keepassxc sops;
 
     # Clipboard
-    wl-clipboard
+    inherit (pkgs) wl-clipboard;
 
     # Monitor / I2C com
-    ddcutil
-  ];
+    inherit (pkgs) ddcutil;
+  };
 }

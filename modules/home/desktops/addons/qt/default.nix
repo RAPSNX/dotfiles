@@ -1,12 +1,12 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    libsForQt5.qtstyleplugin-kvantum
-    (catppuccin-kvantum.override {
+  home.packages = builtins.attrValues {
+    inherit (pkgs.libsForQt5) qtstyleplugin-kvantum;
+    catppuccin-kvantum = pkgs.catppuccin-kvantum.override {
       accent = "mauve";
       variant = "mocha";
-    })
-  ];
+    };
+  };
   home.sessionVariables = {
     QT_STYLE_OVERRIDE = "kvantum";
   };

@@ -15,7 +15,9 @@ in
       graphics = {
         enable = true;
         enable32Bit = true;
-        extraPackages = with pkgs; [ mesa ];
+        extraPackages = builtins.attrValues {
+          inherit (pkgs) mesa;
+        };
       };
     };
   };

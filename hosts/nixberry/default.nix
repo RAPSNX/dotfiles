@@ -7,8 +7,6 @@
 {
   imports = [
     inputs.nixos-hardware.nixosModules.raspberry-pi-3
-
-    ../../modules/nixos
   ];
 
   # Host specific configuration

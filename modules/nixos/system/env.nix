@@ -2,40 +2,34 @@
   pkgs,
   config,
   inputs,
+  lib,
   ...
 }:
 {
   environment = {
     systemPackages =
-      with pkgs;
-      [
-        dnsutils # dig, nslookup, etc.
-        inetutils # ping, traceroute, etc.
-
-        # Cpu & Networking tools
-        htop
-        curl
-
-        # Tooling
-        git
-        curl
-        fzf
-        file
-
-        jq
-        yq-go
-        gawk
-        gnused
-
-        p7zip
-        gnumake
-      ]
+      builtins.attrValues {
+        inherit (pkgs)
+          curl
+          dnsutils
+          file
+          fzf
+          gawk
+          git
+          gnumake
+          gnused
+          htop
+          inetutils
+          jq
+          p7zip
+          yq-go
+          ;
+      }
       # TODO: wtf?
-      ++ lib.optionals (!config.hostConfig.roles.desktop) [
-        inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}.mini
-        jq
-        tmux
-      ];
+      ++ lib.optionals (!config.hostConfig.roles.desktop) (builtins.attrValues {
+        inherit (inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}) mini;
+        inherit (pkgs) jq tmux;
+      });
     variables = {
       EDITOR = "vim";
       VISUAL = "vim";

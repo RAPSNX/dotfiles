@@ -13,10 +13,10 @@ in
     fonts = {
       enableDefaultPackages = false;
       fontDir.enable = true;
-      packages = with pkgs; [
-        nerd-fonts.caskaydia-cove
-        joypixels
-      ];
+      packages = builtins.attrValues {
+        inherit (pkgs) joypixels;
+        inherit (pkgs.nerd-fonts) caskaydia-cove;
+      };
 
       fontconfig = {
         antialias = true;

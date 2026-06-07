@@ -14,17 +14,16 @@ in
     programs = {
       thunar = {
         enable = true;
-        plugins = with pkgs; [
-          thunar-archive-plugin
-          thunar-volman
-        ];
+        plugins = builtins.attrValues {
+          inherit (pkgs) thunar-archive-plugin thunar-volman;
+        };
       };
       xfconf.enable = true;
     };
 
-    environment.systemPackages = [
-      pkgs.file-roller
-    ];
+    environment.systemPackages = builtins.attrValues {
+      inherit (pkgs) file-roller;
+    };
 
     services = {
       gvfs.enable = true; # virtual filesystems
