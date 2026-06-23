@@ -45,9 +45,9 @@ nh home switch -c nix@firefly .
 # nix build installer iso
 nix build .#nixosConfigurations.vinox.config.system.build.isoImage
 
-# nh remote switch
-nh os switch --hostname kubex . -d always --target-host kubex
-nh os switch --hostname nixberry . -d always --target-host <IP>
+# nh remote switch / update
+nh os boot --hostname kubex . -d always --target-host kubex
+nh os boot --hostname nixberry . -d always --target-host <IP>
 
 # nix remote switch
 nixos-rebuild switch --flake .#kubex --target-host 192.168.55.10 --sudo

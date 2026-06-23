@@ -40,6 +40,8 @@ in
 
         "widget.use-xdg-desktop-portal.file-picker" = 0; # Use new gtk file picker instead of legacy one
 
+        "widget.wayland.fractional-scale.enabled" = false; # Disable buggy scaling
+
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         "layers.acceleration.force-enabled" = true;
         "gfx.webrender.all" = true;
