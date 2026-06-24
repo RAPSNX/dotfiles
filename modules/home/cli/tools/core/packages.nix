@@ -51,6 +51,9 @@
       # Clipboard
       wl-clipboard
 
+      # AI Shit
+      codex
+
       # Monitor / I2C com
       ddcutil
       ;
