@@ -31,6 +31,13 @@ sudo zpool create -f \
     raidz2 /dev/sda /dev/sdb /dev/sdc /dev/sdd
 ```
 
+The `k3s` role includes a `wait-for-zfs-pool.service` unit that imports `kubex-main`
+if needed, then loads its encryption key from `rap@nixberry` before `k3s.service`
+starts.
+
+Because the unit runs non-interactively, `kubex` is configured for passwordless sudo
+for members of the `wheel` group.
+
 ## Copy kubeconfig
 
 ```bash

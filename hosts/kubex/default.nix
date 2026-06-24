@@ -40,6 +40,10 @@
 
   boot.zfs.forceImportRoot = false;
 
+  security = {
+    sudo.wheelNeedsPassword = false;
+  };
+
   environment = {
     variables = {
       PROMPT = "%m@%n> ";
