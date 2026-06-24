@@ -23,7 +23,7 @@ jobs:
       - name: Cache Nix store
         uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Check flake
-        run: nix flake check --no-build --print-build-logs
+        run: nix flake check --print-build-logs
   hosts:
     name: Host ${{ matrix.host }}
     runs-on: ${{ matrix.runner }}
