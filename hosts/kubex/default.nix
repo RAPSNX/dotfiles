@@ -38,6 +38,8 @@
     hostId = "5851308f"; # Required by zfs
   };
 
+  boot.zfs.forceImportRoot = false;
+
   environment = {
     variables = {
       PROMPT = "%m@%n> ";

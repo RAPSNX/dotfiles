@@ -51,6 +51,7 @@ in
     catppuccin.hyprland.enable = false;
     wayland.windowManager.hyprland = {
       enable = true;
+      configType = "hyprlang";
       inherit (cfg) package;
       systemd.enable = true;
 
