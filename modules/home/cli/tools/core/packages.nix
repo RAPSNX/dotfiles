@@ -42,6 +42,9 @@
       # Copy tools
       rclone
 
+      # AI shit
+      codex
+
       # SSH / Security
       openssh
       libfido2
@@ -53,6 +56,9 @@
 
       # Monitor / I2C com
       ddcutil
+
+      # Compiler
+      gcc
       ;
   };
 }

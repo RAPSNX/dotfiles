@@ -26,11 +26,16 @@ in
       enable = lib.mkEnableOption "Enable hypridle";
       cmd = mylib.mkOpt lib.types.str "Path to binary";
     };
+
+    hyprpaper = {
+      enable = lib.mkEnableOption "Enable hyprpaper";
+    };
   };
 
   imports = [
     ./addons/hypridle.nix
     ./addons/hyprlock.nix
+    ./addons/hyprpaper.nix
 
     ./keybinds.nix
   ];

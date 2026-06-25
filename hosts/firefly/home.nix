@@ -26,7 +26,8 @@
         enable = true;
         package = pkgs.hyprland;
 
-        hyprlock.enable = true;
+        hyprlock.enable = false;
+        hyprpaper.enable = true;
         hypridle = {
           enable = true;
           cmd = "/usr/bin/swaylock";
@@ -37,6 +38,7 @@
           "chromium"
         ];
       };
+
     };
 
     cli = {

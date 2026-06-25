@@ -63,7 +63,7 @@ in
         "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
 
         # Emoji picker
-        "SUPER,period, exec, rofimoji --action copy --action type"
+        "SUPER,period, exec, rofimoji --action copy type"
 
         # Emoji picker
         "SUPER,I, exec, systemctl restart --user kanshi.service"
