@@ -48,6 +48,8 @@ in
     '';
 
     # TODO: remove this when changed to lua
+    services.hyprpaper.enable = true;
+
     catppuccin.hyprland.enable = false;
     wayland.windowManager.hyprland = {
       enable = true;

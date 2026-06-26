@@ -12,7 +12,6 @@ in
   options.hostConfig.user = {
     name = mylib.mkOpt lib.types.str "Name of user.";
     initialHashedPassword = mylib.mkOpt lib.types.str "Password of user.";
-    keys = mylib.mkOpt (lib.types.listOf lib.types.str) "Public SSH keys of user.";
     extraGroups = mylib.mkOpt' (lib.types.listOf lib.types.str) [ ] "Additional groups for the user.";
     extraOptions = mylib.mkOpt lib.types.attrs "Additional options for the user.";
   };
@@ -24,7 +23,10 @@ in
       shell = pkgs.zsh;
 
       initialHashedPassword = lib.mkForce cfg.initialHashedPassword;
-      openssh.authorizedKeys.keys = cfg.keys;
+      openssh.authorizedKeys.keys = [
+        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIB1twcfSmy7xyUA5iWl51kfBHS1Dxpmmog0x55Z6HRNlAAAABHNzaDo= swiss"
+        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKX8MmA9KdHCny6rKCGZlyd/J5qCXh+YDM0/3ZGDmfyaAAAABHNzaDo= yubi"
+      ];
 
       extraGroups = [
         "wheel"
