@@ -647,13 +647,13 @@
       "locked": {
         "lastModified": 1780865186,
         "narHash": "sha256-GXjj3r00JhjYtVZZtDTz99ZPcJqTTcrsF1NS+jEdDhk=",
-        "owner": "rgroemmer",
+        "owner": "rapsnx",
         "repo": "neonix",
         "rev": "16a56ef334a7117f1124b4082121fbe6787f94d9",
         "type": "github"
       },
       "original": {
-        "owner": "rgroemmer",
+        "owner": "rapsnx",
         "repo": "neonix",
         "type": "github"
       }

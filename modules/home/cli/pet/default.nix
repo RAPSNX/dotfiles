@@ -1,6 +1,6 @@
 {
   lib,
-  inputs,
+  config,
   ...
 }:
 {
@@ -8,7 +8,7 @@
     enable = true;
     settings = {
       General = lib.mkForce {
-        snippetfile = "${inputs.self.outPath}/extra/snippet.toml";
+        snippetfile = "${config.home.homeDirectory}/Projects/rapsnx/dotfiles/extra/snippet.toml";
         selectcmd = "fzf --ansi";
         color = true;
       };

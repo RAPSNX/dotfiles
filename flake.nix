@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     neonix = {
-      url = "github:rgroemmer/neonix";
+      url = "github:rapsnx/neonix";
     };
     sops-nix = {
       url = "github:mic92/sops-nix";
