@@ -65,8 +65,8 @@ in
         # Emoji picker
         "SUPER,period, exec, rofimoji --action copy --action type"
 
-        # Emoji picker
-        "SUPER,I, exec, systemctl restart --user kanshi.service"
+        # Reload kanshi
+        "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
       ];
 
       extraConfig = ''
