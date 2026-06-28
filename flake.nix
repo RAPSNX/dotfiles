@@ -43,7 +43,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
@@ -81,7 +80,7 @@
         inputs.catppuccin.nixosModules.catppuccin
         inputs.niri.nixosModules.niri
         inputs.sops-nix.nixosModules.sops
-        (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
+        ./modules/nixos
         ./modules/nix.nix
       ];
 
@@ -91,7 +90,7 @@
         inputs.krewfile.homeManagerModules.krewfile
         inputs.niri.homeModules.niri
         inputs.sops-nix.homeManagerModules.sops
-        (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
+        ./modules/home
         ./modules/nix.nix
       ];
     in
