@@ -35,7 +35,17 @@
 
           binding = {
             key = "H";
-            mods = "Control|Shift";
+            mods = "Control";
+          };
+        }
+        {
+          action = "Copy";
+          post_processing = true;
+          regex = "[a-z0-9]+(?:--?[a-z0-9]+)*(?:-[a-z0-9]+)*";
+
+          binding = {
+            key = "G";
+            mods = "Control";
           };
         }
       ];
