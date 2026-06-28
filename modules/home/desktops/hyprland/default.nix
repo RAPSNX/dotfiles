@@ -98,8 +98,6 @@ in
             new_optimizations = true;
           };
           rounding = 5;
-          active_opacity = 0.98;
-          inactive_opacity = 0.85;
         };
 
         # Autostart
