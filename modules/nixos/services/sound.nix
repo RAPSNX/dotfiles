@@ -7,7 +7,7 @@ let
   cfg = config.hostConfig.services.sound;
 in
 {
-  options.hostConfig.services.sound = lib.mkEnableOption "Enable sound.";
+  options.hostConfig.services.sound = lib.mkEnableOption "Enable sound support.";
 
   config = lib.mkIf cfg {
     services = {

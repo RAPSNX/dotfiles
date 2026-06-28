@@ -8,11 +8,12 @@ let
 in
 {
   options.hostConfig.boot = {
-    enable = lib.mkEnableOption "Enable install / config of bootloader";
-    armSupport = lib.mkEnableOption "Enable arm cross-compiler support";
+    enable = lib.mkEnableOption "Enable bootloader configuration.";
+    armSupport = lib.mkEnableOption "Enable ARM cross-compilation support.";
     supportedFilesystems = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
+      description = "Additional filesystem types to support at boot.";
     };
   };
 

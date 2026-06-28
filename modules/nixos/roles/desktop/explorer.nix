@@ -8,8 +8,6 @@ let
   cfg = config.hostConfig.roles.desktop;
 in
 {
-  options.hostConfig.roles.desktop = lib.mkEnableOption "Enable hyprland and desktop features.";
-
   config = lib.mkIf cfg {
     programs = {
       thunar = {

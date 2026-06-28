@@ -14,6 +14,8 @@ in
     ./explorer.nix
   ];
 
+  options.hostConfig.roles.desktop = lib.mkEnableOption "Enable desktop features.";
+
   config = lib.mkIf cfg {
     services.gnome.gnome-keyring.enable = true;
 

@@ -8,7 +8,7 @@ let
   cfg = config.hostConfig.services.opengl;
 in
 {
-  options.hostConfig.services.opengl = lib.mkEnableOption "Enable opengl features.";
+  options.hostConfig.services.opengl = lib.mkEnableOption "Enable OpenGL support.";
 
   config = lib.mkIf cfg {
     hardware = {

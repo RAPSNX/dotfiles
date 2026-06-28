@@ -10,10 +10,10 @@ let
 in
 {
   options.hostConfig.user = {
-    name = mylib.mkOpt lib.types.str "Name of user.";
-    initialHashedPassword = mylib.mkOpt lib.types.str "Password of user.";
-    extraGroups = mylib.mkOpt' (lib.types.listOf lib.types.str) [ ] "Additional groups for the user.";
-    extraOptions = mylib.mkOpt lib.types.attrs "Additional options for the user.";
+    name = mylib.mkOpt lib.types.str "Username for the account.";
+    initialHashedPassword = mylib.mkOpt lib.types.str "Initial hashed password for the account.";
+    extraGroups = mylib.mkOpt' (lib.types.listOf lib.types.str) [ ] "Additional supplemental groups.";
+    extraOptions = mylib.mkOpt lib.types.attrs "Extra user account options.";
   };
 
   config = {
