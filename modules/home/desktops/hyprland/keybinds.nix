@@ -45,10 +45,13 @@ in
         "SUPER,3, workspace, 3"
         "SUPER,4, workspace, 4"
         "SUPER,5, workspace, 5"
-        "SUPER,6, workspace, 6"
-        "SUPER,7, workspace, 7"
-        "SUPER,8, workspace, 8"
-        "SUPER,9, workspace, 9"
+
+        # Workspace selection
+        "SUPER+SHIFT,1, movetoworkspace, 1"
+        "SUPER+SHIFT,2, movetoworkspace, 2"
+        "SUPER+SHIFT,3, movetoworkspace, 3"
+        "SUPER+SHIFT,4, movetoworkspace, 4"
+        "SUPER+SHIFT,5, movetoworkspace, 5"
 
         # Workpace handling sratchy
         "SUPER,O, togglespecialworkspace, scratchy"
@@ -90,39 +93,6 @@ in
           bind = , return, submap, reset
           bind = , escape, submap, reset
         submap = reset
-
-
-        # Window mode
-        bind = SUPER, G, submap, windows
-
-        submap = windows
-          bind = , Q, movetoworkspace, 1
-          bind = , Q, submap, reset
-
-          bind = , W, movetoworkspace, 2
-          bind = , W, submap, reset
-
-          bind = , E, movetoworkspace, 3
-          bind = , E, submap, reset
-
-          bind = , R, movetoworkspace, 4
-          bind = , R, submap, reset
-
-          bind = , B, movetoworkspace, +0,class:firefox
-          bind = , B, submap, reset
-
-          bind = SHIFT, B, movetoworkspacesilent, 3,class:firefox
-          bind = SHIFT, B, submap, reset
-
-          bind = , return, submap, reset
-          bind = , escape, submap, reset
-        submap = reset
-
-        # Lid closed: disable internal laptop display
-        bindl = , switch:on:Lid Switch, exec, hyprctl keyword monitor "eDP-1, disable"
-
-        # Lid opened: enable internal laptop display again
-        bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, 1920x1200@60, 0x0, 1"
       '';
     };
   };

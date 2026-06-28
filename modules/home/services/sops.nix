@@ -6,8 +6,8 @@
 lib.mkIf (config ? targets && config.targets ? genericLinux && config.targets.genericLinux.enable) {
   sops = {
     age = {
-      generateKey = true;
-      keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+      generateKey = lib.mkDefault true;
+      keyFile = lib.mkDefault "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     };
 
     defaultSopsFile = ../../../secrets/common/ssh.yaml;

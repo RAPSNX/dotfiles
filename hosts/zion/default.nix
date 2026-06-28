@@ -53,7 +53,11 @@
   };
 
   environment = {
-    systemPackages = [ pkgs.qt6.qtwayland ];
+    systemPackages = [
+      pkgs.age
+      pkgs.age-plugin-yubikey
+      pkgs.qt6.qtwayland
+    ];
 
     sessionVariables = {
       WLR_NO_HARDWARE_CURSORS = "1";
@@ -63,7 +67,9 @@
 
   hardware.i2c.enable = true;
 
-  services.udev.packages = [
-    pkgs.qmk-udev-rules
-  ];
+  services.udev = {
+    packages = [
+      pkgs.qmk-udev-rules
+    ];
+
 }

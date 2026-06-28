@@ -51,6 +51,7 @@ in
     services.hyprpaper.enable = true;
 
     catppuccin.hyprland.enable = false;
+    catppuccin.hyprlock.enable = false;
     wayland.windowManager.hyprland = {
       enable = true;
       configType = "hyprlang";

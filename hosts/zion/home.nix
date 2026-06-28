@@ -11,6 +11,11 @@
     stateVersion = lib.mkDefault "22.05";
   };
 
+  sops.age = {
+    generateKey = false;
+    keyFile = "${config.home.homeDirectory}/.config/sops/age/yubikey-identity.txt";
+  };
+
   roles = {
     work = false;
     email = "mail@rapsn.me";

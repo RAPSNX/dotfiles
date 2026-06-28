@@ -6,8 +6,8 @@
 lib.mkIf (config.hostConfig.user.name != "root") {
   sops = {
     age = {
-      generateKey = false;
-      keyFile = "/home/${config.hostConfig.user.name}/.config/sops/age/keys.txt";
+      generateKey = lib.mkDefault false;
+      keyFile = lib.mkDefault "/home/${config.hostConfig.user.name}/.config/sops/age/keys.txt";
     };
 
     defaultSopsFile = ../../../secrets/common/ssh.yaml;
