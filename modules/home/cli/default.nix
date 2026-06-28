@@ -1,8 +1,6 @@
 {
   imports = [
     ./atuin
-    ./core
-    ./custom
     ./direnv
     ./git
     ./k8s

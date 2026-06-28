@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   home.packages = builtins.attrValues {
     # Core utility
@@ -57,14 +60,5 @@
       # Monitor / I2C com
       ddcutil
       ;
-  };
-  programs = {
-    bat.enable = true;
-    fzf.enable = true;
-    btop.enable = true;
-
-    zoxide.enable = true;
-    neonix.enable = true;
-    eza.enable = true;
   };
 }

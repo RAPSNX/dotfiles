@@ -1,6 +1,7 @@
 {
   imports = [
     ./common
+    ./packages
     ./programs
     ./services
     ./cli

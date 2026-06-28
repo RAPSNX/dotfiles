@@ -1,1 +1,0 @@
-{ imports = [ ./shell-scripts.nix ]; }
