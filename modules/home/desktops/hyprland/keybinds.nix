@@ -33,7 +33,7 @@ in
     wayland.windowManager.hyprland.settings = {
       bind = [
         # Common
-        "SUPER,RETURN, exec, alacritty"
+        "SUPER,RETURN, exec, alacritty -e tflow"
         "SUPER,E, exec, fuzzel"
         "SUPER,P, exec, wlogout"
         "SUPER,Q, killactive"

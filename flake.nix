@@ -22,6 +22,10 @@
       url = "github:brumhard/krewfile";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tflow = {
+      url = "github:rapsnx/tflow";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -89,6 +93,7 @@
         inputs.catppuccin.homeModules.catppuccin
         inputs.neonix.homeManagerModules.neonix
         inputs.krewfile.homeManagerModules.krewfile
+        inputs.tflow.homeManagerModules.default
         inputs.niri.homeModules.niri
         inputs.sops-nix.homeManagerModules.sops
         (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
