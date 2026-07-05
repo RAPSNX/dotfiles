@@ -13,6 +13,10 @@
       inherit (pkgs) zsh-completions;
     };
 
+    home.sessionPath = [
+      "$HOME/.local/bin"
+    ];
+
     programs.zsh = {
       enable = true;
 

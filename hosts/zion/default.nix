@@ -71,5 +71,5 @@
     packages = [
       pkgs.qmk-udev-rules
     ];
-
+  };
 }
