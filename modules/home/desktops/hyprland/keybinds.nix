@@ -1,10 +1,32 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
   cfg = config.roles.desktop.hyprland;
+  toggleFirefox = pkgs.writeShellScriptBin "toggleFirefox" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    CLASS="firefox"
+    DEDICATED_WS="3"
+
+    current_ws="$(hyprctl activeworkspace -j | jq -r '.id')"
+
+    firefox_on_current="$(
+      hyprctl clients -j | jq -r --arg class "$CLASS" --argjson ws "$current_ws" '
+        any(.[]; (.class | ascii_downcase) == $class and .workspace.id == $ws)
+      '
+    )"
+
+    if [[ "$firefox_on_current" == "true" ]]; then
+      hyprctl dispatch movetoworkspacesilent "$DEDICATED_WS,class:$CLASS"
+    else
+      hyprctl dispatch movetoworkspace "+0,class:$CLASS"
+    fi
+  '';
 in
 {
   config = lib.mkIf cfg.enable {
@@ -46,13 +68,6 @@ in
         "SUPER,4, workspace, 4"
         "SUPER,5, workspace, 5"
 
-        # Workspace selection
-        "SUPER+SHIFT,1, movetoworkspace, 1"
-        "SUPER+SHIFT,2, movetoworkspace, 2"
-        "SUPER+SHIFT,3, movetoworkspace, 3"
-        "SUPER+SHIFT,4, movetoworkspace, 4"
-        "SUPER+SHIFT,5, movetoworkspace, 5"
-
         # Workpace handling sratchy
         "SUPER,O, togglespecialworkspace, scratchy"
         "SUPER,M, togglespecialworkspace, aux"
@@ -60,13 +75,12 @@ in
         "SUPER SHIFT,M, movetoworkspace, special:aux"
 
         # -- Programs
-
         # Mumble
         "SUPER,Z, exec, mumble rpc togglemute"
         "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
 
         # Emoji picker
-        "SUPER,period, exec, rofimoji --action copy --action type"
+        "SUPER,period, exec, rofimoji --action copy type"
 
         # Reload kanshi
         "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
@@ -109,19 +123,12 @@ in
           bind = , R, movetoworkspace, 4
           bind = , R, submap, reset
 
-          bind = , B, movetoworkspace, +0,class:firefox
-          bind = , B, submap, reset
-
-          bind = SHIFT, B, movetoworkspacesilent, 3,class:firefox
-          bind = SHIFT, B, submap, reset
+          # Special app toggle
+          bing = , B, exec, ${lib.getExe toggleFirefox}"
 
           bind = , return, submap, reset
           bind = , escape, submap, reset
         submap = reset
-
-        # Lid closed: let kanshi apply the docked profile. Lid opened: keep kanshi out of the way and force-enable the panel.
-        bindl = , switch:on:Lid Switch, exec, systemctl --user start kanshi.service
-        bindl = , switch:off:Lid Switch, exec, sh -c 'systemctl --user stop kanshi.service; sleep 2; hyprctl keyword monitor "eDP-1,preferred,0x0,1"'
       '';
     };
   };
