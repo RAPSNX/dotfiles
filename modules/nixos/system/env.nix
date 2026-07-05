@@ -26,10 +26,12 @@
           ;
       }
       # TODO: wtf?
-      ++ lib.optionals (!config.hostConfig.roles.desktop) (lib.attrValues {
-        inherit (inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}) mini;
-        inherit (pkgs) jq tmux;
-      });
+      ++ lib.optionals (!config.hostConfig.roles.desktop) (
+        lib.attrValues {
+          inherit (inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}) mini;
+          inherit (pkgs) jq;
+        }
+      );
     variables = {
       EDITOR = "vim";
       VISUAL = "vim";

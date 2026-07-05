@@ -93,6 +93,35 @@ in
           bind = , return, submap, reset
           bind = , escape, submap, reset
         submap = reset
+
+        # Window mode
+        bind = SUPER, G, submap, windows
+        submap = windows
+          bind = , Q, movetoworkspace, 1
+          bind = , Q, submap, reset
+
+          bind = , W, movetoworkspace, 2
+          bind = , W, submap, reset
+
+          bind = , E, movetoworkspace, 3
+          bind = , E, submap, reset
+
+          bind = , R, movetoworkspace, 4
+          bind = , R, submap, reset
+
+          bind = , B, movetoworkspace, +0,class:firefox
+          bind = , B, submap, reset
+
+          bind = SHIFT, B, movetoworkspacesilent, 3,class:firefox
+          bind = SHIFT, B, submap, reset
+
+          bind = , return, submap, reset
+          bind = , escape, submap, reset
+        submap = reset
+
+        # Lid closed: let kanshi apply the docked profile. Lid opened: keep kanshi out of the way and force-enable the panel.
+        bindl = , switch:on:Lid Switch, exec, systemctl --user start kanshi.service
+        bindl = , switch:off:Lid Switch, exec, sh -c 'systemctl --user stop kanshi.service; sleep 2; hyprctl keyword monitor "eDP-1,preferred,0x0,1"'
       '';
     };
   };
