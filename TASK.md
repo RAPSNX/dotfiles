@@ -1,0 +1,24 @@
+# Sway Home-Manager Module Task List
+
+- [x] Inspect the existing Hyprland Home Manager module and keybinding file to identify the small shared surface worth migrating.
+- [x] Confirm first-iteration scope:
+  - Sway is additive alongside Hyprland.
+  - Do not migrate Hyprland addons or wallpapers.
+  - Only migrate keybindings and core Hyprland config where Sway has a simple equivalent.
+- [ ] Create a new `modules/home/desktops/sway/default.nix` Home Manager module with a minimal option surface modeled after Hyprland.
+- [ ] Keep the Sway role option surface intentionally small for the first pass:
+  - `enable`
+  - `autostart`
+  - package option only if needed by the Home Manager Sway module
+- [ ] Translate the relevant Hyprland core config into Sway equivalents:
+  - session environment variables
+  - keyboard layout / variant / repeat settings
+  - gaps and border settings
+  - basic floating / assignment rules where Sway supports an equivalent
+- [ ] Migrate the current Hyprland key mapping into an initial Sway binding set, simplifying or dropping Hyprland-only behavior where there is no cheap equivalent.
+- [ ] Keep side-by-side enablement conflict-aware:
+  - avoid migrating portal config unless Sway specifically needs separate wiring
+  - avoid addon-specific services and wallpaper handling
+- [ ] Enable the Sway role in the target Home Manager host configuration without removing Hyprland.
+- [ ] Run focused validation on the edited Nix files and fix syntax or module errors from the first pass.
+- [ ] Summarize what was migrated directly, what was simplified, and what remains intentionally Hyprland-only.
