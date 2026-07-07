@@ -24,9 +24,9 @@
     desktop = {
       hyprland = {
         enable = true;
-        package = pkgs.hyprland;
+        configOnly = true;
 
-        hyprlock.enable = true;
+        hyprlock.enable = false;
         hypridle = {
           enable = true;
           cmd = "/usr/bin/swaylock";

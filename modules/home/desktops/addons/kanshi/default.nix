@@ -2,12 +2,18 @@
   pkgs,
   lib,
   self,
+  config,
   ...
 }:
 {
   services.kanshi =
     let
-      hyprctl = lib.getExe' pkgs.hyprland "hyprctl";
+      hyprlandCfg = config.roles.desktop.hyprland;
+      hyprctl =
+        if hyprlandCfg.enable && hyprlandCfg.configOnly then
+          "/usr/bin/hyprctl"
+        else
+          lib.getExe' pkgs.hyprland "hyprctl";
       workspaceSetup =
         let
           wallpaperPath = "${self.outPath}/extra/wallpapers";
