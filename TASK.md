@@ -5,6 +5,7 @@
   - Sway is additive alongside Hyprland.
   - Do not migrate Hyprland addons or wallpapers.
   - Only migrate keybindings and core Hyprland config where Sway has a simple equivalent.
+  - Ignore the `configOnly` options its only for hyprland
 - [ ] Create a new `modules/home/desktops/sway/default.nix` Home Manager module with a minimal option surface modeled after Hyprland.
 - [ ] Keep the Sway role option surface intentionally small for the first pass:
   - `enable`
@@ -22,3 +23,4 @@
 - [ ] Enable the Sway role in the target Home Manager host configuration without removing Hyprland.
 - [ ] Run focused validation on the edited Nix files and fix syntax or module errors from the first pass.
 - [ ] Summarize what was migrated directly, what was simplified, and what remains intentionally Hyprland-only.
+- [ ] Update the docs for firefly, to create all necessary files outside of Home-Manager.
