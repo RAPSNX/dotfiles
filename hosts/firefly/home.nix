@@ -37,6 +37,16 @@
           "chromium"
         ];
       };
+
+      sway = {
+        enable = true;
+        package = null;
+        autostart = [
+          "sleep 3 && mumble" # Need to sleep for tray icon
+          "firefox"
+          "chromium"
+        ];
+      };
     };
 
     cli = {

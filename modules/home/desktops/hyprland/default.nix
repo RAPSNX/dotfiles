@@ -69,7 +69,7 @@ in
           PATH="$HOME/.nix-profile/bin:$PATH"
         '';
 
-        programs.waybar.systemd.target = lib.mkDefault "hyprland-session.target";
+        programs.waybar.systemd.targets = lib.mkDefault [ "hyprland-session.target" ];
 
         wayland.windowManager.hyprland = {
           enable = true;
