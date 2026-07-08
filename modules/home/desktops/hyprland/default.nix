@@ -108,8 +108,8 @@ in
             input = {
               kb_layout = "eu,de,de";
               kb_variant = ",neo_qwertz,";
-              repeat_rate = 45;
-              repeat_delay = 150;
+              repeat_rate = 40;
+              repeat_delay = 250;
               accel_profile = "flat";
               sensitivity = 1;
             };
