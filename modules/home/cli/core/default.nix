@@ -60,9 +60,11 @@
   };
   programs = {
     bat.enable = true;
-    fzf.enable = true;
+    fzf = {
+      enable = true;
+      historyWidget.command = "";
+    };
     btop.enable = true;
-
     zoxide.enable = true;
     neonix.enable = true;
     eza.enable = true;
