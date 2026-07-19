@@ -53,9 +53,14 @@
 
       # AI Shit
       codex
+      claude-code
+      nodejs
 
       # Monitor / I2C com
       ddcutil
+
+      # Compiler
+      gcc
       ;
   };
   programs = {
