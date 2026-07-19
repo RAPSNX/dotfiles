@@ -96,7 +96,7 @@
         {
           output = {
             criteria = "eDP-1";
-            position = "0,0";
+            position = "6000,0";
             mode = "1920x1200@60.00Hz";
           };
         }
@@ -117,9 +117,7 @@
           name = "office";
           outputs = [
             {
-              # TODO: confirm this connector name via `hyprctl monitors -j`
-              # while docked. The port is stable across desks even though the
-              # monitor's description (and serial) varies desk to desk.
+              # TODO: test this connector, may overload this config with all possible connectors
               criteria = "DP-1";
               mode = "3440x1440@99.98Hz";
               scale = 1.0;
