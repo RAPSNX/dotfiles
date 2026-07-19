@@ -124,7 +124,7 @@ in
           bind = , R, submap, reset
 
           # Special app toggle
-          bing = , B, exec, ${lib.getExe toggleFirefox}"
+          bind = , B, exec, ${lib.getExe toggleFirefox}
 
           bind = , return, submap, reset
           bind = , escape, submap, reset
