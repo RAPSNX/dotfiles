@@ -22,18 +22,8 @@
         pkgs.writeShellScriptBin "workspaceSetup" ''
           set -euo pipefail
 
-          primary_desc="''${1:?missing primary monitor description}"
-          secondary_desc="''${2:-""}"
-          monitors="$(${hyprctl} monitors -j)"
-
-          # get_output gets the output name of a monitor description.
-          get_output() {
-            ${lib.getExe pkgs.jq} -r --arg matcher "$1" '
-              [.[] | select(.description | test($matcher)) | .name][0]' <<< "$monitors"
-          }
-
-          primary="$(get_output $primary_desc)"
-          secondary="$(get_output $secondary_desc)"
+          primary="''${1:?missing primary monitor}"
+          secondary="''${2:?missing secondary monitor}"
 
           # Generate workspace config
           cat > "$HOME/.config/hypr/workspaces.conf" <<EOF
@@ -52,28 +42,49 @@
           ${hyprctl} dispatch moveworkspacetomonitor "4 $secondary"
 
           # Set random wallpaper
-
           wall_one=$(shuf -n 1 -e ${toString wallpapers})
           wall_two=$(shuf -n 1 -e ${toString wallpapers})
-          ${hyprctl} hyprpaper wallpaper "$primary, ${wallpaperPath}/$(shuf -n 1 -e ${toString wallpapers})"
-          ${hyprctl} hyprpaper wallpaper "$secondary, ${wallpaperPath}/$(shuf -n 1 -e ${toString wallpapers})"
+          ${hyprctl} hyprpaper wallpaper "$primary, ${wallpaperPath}/$wall_one"
+          ${hyprctl} hyprpaper wallpaper "$secondary, ${wallpaperPath}/$wall_two"
 
           ${hyprctl} dispatch focusmonitor "$primary"
           ${hyprctl} dispatch workspace 1
           systemctl --user restart waybar.service
         '';
 
-      # mkExec collects all outputs and creates args out of it, the workspaceSetup script only takes the first two.
+      # toMonitorId turns a kanshi criteria string into the identifier Hyprland's
+      # workspace/dispatch syntax expects: connector names (DP-1, eDP-1, ...) are
+      # passed through as-is, descriptions (which always contain spaces) are
+      # prefixed with "desc:".
+      toMonitorId = criteria: if lib.hasInfix " " criteria then "desc:${criteria}" else criteria;
+
+      # mkExec picks which output(s) receive workspaces. A single entry means
+      # all four workspaces go to that one monitor (primary == secondary).
       mkExec =
-        outputs:
-        "${lib.getExe workspaceSetup} ${lib.escapeShellArgs (map (output: output.criteria) outputs)}";
+        workspaceOutputs:
+        let
+          primary = toMonitorId (builtins.elemAt workspaceOutputs 0);
+          secondary = toMonitorId (
+            builtins.elemAt workspaceOutputs (if builtins.length workspaceOutputs == 2 then 1 else 0)
+          );
+        in
+        "${lib.getExe workspaceSetup} ${
+          lib.escapeShellArgs [
+            primary
+            secondary
+          ]
+        }";
 
       mkProfile =
-        { name, outputs }:
+        {
+          name,
+          outputs,
+          workspaceOutputs,
+        }:
         {
           profile = {
             inherit name outputs;
-            exec = mkExec outputs;
+            exec = mkExec workspaceOutputs;
           };
         };
     in
@@ -106,14 +117,18 @@
           name = "office";
           outputs = [
             {
-              criteria = "HP Inc. HP 534pm *";
+              # TODO: confirm this connector name via `hyprctl monitors -j`
+              # while docked. The port is stable across desks even though the
+              # monitor's description (and serial) varies desk to desk.
+              criteria = "DP-1";
               mode = "3440x1440@99.98Hz";
               scale = 1.0;
             }
             {
-              criteria = "*";
+              criteria = "eDP-1";
             }
           ];
+          workspaceOutputs = [ "DP-1" ];
         })
 
         # TODO: Add meeting room here
@@ -135,8 +150,11 @@
             }
             {
               criteria = "eDP-1";
-              status = "disable";
             }
+          ];
+          workspaceOutputs = [
+            "Dell Inc. AW2725Q G2QC174"
+            "Samsung Electric Company LC27G7xT H4ZNC00167"
           ];
         })
 
@@ -155,6 +173,10 @@
               position = "0,0";
               mode = "2560x1440@239.96Hz";
             }
+          ];
+          workspaceOutputs = [
+            "Dell Inc. AW2725Q G2QC174"
+            "Samsung Electric Company LC27G7xT H4ZNC00167"
           ];
         })
       ];
