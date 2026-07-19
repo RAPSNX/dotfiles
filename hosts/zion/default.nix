@@ -44,6 +44,8 @@
     sudo.wheelNeedsPassword = false;
   };
 
+  boot.loader.timeout = 0;
+
   networking = {
     hostName = "zion";
     networkmanager.enable = true;
