@@ -30,20 +30,12 @@ switch-firefly
 
 `firefly` uses `roles.desktop.hyprland.configOnly = true`, so Home Manager only writes Hyprland configuration. Hyprland itself must come from the cppiber PPA and the display manager must start the APT/PPA binary directly.
 
-`firefly` also uses `roles.desktop.sway.package = null`, so Home Manager writes Sway configuration without installing or wrapping Sway. Sway and the display manager session file must exist on the host.
-
 ```bash
 echo "[Desktop Entry]
 Name=Hyprland
 Comment=An intelligent dynamic tiling Wayland compositor
 Exec=/usr/bin/Hyprland
 Type=Application" | sudo tee /usr/share/wayland-sessions/hyprland.desktop
-
-echo "[Desktop Entry]
-Name=Sway
-Comment=An i3-compatible Wayland compositor
-Exec=/usr/bin/sway
-Type=Application" | sudo tee /usr/share/wayland-sessions/sway.desktop
 ```
 
 5. Copy user-certificate to firefox
@@ -96,7 +88,6 @@ sudo add-apt-repository ppa:cppiber/hyprland
 sudo apt update
 sudo apt -y install \
   hyprland \
-  sway \
   xdg-desktop-portal \
   xdg-desktop-portal-hyprland \
   xdg-desktop-portal-gtk \
@@ -105,11 +96,10 @@ sudo apt -y install \
   podman
 ```
 
-Home Manager must not manage Hyprland, Sway, or portal packages on `firefly`. Verify the active setup after switching:
+Home Manager must not manage Hyprland or portal packages on `firefly`. Verify the active setup after switching:
 
 ```bash
 readlink -f "$(command -v Hyprland)"
-readlink -f "$(command -v sway)"
 systemctl --user cat xdg-desktop-portal*.service
 systemctl --user show-environment | grep NIX_XDG_DESKTOP_PORTAL_DIR
 find ~/.config/xdg-desktop-portal ~/.nix-profile/share/xdg-desktop-portal -maxdepth 3 -type f 2>/dev/null
@@ -118,7 +108,6 @@ find ~/.config/xdg-desktop-portal ~/.nix-profile/share/xdg-desktop-portal -maxde
 Expected results:
 
 - `Hyprland` resolves to `/usr/bin/Hyprland`.
-- `sway` resolves to `/usr/bin/sway`.
 - Portal services come from the host packages, not Home Manager-generated user units.
 - `NIX_XDG_DESKTOP_PORTAL_DIR` is absent from the user systemd environment.
 - The `find` command does not show Home Manager-generated portal config under `~/.config/xdg-desktop-portal` or Nix profile portal definitions under `~/.nix-profile/share/xdg-desktop-portal`.

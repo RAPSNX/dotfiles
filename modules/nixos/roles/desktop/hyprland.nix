@@ -71,8 +71,6 @@ in
       withUWSM = false;
     };
 
-    programs.niri.enable = true;
-
     security.sudo.extraRules = [
       {
         users = [ "greeter" ];

@@ -37,9 +37,5 @@
         ];
       };
     };
-
-    desktop.niri = {
-      enable = true;
-    };
   };
 }
