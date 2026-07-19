@@ -53,9 +53,7 @@
         '';
 
       # toMonitorId turns a kanshi criteria string into the identifier Hyprland's
-      # workspace/dispatch syntax expects: connector names (DP-1, eDP-1, ...) are
-      # passed through as-is, descriptions (which always contain spaces) are
-      # prefixed with "desc:".
+      # workspace/dispatch syntax expects.
       toMonitorId = criteria: if lib.hasInfix " " criteria then "desc:${criteria}" else criteria;
 
       # mkExec picks which output(s) receive workspaces. A single entry means
