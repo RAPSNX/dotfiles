@@ -41,6 +41,10 @@
       niri = {
         enable = true;
       };
+
+      sway = {
+        enable = true;
+      };
     };
 
     cli = {
