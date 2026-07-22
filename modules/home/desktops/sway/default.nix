@@ -1,5 +1,6 @@
 {
   lib,
+  mylib,
   config,
   ...
 }:
@@ -7,7 +8,10 @@ let
   cfg = config.roles.desktop.sway;
 in
 {
-  options.roles.desktop.sway.enable = lib.mkEnableOption "Enable sway";
+  options.roles.desktop.sway = {
+    enable = lib.mkEnableOption "Enable sway";
+    autostart = mylib.mkOpt (lib.types.listOf lib.types.str) "autostart";
+  };
 
   # Migrated from modules/home/desktops/hyprland/keybinds.nix.
   # Sway's own default keybindings (splith/splitv, scratchpad, exit dialog,
@@ -19,6 +23,10 @@ in
   # `mode` blocks are a direct equivalent of Hyprland's submaps, so the
   # resize and window-move submaps *are* migrated here.
   config = lib.mkIf cfg.enable {
+    catppuccin.sway.enable = false;
+
+    programs.waybar.systemd.targets = lib.mkDefault [ "sway-session.target" ];
+
     wayland.windowManager.sway = {
       enable = true;
 
@@ -26,6 +34,44 @@ in
         modifier = "Mod4";
         terminal = "alacritty";
         menu = "fuzzel";
+
+        gaps = {
+          inner = 8;
+          outer = 10;
+        };
+
+        window.border = 3;
+        floating.border = 3;
+
+        bars = lib.mkForce [ ];
+
+        input."*" = {
+          xkb_layout = "eu,de,de";
+          xkb_variant = ",neo_qwertz,";
+          repeat_delay = "250";
+          repeat_rate = "40";
+          accel_profile = "flat";
+          pointer_accel = "1";
+        };
+
+        startup = map (cmd: { command = cmd; }) cfg.autostart;
+
+        assigns = {
+          "3" = [
+            { app_id = "^firefox$"; }
+            { class = "^firefox$"; }
+          ];
+          "4" = [
+            { app_id = "^chromium.*"; }
+            { class = "^chromium.*"; }
+          ];
+        };
+
+        floating.criteria = [
+          { app_id = "steam"; }
+          { class = "steam"; }
+          { class = ".*nextcloud.*"; }
+        ];
 
         keybindings = lib.mkForce {
           "Mod4+Return" = "exec alacritty";
