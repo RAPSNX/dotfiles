@@ -43,6 +43,42 @@ in
         window.border = 3;
         floating.border = 3;
 
+        # Catppuccin Macchiato, mauve accent -- matches the accent used
+        # elsewhere in this repo (see catppuccin.accent on the NixOS side).
+        # Not full catppuccin.sway theming (kept disabled below, since that
+        # also brings back sway's own bar) -- just the window border colors.
+        colors = {
+          background = "#24273a";
+          focused = {
+            border = "#c6a0f6";
+            background = "#24273a";
+            text = "#cad3f5";
+            indicator = "#c6a0f6";
+            childBorder = "#c6a0f6";
+          };
+          focusedInactive = {
+            border = "#5b6078";
+            background = "#24273a";
+            text = "#cad3f5";
+            indicator = "#5b6078";
+            childBorder = "#5b6078";
+          };
+          unfocused = {
+            border = "#363a4f";
+            background = "#24273a";
+            text = "#a5adcb";
+            indicator = "#363a4f";
+            childBorder = "#363a4f";
+          };
+          urgent = {
+            border = "#ed8796";
+            background = "#24273a";
+            text = "#cad3f5";
+            indicator = "#ed8796";
+            childBorder = "#ed8796";
+          };
+        };
+
         bars = lib.mkForce [ ];
 
         input."*" = {
@@ -54,7 +90,10 @@ in
           pointer_accel = "1";
         };
 
-        startup = map (cmd: { command = cmd; }) cfg.autostart;
+        startup = [
+          { command = "alacritty -t scratchy"; }
+        ]
+        ++ map (cmd: { command = cmd; }) cfg.autostart;
 
         assigns = {
           "3" = [
@@ -71,6 +110,18 @@ in
           { app_id = "steam"; }
           { class = "steam"; }
           { class = ".*nextcloud.*"; }
+        ];
+
+        # Sway's real scratchpad is a single unnamed pool (unlike Hyprland's
+        # two independently named special workspaces), so only "scratchy" is
+        # restored this way -- "aux" still has no clean sway equivalent.
+        window.commands = [
+          {
+            criteria = {
+              title = "^scratchy$";
+            };
+            command = "floating enable, move to scratchpad";
+          }
         ];
 
         keybindings = lib.mkForce {
@@ -95,6 +146,9 @@ in
 
           "Mod4+t" = "layout toggle split";
           "Mod4+u" = "floating toggle";
+
+          "Mod4+o" = "scratchpad show";
+          "Mod4+Shift+o" = "move scratchpad";
 
           "Mod4+1" = "workspace number 1";
           "Mod4+2" = "workspace number 2";
