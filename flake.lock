@@ -159,24 +159,6 @@
         "type": "github"
       }
     },
-    "flake-utils_2": {
-      "inputs": {
-        "systems": "systems_4"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -858,35 +840,19 @@
         "type": "github"
       }
     },
-    "systems_4": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
     "tflow": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
         "home-manager": "home-manager_2",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1784146867,
-        "narHash": "sha256-4MszpU7lygYZnr1R5kLBVUJSR49Ag/kW2UmcdAPMnSk=",
+        "lastModified": 1784656234,
+        "narHash": "sha256-K21jySfHFlbzZKPejD4v5vLdbpWtje2o6CtsDfdUSHQ=",
         "owner": "rapsnx",
         "repo": "tflow",
-        "rev": "b08293ceb859e6cd0a04fa87e147ce7ade56fdeb",
+        "rev": "5bdabe5a31df3665363cbcd1a0ed8610f96528bf",
         "type": "github"
       },
       "original": {
