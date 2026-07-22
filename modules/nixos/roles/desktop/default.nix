@@ -9,6 +9,7 @@ in
 {
   imports = [
     ./hyprland.nix
+    ./niri.nix
     ./fonts.nix
     ./power.nix
     ./explorer.nix

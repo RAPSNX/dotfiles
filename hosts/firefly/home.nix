@@ -37,6 +37,10 @@
           "chromium"
         ];
       };
+
+      niri = {
+        enable = true;
+      };
     };
 
     cli = {

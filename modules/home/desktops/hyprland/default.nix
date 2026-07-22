@@ -52,11 +52,11 @@ in
 
         services.hyprpaper.enable = true;
 
-        xdg.configFile."hypr/xdph.conf".text = ''
-          screencopy {
-              force_shm = true
-          }
-        '';
+        # xdg.configFile."hypr/xdph.conf".text = ''
+        #   screencopy {
+        #       force_shm = true
+        #   }
+        # '';
 
         home.packages = builtins.attrValues {
           inherit (pkgs)

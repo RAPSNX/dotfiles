@@ -38,6 +38,27 @@ Exec=/usr/bin/Hyprland
 Type=Application" | sudo tee /usr/share/wayland-sessions/hyprland.desktop
 ```
 
+`firefly` also has `roles.desktop.niri.enable = true` (PoC), backed by [niri-flake](https://github.com/sodiboo/niri-flake)'s `homeModules.niri`. Unlike Hyprland, there is no APT/PPA package for niri, so this module lets Home Manager install and manage niri itself (`programs.niri.package`, default `niri-stable` from niri-flake) in addition to generating `~/.config/niri/config.kdl` from `programs.niri.settings` (validated at build time via `niri validate`).
+
+niri-flake has its own binary cache to avoid building niri from source. Since `firefly` doesn't use the NixOS module (which wires the cache in automatically), add it once manually:
+
+```bash
+cachix use niri
+```
+
+The display manager launches session files without the user's shell `PATH`, so the `Exec` line must use the absolute path into the Home Manager profile (`niri-session` handles systemd/portal integration, unlike calling the raw `niri` binary). `DesktopNames=niri` sets `XDG_CURRENT_DESKTOP`, which portals/theming rely on to detect the session:
+
+```bash
+echo "[Desktop Entry]
+Name=Niri
+Comment=A scrollable-tiling Wayland compositor
+Exec=/home/$(whoami)/.nix-profile/bin/niri-session
+Type=Application
+DesktopNames=niri" | sudo tee /usr/share/wayland-sessions/niri.desktop
+```
+
+`niri --session` (invoked by `niri-session`) is systemd-integrated, like Hyprland — it expects `niri.service`/`niri-shutdown.target` user units to exist so GDM can track the session. Those ship inside the niri package itself, but only get linked into `~/.config/systemd/user/` automatically on NixOS; the `roles.desktop.niri` Home Manager module links them explicitly for non-NixOS hosts like `firefly` (see `modules/home/desktops/niri/default.nix`). Without that, GDM logs `Failed to start niri.service: Unit niri.service not found.` and silently falls back to another session.
+
 5. Copy user-certificate to firefox
 
 ```bash
