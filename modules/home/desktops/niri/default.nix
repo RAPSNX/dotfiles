@@ -1,11 +1,43 @@
 {
   lib,
+  pkgs,
   mylib,
   config,
   ...
 }:
 let
   cfg = config.roles.desktop.niri;
+
+  # Niri has no scratchpad, unlike sway, but its IPC can address windows by
+  # id directly (niri msg action focus-window/move-window-to-workspace),
+  # which is enough to reconstruct a real hide/show toggle: hide by moving
+  # the window to a dedicated, otherwise-unused named workspace; show by
+  # moving it back to whatever workspace is currently focused and focusing
+  # it. This is a single script invoked per keypress, not a persistent
+  # daemon.
+  toggleScratchy = pkgs.writeShellScript "toggle-scratchy" ''
+    set -euo pipefail
+
+    scratchy_id=$(niri msg --json windows | ${lib.getExe pkgs.jq} -r '
+      .[] | select(.app_id == "Alacritty" and .title == "scratchy") | .id
+    ' | head -n1)
+
+    if [ -z "$scratchy_id" ]; then
+      exit 0
+    fi
+
+    is_focused=$(niri msg --json windows | ${lib.getExe pkgs.jq} -r --argjson id "$scratchy_id" '
+      .[] | select(.id == $id) | .is_focused
+    ')
+
+    if [ "$is_focused" = "true" ]; then
+      niri msg action move-window-to-workspace --window-id "$scratchy_id" --focus false "scratch-hidden"
+    else
+      current_idx=$(niri msg --json workspaces | ${lib.getExe pkgs.jq} -r '.[] | select(.is_focused == true) | .idx')
+      niri msg action move-window-to-workspace --window-id "$scratchy_id" --focus false "$current_idx"
+      niri msg action focus-window --id "$scratchy_id"
+    fi
+  '';
 in
 {
   options.roles.desktop.niri = {
@@ -33,6 +65,11 @@ in
           border.width = 3;
         };
 
+        # Parking spot for the scratchy toggle script (see toggleScratchy
+        # above) -- deliberately not bound to any Mod+N workspace-switch
+        # key, so it's never visible during regular use.
+        workspaces."scratch-hidden" = { };
+
         input = {
           keyboard = {
             xkb = {
@@ -50,7 +87,16 @@ in
 
         # spawn-at-startup runs each command directly (not through a shell),
         # so autostart entries with shell syntax (&&, etc.) need "sh" "-c".
-        spawn-at-startup = map (cmd: {
+        spawn-at-startup = [
+          {
+            command = [
+              "alacritty"
+              "-t"
+              "scratchy"
+            ];
+          }
+        ]
+        ++ map (cmd: {
           command = [
             "sh"
             "-c"
@@ -75,6 +121,15 @@ in
             matches = [
               { app-id = "^steam$"; }
               { app-id = ".*nextcloud.*"; }
+            ];
+            open-floating = true;
+          }
+          {
+            matches = [
+              {
+                app-id = "^Alacritty$";
+                title = "^scratchy$";
+              }
             ];
             open-floating = true;
           }
@@ -117,6 +172,8 @@ in
           "Mod+Shift+L".action.move-column-right = [ ];
 
           "Mod+U".action.toggle-window-floating = [ ];
+
+          "Mod+O".action.spawn = "${toggleScratchy}";
 
           "Mod+1".action.focus-workspace = 1;
           "Mod+2".action.focus-workspace = 2;
