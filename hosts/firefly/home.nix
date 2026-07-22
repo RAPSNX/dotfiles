@@ -40,10 +40,20 @@
 
       niri = {
         enable = true;
+        autostart = [
+          "sleep 3 && mumble" # Need to sleep for tray icon
+          "firefox"
+          "chromium"
+        ];
       };
 
       sway = {
         enable = true;
+        autostart = [
+          "sleep 3 && mumble" # Need to sleep for tray icon
+          "firefox"
+          "chromium"
+        ];
       };
     };
 
