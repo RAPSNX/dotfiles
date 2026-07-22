@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -11,11 +12,23 @@ let
   # compositors can be enabled at once (as separate selectable sessions), so
   # this detects which one is actually running rather than being duplicated
   # per-compositor, which would double up the swayidle timeout list.
-  dpms = state: ''
+  #
+  # Built as a real script (not an inline multi-line string) because
+  # services.swayidle.timeouts[].command is embedded verbatim into a
+  # systemd unit file's ExecStart= line -- a raw multi-line value there
+  # breaks systemd's unit-file parser (each embedded newline starts a new,
+  # invalid "key=value" line) unless every line ends with a `\` line
+  # continuation. A script path avoids that entirely.
+  dpmsToggle = pkgs.writeShellScript "dpms-toggle" ''
+    set -euo pipefail
+    state="''${1:?missing state (on|off)}"
     if pgrep -x sway >/dev/null; then
-      swaymsg output '*' dpms ${state}
+      swaymsg output '*' dpms "$state"
     elif pgrep -x niri >/dev/null; then
-      niri msg action power-${if state == "off" then "off" else "on"}-monitors
+      case "$state" in
+        off) niri msg action power-off-monitors ;;
+        on) niri msg action power-on-monitors ;;
+      esac
     fi
   '';
 
@@ -56,8 +69,8 @@ in
         }
         {
           timeout = 3600;
-          command = dpms "off";
-          resumeCommand = dpms "on";
+          command = "${dpmsToggle} off";
+          resumeCommand = "${dpmsToggle} on";
         }
       ];
 
