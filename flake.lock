@@ -923,11 +923,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784656234,
-        "narHash": "sha256-K21jySfHFlbzZKPejD4v5vLdbpWtje2o6CtsDfdUSHQ=",
+        "lastModified": 1784753614,
+        "narHash": "sha256-o+wcNoHf3osmjglOY+VouUqnAzdoDB+ZLgY99w4BFgQ=",
         "owner": "rapsnx",
         "repo": "tflow",
-        "rev": "5bdabe5a31df3665363cbcd1a0ed8610f96528bf",
+        "rev": "9bddddb1d89a89965af68240006535a1672eb55e",
         "type": "github"
       },
       "original": {
