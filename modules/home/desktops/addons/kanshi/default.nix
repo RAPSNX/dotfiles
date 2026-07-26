@@ -35,6 +35,7 @@
             }
             {
               criteria = "eDP-1";
+              status = "disable";
             }
           ];
         };
@@ -60,6 +61,7 @@
             }
             {
               criteria = "eDP-1";
+              status = "disable";
             }
           ];
         };

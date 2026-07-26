@@ -136,6 +136,13 @@ in
             ]
             ++ cfg.autostart;
 
+            workspace = [
+              "1, monitor:desc:Dell Inc. AW2725Q G2QC174, default:true"
+              "2, monitor:desc:Dell Inc. AW2725Q G2QC174"
+              "3, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167, default:true"
+              "4, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167"
+            ];
+
             windowrule = [
               "match:class ^(firefox)$, workspace 3"
               "match:class ^(chromium-browser)$, workspace 4"
