@@ -35,6 +35,7 @@
 
     roles = {
       desktop = true;
+      gaming.enable = true;
     };
   };
 

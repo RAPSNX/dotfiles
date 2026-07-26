@@ -8,40 +8,38 @@ let
   cfg = config.hostConfig.roles.gaming;
 in
 {
-  options.hostConfig.roles.gaming = lib.mkEnableOption "Enable NixOS gaming environment.";
+  options.hostConfig.roles.gaming = {
+    enable = lib.mkEnableOption "NixOS gaming environment.";
 
-  config = lib.mkIf cfg {
-    services.ratbagd.enable = true; # Daemon to configure gaming mice, GUI piper comes through HM.
+    mouse.enable = lib.mkEnableOption "ratbagd and Piper support for compatible gaming mice.";
+  };
+
+  config = lib.mkIf cfg.enable {
+    services.ratbagd.enable = cfg.mouse.enable;
 
     programs = {
-      gamemode.enable = true; # Performance increase through niceness while gaming.
-      gamescope.enable = true; # Wayland steam-compositor
+      gamemode.enable = true;
+      gamescope = {
+        enable = true;
+        capSysNice = true;
+      };
       steam = {
         enable = true;
-        package = pkgs.steam.override {
-          extraPkgs =
-            p:
-            builtins.attrValues {
-              inherit (p)
-                gamemode
-                mangohud # Fps widget ingame
-                ;
-            };
+        extraPackages = builtins.attrValues {
+          inherit (pkgs) gamemode mangohud;
         };
         gamescopeSession.enable = true;
-        # Compatiblility tools accessable for steam
         extraCompatPackages = builtins.attrValues {
           inherit (pkgs) proton-ge-bin;
         };
+        protontricks.enable = true;
       };
     };
 
-    environment.systemPackages = builtins.attrValues {
-      inherit (pkgs)
-        adwsteamgtk # Gnome theme for steam
-        winetricks # DLL libary collection
-        ;
-      inherit (pkgs.wineWowPackages) waylandFull; # OpenSouce implementation of WinAPI
-    };
+    environment.systemPackages =
+      builtins.attrValues {
+        inherit (pkgs) lutris umu-launcher;
+      }
+      ++ lib.optionals cfg.mouse.enable [ pkgs.piper ];
   };
 }
