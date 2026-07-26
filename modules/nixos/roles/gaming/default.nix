@@ -17,6 +17,10 @@ in
   config = lib.mkIf cfg.enable {
     services.ratbagd.enable = cfg.mouse.enable;
 
+    # Steam owns the runtime used by Proton 11+. Prevent UMU from attempting to
+    # replace that runtime through its separate updater.
+    environment.sessionVariables.UMU_RUNTIME_UPDATE = "0";
+
     programs = {
       gamemode.enable = true;
       gamescope = {
