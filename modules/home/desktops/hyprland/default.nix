@@ -50,7 +50,16 @@ in
         catppuccin.hyprland.enable = false;
         catppuccin.hyprlock.enable = false;
 
-        services.hyprpaper.enable = true;
+        services.hyprpaper = {
+          enable = true;
+          settings.wallpaper = [
+            {
+              monitor = "";
+              path = toString ../../../../extra/wallpapers/minimal-space.jpg;
+              fit_mode = "cover";
+            }
+          ];
+        };
 
         # xdg.configFile."hypr/xdph.conf".text = ''
         #   screencopy {
