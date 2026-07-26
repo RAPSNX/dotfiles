@@ -38,11 +38,13 @@ in
         done
 
         echo "Loading encryption key for $pool from $key_source"
+        # Refuse an unverified nixberry host key; accepting a new key here
+        # would allow a network attacker to impersonate the key server.
         while true; do
           if key="$(${pkgs.openssh}/bin/ssh \
             -o BatchMode=yes \
             -o ConnectTimeout=10 \
-            -o StrictHostKeyChecking=accept-new \
+            -o StrictHostKeyChecking=yes \
             "$key_source" ulock-agent get)"; then
             break
           fi

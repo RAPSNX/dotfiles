@@ -53,38 +53,6 @@ let
       ];
     };
 
-    suspend = {
-      description = "Suspend resource";
-      shortCut = "s";
-      scopes = gardenerScopes;
-      command = "kubectl";
-      background = true;
-      args = [
-        "annotate"
-        "-n"
-        "$NAMESPACE"
-        "$RESOURCE_NAME"
-        "$NAME"
-        "gardener.cloud/operation=suspend"
-      ];
-    };
-
-    resume = {
-      description = "Resume resource";
-      shortCut = "u";
-      scopes = gardenerScopes;
-      command = "kubectl";
-      background = true;
-      args = [
-        "annotate"
-        "-n"
-        "$NAMESPACE"
-        "$RESOURCE_NAME"
-        "$NAME"
-        "gardener.cloud/operation=resume"
-      ];
-    };
-
     reconcile-seed = {
       description = "Reconcile seed";
       shortCut = "r";

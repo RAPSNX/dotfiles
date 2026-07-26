@@ -5,16 +5,16 @@ let
     mods = "Control";
   };
 
-  kubernetesBinding = {
+  platformBinding = {
     key = "K";
     mods = "Control";
   };
 
   # Keep these as one alternation per mode. This prevents overlapping matches
   # such as a hostname inside a URL from producing duplicate hint labels.
-  generalRegex = ''(?-u)(?:ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh://|ftp://)[^[:space:]<>"\x27{}^\x60]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|\[(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4}\]|(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4}|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|\b[0-9a-fA-F]{7,40}\b|(?:~|\.{1,2})/[^[:space:]<>"\x27\x60]+|/(?:home|etc|var|tmp|usr|opt|run|dev|mnt|root)/[^[:space:]<>"\x27\x60]+|\b(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,}\b|\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+:[^[:space:]<>"\x27\x60]+'';
+  generalRegex = ''(?:ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh://|ftp://)[^[:space:]<>"\x27{}^\x60]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|(?-u:\b)(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}(?-u:\b)|\[(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4}\]|(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4}|(?-u:\b)[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}(?-u:\b)|(?-u:\b)[0-9A-Fa-f]{32}(?-u:\b)|(?:~|\.{1,2})/[^[:space:]<>"\x27\x60]+|/(?:home|etc|var|tmp|usr|opt|run|dev|mnt|root)/[^[:space:]<>"\x27\x60]+|(?-u:\b)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,}(?-u:\b)|(?-u:\b)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+:[^[:space:]<>"\x27\x60]+'';
 
-  kubernetesRegex = ''(?-u)\b[a-z0-9](?:[a-z0-9._-]*[a-z0-9])*(?::[A-Za-z0-9._-]+|@sha256:[0-9a-fA-F]{64})\b|\b[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)+(?::[A-Za-z0-9._-]+|@sha256:[0-9a-fA-F]{64})\b|(?:pods?|deployments?|statefulsets?|daemonsets?|jobs?|cronjobs?|replicasets?|services?|svc|ingresses?|configmaps?|cm|secrets?|namespaces?|ns|nodes?|no|events?|ev|serviceaccounts?|sa|roles?|rolebindings?|customresourcedefinitions?|crds?|shoots?|seeds?|managedseeds?|projects?|clusters?|cloudprofiles?|backupbuckets?|backupentries?|bastions?|containerruntimes?|controlplanes?|dnsrecords?|extensions?|infrastructures?|networks?|operatingsystemconfigs?|workers?|machinedeployments?|machinesets?|machines?|machineclasses?)/[a-z0-9][a-z0-9.-]*[a-z0-9]|(?:context|ctx|namespace|ns)[=:][[:space:]]*[A-Za-z0-9][A-Za-z0-9._-]*|(?:--context|--namespace|-n)[=:[:space:]]*[A-Za-z0-9][A-Za-z0-9._-]*|(?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)+[a-z0-9](?:[-a-z0-9]*[a-z0-9])?/[A-Za-z0-9][A-Za-z0-9_.-]*(?:[=:][[:space:]]*[A-Za-z0-9_.:/-]+)?|\b[A-Za-z][A-Za-z0-9_.-]*=[A-Za-z0-9_.:/-]+\b|\b[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.svc(?:\.cluster\.local)?\b|(?:\[[0-9A-Fa-f:]+\]|(?:[A-Za-z0-9-]+\.)+[A-Za-z0-9-]+|(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}):[0-9]{1,5}'';
+  platformRegex = ''(?-u:\b)shoot-[a-z0-9](?:[-a-z0-9]*[a-z0-9])?(?:-[a-z0-9](?:[-a-z0-9]*[a-z0-9])?)+(?-u:\b)|(?-u:\b)(?:source-)?shoot--[a-z0-9](?:[-a-z0-9]*[a-z0-9])?(?:--[a-z0-9](?:[-a-z0-9]*[a-z0-9])?){1,2}(?-u:\b)|(?-u:\b)[a-z0-9](?:[a-z0-9._-]*[a-z0-9])*(?::[A-Za-z0-9._-]+|@sha256:[0-9a-fA-F]{64})(?-u:\b)|(?-u:\b)[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)+(?::[A-Za-z0-9._-]+|@sha256:[0-9a-fA-F]{64})(?-u:\b)|(?:context|ctx|namespace|ns)[=:][[:space:]]*[A-Za-z0-9][A-Za-z0-9._-]*|(?:--context|--namespace|-n)[=:[:space:]]*[A-Za-z0-9][A-Za-z0-9._-]*|(?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)+[a-z0-9](?:[-a-z0-9]*[a-z0-9])?/[A-Za-z0-9][A-Za-z0-9_.-]*(?:[=:][[:space:]]*[A-Za-z0-9_.:/-]+)?|(?-u:\b)[A-Za-z][A-Za-z0-9_.-]*=[A-Za-z0-9_.:/-]+(?-u:\b)|(?-u:\b)[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.svc(?:\.cluster\.local)?(?-u:\b)|(?:\[[0-9A-Fa-f:]+\]|(?:[A-Za-z0-9-]+\.)+[A-Za-z0-9-]+|(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}):[0-9]{1,5}'';
 
 in
 {
@@ -53,13 +53,13 @@ in
           regex = generalRegex;
         }
 
-        # Kubernetes and Gardener copy hints: resources, selectors,
-        # annotations, contexts, namespaces, endpoints, and images.
+        # Kubernetes and Gardener copy hints: images, Shoot technical IDs,
+        # selectors, annotations, contexts, namespaces, and endpoints.
         {
           action = "Copy";
-          binding = kubernetesBinding;
+          binding = platformBinding;
           post_processing = true;
-          regex = kubernetesRegex;
+          regex = platformRegex;
         }
       ];
 
