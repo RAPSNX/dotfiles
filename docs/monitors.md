@@ -1,9 +1,8 @@
 # Monitor / Workspace setup
 
 `kanshi` is used to match all possible desktop / office setups via profiles.
-These profiles have the primary and secondary display configured, and will execute a script to adapt the workspace pinning.
-This will write its config to `~/.config/hypr/workspaces.conf`, same as `nwg-desktop`.
-`nwg-desktop` can still be used for both monitor and workspace dynamic configuration.
+These profiles configure the primary and secondary display (position, mode, scale) for each known monitor combination.
+`nwg-desktop` can still be used for workspace dynamic configuration.
 
 **To actually change the monitor config, the `kanshi` systemd service needs to be stopped.**
 

@@ -97,7 +97,6 @@ in
 
             source = [
               "${config.xdg.configHome}/hypr/monitors.conf"
-              "${config.xdg.configHome}/hypr/workspaces.conf"
             ];
 
             dwindle = {
