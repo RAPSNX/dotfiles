@@ -49,7 +49,6 @@
       openssh
       libfido2
       keepassxc
-      sops
 
       # Clipboard
       wl-clipboard

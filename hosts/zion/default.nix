@@ -55,8 +55,6 @@
 
   environment = {
     systemPackages = [
-      pkgs.age
-      pkgs.age-plugin-yubikey
       pkgs.qt6.qtwayland
     ];
 
