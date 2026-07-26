@@ -27,6 +27,8 @@
     roles = {
       k3s = true;
     };
+
+    services.ssh = true;
   };
 
   networking = {

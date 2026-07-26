@@ -44,7 +44,6 @@ in
       "/share/zsh" # autocompletion
       "/share/xdg-desktop-portal"
     ];
-    services.openssh.enable = true;
     nix.optimise.automatic = true;
     system.stateVersion = "24.11";
   };

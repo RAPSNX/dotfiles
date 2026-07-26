@@ -25,6 +25,8 @@
       extraOptions = { };
       extraGroups = [ ];
     };
+
+    services.ssh = true;
   };
 
   networking.hostName = "vinox";

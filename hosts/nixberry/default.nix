@@ -20,6 +20,7 @@
     boot.enable = false;
 
     services = {
+      ssh = true;
       tailscale = true;
     };
   };
