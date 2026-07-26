@@ -1,73 +1,69 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
 {
-  home.packages =
-    builtins.attrValues {
-      # Core utility
-      inherit (pkgs)
-        coreutils
-        dnsutils
-        gnumake
-        gnutar
-        gzip
-        unzip
-        gnused
-        gnugrep
-        killall
-        pciutils
-        parallel
+  home.packages = builtins.attrValues {
+    # Core utility
+    inherit (pkgs)
+      coreutils
+      dnsutils
+      gnumake
+      gnutar
+      gzip
+      unzip
+      gnused
+      gnugrep
+      killall
+      pciutils
+      parallel
 
-        # Inspection
-        htop
+      # Inspection
+      htop
 
-        # Network tools
-        inetutils
-        curl
-        wget
+      # Network tools
+      inetutils
+      curl
+      wget
 
-        # Network inspection
-        termshark
-        nmap
-        netcat
-        tcpdump
-        iproute2
+      # Network inspection
+      termshark
+      nmap
+      netcat
+      tcpdump
+      iproute2
 
-        # Text processing
-        jq
-        yq-go
-        gawk
+      # Text processing
+      jq
+      yq-go
+      gawk
 
-        # Find utils
-        fd
-        ripgrep
+      # Find utils
+      fd
+      ripgrep
 
-        # Copy tools
-        rclone
+      # Copy tools
+      rclone
 
-        # SSH / Security
-        openssh
-        libfido2
-        keepassxc
-        sops
+      # SSH / Security
+      openssh
+      libfido2
+      keepassxc
+      sops
 
-        # Clipboard
-        wl-clipboard
+      # Clipboard
+      wl-clipboard
 
-        # AI Shit
-        codex
-        claude-code
-        nodejs
+      # AI Shit
+      codex
+      claude-code
+      nodejs
 
-        # Monitor / I2C com
-        ddcutil
+      # Monitor / I2C com
+      ddcutil
 
-        ;
-    }
-    ++ lib.optional config.roles.work pkgs.gcc;
+      ;
+  };
   programs = {
     bat.enable = true;
     fzf = {
