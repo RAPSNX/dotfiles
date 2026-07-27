@@ -10,6 +10,7 @@
       # Screenshot / Recording
       grimblast
       wf-recorder
+      noisetorch
 
       # Tools
       nwg-displays

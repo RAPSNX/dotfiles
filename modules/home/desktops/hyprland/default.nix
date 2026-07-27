@@ -54,6 +54,26 @@ in
           enable = true;
           settings.wallpaper = [
             {
+              monitor = "eDP-1";
+              path = toString ../../../../extra/wallpapers/anime-city.jpg;
+              fit_mode = "cover";
+            }
+            {
+              monitor = "DP-1";
+              path = toString ../../../../extra/wallpapers/gohan-supersaiyan.png;
+              fit_mode = "cover";
+            }
+            {
+              monitor = "desc:Dell Inc. AW2725Q G2QC174";
+              path = toString ../../../../extra/wallpapers/luffy-gear-5.jpg;
+              fit_mode = "cover";
+            }
+            {
+              monitor = "desc:Samsung Electric Company LC27G7xT H4ZNC00167";
+              path = toString ../../../../extra/wallpapers/one-piece-logo.jpg;
+              fit_mode = "cover";
+            }
+            {
               monitor = "";
               path = toString ../../../../extra/wallpapers/minimal-space.jpg;
               fit_mode = "cover";
