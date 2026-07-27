@@ -34,6 +34,7 @@ in
         deadnix
         nixfmt
         nix-inspect
+        nix-tree
         ;
 
       inherit

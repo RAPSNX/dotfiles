@@ -39,7 +39,7 @@
       };
 
       niri = {
-        enable = true;
+        enable = false;
         autostart = [
           "sleep 3 && mumble" # Need to sleep for tray icon
           "firefox"
@@ -48,7 +48,7 @@
       };
 
       sway = {
-        enable = true;
+        enable = false;
         autostart = [
           "sleep 3 && mumble" # Need to sleep for tray icon
           "firefox"
@@ -69,7 +69,7 @@
   home.packages = builtins.attrValues {
     inherit (pkgs)
       stackit-cli
-      openstackclient-full
+      openstackclient
       vault-bin
       brightnessctl
       ;
