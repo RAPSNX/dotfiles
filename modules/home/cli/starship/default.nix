@@ -20,11 +20,7 @@
         "$git_branch$git_status"
         "[](fg:yellow bg:base)"
         "$git_metrics"
-
-        "$fill"
-
         "$nix_shell"
-        "$shlvl"
 
         "$line_break"
 
