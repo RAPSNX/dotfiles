@@ -28,8 +28,7 @@
           name = "office";
           outputs = [
             {
-              # TODO: test this connector, may overload this config with all possible connectors
-              criteria = "DP-1";
+              criteria = "HP Inc. HP 534pm *";
               mode = "3440x1440@99.98Hz";
               scale = 1.0;
             }

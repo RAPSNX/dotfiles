@@ -72,6 +72,7 @@
       openstackclient
       vault-bin
       brightnessctl
+      gcc
       ;
 
     inherit (pkgs.mypkgs)
