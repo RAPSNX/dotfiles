@@ -1,3 +1,4 @@
+
 [[Snippets]]
   Description = "Reconcile gardener resource"
   Output = ""
@@ -75,3 +76,15 @@
   Output = ""
   Tag = ["pw"]
   command = "LC_ALL=C tr -dc '0-9a-zA-Z' </dev/urandom | head -c30"
+
+[[Snippets]]
+  Description = "jq: regex var for select()"
+  Output = ""
+  Tag = ["jq"]
+  command = "jq --arg regex \"$regex\" '.items[] | select((.status.ID // \"\") | test($regex))' < input.json"
+
+[[Snippets]]
+  Description = "convert jq to yaml"
+  Output = ""
+  Tag = ["jq"]
+  command = "jq '.something' < input.json | yq -p=json -P '.'"
