@@ -11,10 +11,6 @@
       url = "github:hyprwm/hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     neonix = {
       url = "github:rapsnx/neonix";
     };
@@ -72,7 +68,6 @@
 
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
-        inputs.niri.nixosModules.niri
         (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
         ./modules/nix.nix
       ];
@@ -82,7 +77,6 @@
         inputs.neonix.homeManagerModules.neonix
         inputs.krewfile.homeManagerModules.krewfile
         inputs.tflow.homeManagerModules.default
-        inputs.niri.homeModules.niri
         (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
         ./modules/nix.nix
       ];

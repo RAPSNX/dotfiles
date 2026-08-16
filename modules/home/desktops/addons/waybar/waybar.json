@@ -6,10 +6,7 @@
     "modules-left": [
         "custom/logo",
         "hyprland/workspaces",
-        "sway/workspaces",
-        "niri/workspaces",
-        "hyprland/submap",
-        "sway/mode"
+        "hyprland/submap"
     ],
     "modules-center": [
         "clock"
@@ -50,29 +47,6 @@
         "format": "MODE: {}",
         "tooltip": false,
         "always-on": false
-    },
-    "sway/workspaces": {
-        "on-click": "activate",
-        "format": "{icon}",
-        "format-icons": {
-            "1": "",
-            "2": "λ",
-            "3": "",
-            "4": "󰍩"
-        }
-    },
-    "niri/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "1": "",
-            "2": "λ",
-            "3": "",
-            "4": "󰍩"
-        }
-    },
-    "sway/mode": {
-        "format": "MODE: {}",
-        "tooltip": false
     },
     "memory": {
         "interval": 5,

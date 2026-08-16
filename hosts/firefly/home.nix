@@ -37,24 +37,6 @@
           "chromium"
         ];
       };
-
-      niri = {
-        enable = false;
-        autostart = [
-          "sleep 3 && mumble" # Need to sleep for tray icon
-          "firefox"
-          "chromium"
-        ];
-      };
-
-      sway = {
-        enable = false;
-        autostart = [
-          "sleep 3 && mumble" # Need to sleep for tray icon
-          "firefox"
-          "chromium"
-        ];
-      };
     };
 
     cli = {
