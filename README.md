@@ -80,6 +80,7 @@ sudo nixos-install --flake .#zion
 
 - [Gaming and Battle.net](./docs/guides/gaming.md)
 - [Hyprland - Keymap](./docs/reference/hyprland.md#keymap)
+- [Noctalia shell](./docs/reference/noctalia.md)
 - [NVIM - Keymap](https://github.com/RAPSNX/neonix/tree/main/docs/keymap.md)
 
 ## Licenses

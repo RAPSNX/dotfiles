@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -37,6 +42,27 @@
       desktop = true;
       gaming.enable = true;
     };
+  };
+
+  programs.noctalia = {
+    enable = true;
+    recommendedServices.enable = true;
+  };
+
+  programs.noctalia-greeter = {
+    enable = true;
+    settings = {
+      keyboard = {
+        layout = "eu,de,de";
+        variant = ",neo_qwertz,";
+      };
+      idle.timeout = 300;
+    };
+  };
+
+  services.greetd.settings.default_session = {
+    command = lib.mkForce "${config.programs.noctalia-greeter.package}/bin/noctalia-greeter-session --";
+    user = "greeter";
   };
 
   security = {

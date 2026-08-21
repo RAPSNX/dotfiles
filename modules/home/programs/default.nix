@@ -3,12 +3,10 @@
   home.packages = builtins.attrValues {
     # Audio
     inherit (pkgs)
-      pavucontrol
       spek
       vlc
 
       # Screenshot / Recording
-      grimblast
       wf-recorder
       noisetorch
 

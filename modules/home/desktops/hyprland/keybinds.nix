@@ -34,12 +34,14 @@ in
       bind = [
         # Common
         "SUPER,RETURN, exec, alacritty"
-        "SUPER,E, exec, fuzzel"
-        "SUPER,P, exec, wlogout"
+        "SUPER,E, exec, noctalia msg panel-toggle launcher"
+        "SUPER,P, exec, noctalia msg panel-toggle session"
         "SUPER,Q, killactive"
+        "SUPER,V, exec, noctalia msg panel-toggle clipboard"
+        "ALT,TAB, exec, noctalia msg window-switcher"
 
         # Notification center
-        "SUPER,N, exec, swaync-client -t"
+        "SUPER,N, exec, noctalia msg panel-toggle control-center notifications"
 
         # Window actions
         "SUPER,F, fullscreen, 1"
@@ -80,7 +82,7 @@ in
         "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
 
         # Emoji picker
-        "SUPER,period, exec, rofimoji --action copy type"
+        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo"
 
         # Reload kanshi
         "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"

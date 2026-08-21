@@ -33,7 +33,22 @@
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
 
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/cachix";
+    };
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     import-tree.url = "github:vic/import-tree";
+  };
+
+  nixConfig = {
+    extra-substituters = [ "https://noctalia.cachix.org" ];
+    extra-trusted-public-keys = [
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    ];
   };
 
   outputs =
@@ -68,12 +83,15 @@
 
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
+        inputs.noctalia.nixosModules.default
+        inputs.noctalia-greeter.nixosModules.default
         (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
         ./modules/nix.nix
       ];
 
       homeModules = [
         inputs.catppuccin.homeModules.catppuccin
+        inputs.noctalia.homeModules.default
         inputs.neonix.homeManagerModules.neonix
         inputs.krewfile.homeManagerModules.krewfile
         inputs.tflow.homeManagerModules.default

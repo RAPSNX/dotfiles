@@ -13,10 +13,12 @@ General docs for hyprland.
 |---|---|
 | `Super+Enter` | Terminal |
 | `Super+E` | Launcher |
-| `Super+P` | Wlogout |
+| `Super+P` | Noctalia session panel |
 | `Super+Q` | Kill active |
-| `Super+N` | Notification Center |
-| `Super+.` | Emoji picker |
+| `Super+V` | Clipboard history |
+| `Alt+Tab` | Window switcher |
+| `Super+N` | Noctalia notification controls |
+| `Super+.` | Noctalia emoji search |
 
 ## Window
 
@@ -61,7 +63,7 @@ General docs for hyprland.
 |---|---|
 | `Super+Z` | Mumble mute |
 | `Super+Shift+Z` | Mumble deaf |
-| `Super+.` | Emoji picker |
+| `Super+.` | Noctalia emoji search |
 
 ## Resize Mode
 

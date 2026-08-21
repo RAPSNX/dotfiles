@@ -22,15 +22,11 @@
     ];
 
     desktop = {
+      noctalia.enable = true;
+
       hyprland = {
         enable = true;
         configOnly = true;
-
-        hyprlock.enable = false;
-        hypridle = {
-          enable = true;
-          cmd = "/usr/bin/swaylock";
-        };
         autostart = [
           "sleep 3 && mumble" # Need to sleep for tray icon
           "firefox"
