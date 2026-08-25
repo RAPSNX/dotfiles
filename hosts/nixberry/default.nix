@@ -1,12 +1,15 @@
 {
   inputs,
   lib,
+  pkgs,
   ...
 }:
 {
   imports = [
     inputs.nixos-hardware.nixosModules.raspberry-pi-3
   ];
+
+  boot.kernelPackages = pkgs.linuxPackages;
 
   # Host specific configuration
   hostConfig = {
