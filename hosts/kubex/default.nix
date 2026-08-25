@@ -12,6 +12,8 @@
   ];
 
   hostConfig = {
+    cli.starship.enable = true;
+
     boot = {
       enable = true;
       supportedFilesystems = [ "zfs" ];
@@ -42,13 +44,7 @@
     sudo.wheelNeedsPassword = false;
   };
 
-  environment = {
-    variables = {
-      PROMPT = "%m@%n> ";
-      RPROMPT = "%D %T";
-    };
-    systemPackages = [ pkgs.restic ];
-  };
+  environment.systemPackages = [ pkgs.restic ];
 
   nix.settings.trusted-users = [ "@wheel" ]; # need for remote build
 }

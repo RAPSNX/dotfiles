@@ -17,7 +17,6 @@ in
       after = [ "network-online.target" ];
       serviceConfig = {
         Type = "oneshot";
-        User = config.hostConfig.user.name;
         RemainAfterExit = true;
         TimeoutStartSec = "infinity";
       };
@@ -29,7 +28,7 @@ in
 
         echo "Ensuring ZFS pool $pool is imported"
         if ! ${pkgs.zfs}/bin/zpool list -H "$pool" >/dev/null 2>&1; then
-          ${pkgs.sudo}/bin/sudo -n ${pkgs.zfs}/bin/zpool import -aN
+          ${pkgs.zfs}/bin/zpool import -aN
         fi
 
         until ${pkgs.zfs}/bin/zpool list -H "$pool" >/dev/null 2>&1; do
@@ -41,7 +40,7 @@ in
         # Refuse an unverified nixberry host key; accepting a new key here
         # would allow a network attacker to impersonate the key server.
         while true; do
-          if key="$(${pkgs.openssh}/bin/ssh \
+          if key="$(${pkgs.util-linux}/bin/runuser -u ${config.hostConfig.user.name} -- ${pkgs.openssh}/bin/ssh \
             -o BatchMode=yes \
             -o ConnectTimeout=10 \
             -o StrictHostKeyChecking=yes \
@@ -53,7 +52,7 @@ in
           sleep 5
         done
 
-        printf '%s\n' "$key" | ${pkgs.sudo}/bin/sudo -n ${pkgs.zfs}/bin/zfs load-key "$pool"
+        printf '%s\n' "$key" | ${pkgs.zfs}/bin/zfs load-key "$pool"
       '';
     };
 

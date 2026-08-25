@@ -12,8 +12,10 @@
   };
 
   # UMU uses Steam's Proton 11+ runtime instead of maintaining a second copy.
-  xdg.dataFile."umu/steamrt4".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamLinuxRuntime_4";
+  xdg.dataFile."umu/steamrt4" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamLinuxRuntime_4";
+    force = true;
+  };
 
   roles = {
     work = false;

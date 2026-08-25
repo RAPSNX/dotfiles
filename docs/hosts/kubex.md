@@ -35,8 +35,75 @@ The `k3s` role includes a `wait-for-zfs-pool.service` unit that imports `kubex-m
 if needed, then loads its encryption key from `rap@nixberry` before `k3s.service`
 starts.
 
-Because the unit runs non-interactively, `kubex` is configured for passwordless sudo
-for members of the `wheel` group.
+The service performs ZFS operations as root. Its SSH request runs as the `kubex` user
+and needs a dedicated key plus a verified Nixberry host key.
+
+### Configure unattended ZFS key retrieval
+
+Generate a dedicated key on Kubex.
+
+```bash
+sudo install -d -m 0700 -o kubex -g users /var/lib/kubex-zfs-unlock
+sudo -u kubex ssh-keygen -t ed25519 \
+  -f /var/lib/kubex-zfs-unlock/id_ed25519 \
+  -N '' \
+  -C 'kubex-zfs-unlock'
+sudo cat /var/lib/kubex-zfs-unlock/id_ed25519.pub
+```
+
+Add the resulting public key to Nixberry's `rap` account in
+`hosts/nixberry/default.nix`:
+
+```nix
+users.users.rap.openssh.authorizedKeys.keys = [
+  "ssh-ed25519 <KUBEX_ZFS_UNLOCK_PUBLIC_KEY> kubex-zfs-unlock"
+];
+```
+
+On the Nixberry console, obtain its Ed25519 host public key and verify its
+fingerprint through a trusted channel. Do not trust a key obtained only through
+`ssh-keyscan`.
+
+```bash
+sudo cat /etc/ssh/ssh_host_ed25519_key.pub
+sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+```
+
+Declare the verified key in `hosts/kubex/default.nix` so strict host-key checking is
+available to the boot-time service:
+
+```nix
+programs.ssh.knownHosts.nixberry = {
+  hostNames = [ "nixberry" ];
+  publicKey = "ssh-ed25519 <NIXBERRY_ED25519_HOST_PUBLIC_KEY>";
+};
+```
+
+Configure `wait-for-zfs-pool.service` in `modules/nixos/roles/k3s/zfs.nix` to pass
+the dedicated key explicitly when it runs SSH as `kubex`:
+
+```nix
+if key="$(${pkgs.util-linux}/bin/runuser -u ${config.hostConfig.user.name} -- ${pkgs.openssh}/bin/ssh \
+  -i /var/lib/kubex-zfs-unlock/id_ed25519 \
+  -o IdentitiesOnly=yes \
+  -o BatchMode=yes \
+  -o ConnectTimeout=10 \
+  -o StrictHostKeyChecking=yes \
+  "$key_source" ulock-agent get)"; then
+  # ...
+fi
+```
+
+Rebuild Nixberry first to authorize the key, then rebuild Kubex. Before restarting
+the unit, verify the non-interactive request manually:
+
+```bash
+sudo -u kubex ssh \
+  -i /var/lib/kubex-zfs-unlock/id_ed25519 \
+  -o IdentitiesOnly=yes \
+  -o StrictHostKeyChecking=yes \
+  rap@nixberry ulock-agent get
+```
 
 ## Copy kubeconfig
 

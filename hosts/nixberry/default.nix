@@ -13,7 +13,7 @@
 
   # Host specific configuration
   hostConfig = {
-    environment.enableNeonixMini = false;
+    cli.starship.enable = true;
 
     user = {
       name = "rap";
