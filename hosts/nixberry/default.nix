@@ -10,6 +10,8 @@
 
   # Host specific configuration
   hostConfig = {
+    environment.enableNeonixMini = false;
+
     user = {
       name = "rap";
       initialHashedPassword = "$y$j9T$8uQSJbY6w9kjXnj74JKjA1$pWYgNf.gb497suX//oIw6aggEPoD2Xv1kvMKZfDTOU/";
@@ -20,6 +22,7 @@
     boot.enable = false;
 
     services = {
+      nh = false;
       ssh = true;
       tailscale = true;
     };
