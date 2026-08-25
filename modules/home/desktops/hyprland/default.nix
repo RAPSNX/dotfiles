@@ -124,10 +124,6 @@ in
               border_size = 3;
             };
 
-            source = [
-              "${config.xdg.configHome}/hypr/monitors.conf"
-            ];
-
             dwindle = {
               preserve_split = "yes";
               special_scale_factor = 0.8;

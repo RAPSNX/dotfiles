@@ -27,48 +27,49 @@
         }
       '';
 
-      apparmorRuleGen = app: path: ''
-        cat <<EOF >/etc/apparmor.d/${app}-nix
-        ${apparmorRule app path}EOF
-      '';
-
       apparmorProfiles = map (pkg: {
         app = pkg.pname;
         path = lib.getExe pkg;
         content = pkgs.writeText "${pkg.pname}-apparmor-profile" (apparmorRule pkg.pname (lib.getExe pkg));
       }) config.roles.apparmor-gen;
 
-      apparmorProfilesGen = lib.strings.concatStrings (
-        (map (profile: apparmorRuleGen profile.app profile.path) apparmorProfiles)
-        ++ [ "sudo systemctl reload apparmor" ]
-      );
-
-      apparmorProfilesChanged = pkgs.writeShellScript "apparmor-profiles-changed" ''
-        ${lib.strings.concatStringsSep "\n" (
+      apparmorSetupScript = pkgs.writeShellScript "apparmor-gen" ''
+        set -eu
+        ${lib.strings.concatLines (
           map (profile: ''
-            if ! ${lib.getExe' pkgs.diffutils "cmp"} --silent ${profile.content} /etc/apparmor.d/${profile.app}-nix; then
-              exit 0
-            fi
+            cp -f ${profile.content} /etc/apparmor.d/${profile.app}-nix
           '') apparmorProfiles
         )}
-        exit 1
+        if command -v systemctl >/dev/null 2>&1; then
+          systemctl reload apparmor || true
+        fi
       '';
 
       noisetorchExe = lib.getExe pkgs.noisetorch;
-      noisetorchCapsSet = pkgs.writeShellScript "noisetorch-caps-set" ''
-        test "$(${lib.getExe' pkgs.libcap "getcap"} ${noisetorchExe} 2>/dev/null)" = "${noisetorchExe} cap_sys_resource=ep"
-      '';
+      setcapExe = lib.getExe' pkgs.libcap "setcap";
+      getcapExe = lib.getExe' pkgs.libcap "getcap";
+      cmpExe = lib.getExe' pkgs.diffutils "cmp";
     in
     lib.mkIf (config.roles.apparmor-gen != [ ] || config.roles.work) {
       home.activation.roles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${lib.optionalString (config.roles.apparmor-gen != [ ]) ''
-          if ${apparmorProfilesChanged}; then
-            run warnEcho "sudo ${pkgs.writeShellScript "apparmor-gen" apparmorProfilesGen}"
+          apparmor_changed=0
+          ${lib.strings.concatLines (
+            map (profile: ''
+              if ! ${cmpExe} --silent ${profile.content} /etc/apparmor.d/${profile.app}-nix 2>/dev/null; then
+                apparmor_changed=1
+              fi
+            '') apparmorProfiles
+          )}
+          if [[ $apparmor_changed -eq 1 ]]; then
+            warnEcho "AppArmor profiles require an update, run"
+            warnEcho "  sudo ${apparmorSetupScript}"
           fi
         ''}
         ${lib.optionalString config.roles.work ''
-          if ! ${noisetorchCapsSet}; then
-            run warnEcho "sudo setcap 'CAP_SYS_RESOURCE=+ep' ${noisetorchExe}"
+          if [[ "$(${getcapExe} ${noisetorchExe} 2>/dev/null)" != "${noisetorchExe} cap_sys_resource=ep" ]]; then
+            warnEcho "NoiseTorch capabilities are missing, run"
+            warnEcho "  sudo ${setcapExe} 'CAP_SYS_RESOURCE=+ep' ${noisetorchExe}"
           fi
         ''}
       '';

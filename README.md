@@ -78,8 +78,8 @@ sudo nixos-install --flake .#zion
 
 ## :open_book: Docs
 
-- [Gaming and Battle.net](./docs/gaming.md)
-- [Hyprland - Keymap](./docs/hyprland.md#keymap)
+- [Gaming and Battle.net](./docs/guides/gaming.md)
+- [Hyprland - Keymap](./docs/reference/hyprland.md#keymap)
 - [NVIM - Keymap](https://github.com/RAPSNX/neonix/tree/main/docs/keymap.md)
 
 ## Licenses
