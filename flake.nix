@@ -68,7 +68,7 @@
 
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
-        (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
+        (inputs.import-tree ./modules/nixos)
         ./modules/nix.nix
       ];
 
@@ -77,7 +77,7 @@
         inputs.neonix.homeManagerModules.neonix
         inputs.krewfile.homeManagerModules.krewfile
         inputs.tflow.homeManagerModules.default
-        (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
+        (inputs.import-tree ./modules/home)
         ./modules/nix.nix
       ];
     in

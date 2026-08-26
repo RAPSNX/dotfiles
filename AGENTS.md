@@ -8,7 +8,7 @@ Repository guidelines and operational instructions for AI agents working in this
 
 ## Overview & Architecture
 - **Nix Flake & Home-Manager:** Declarative configuration managing multi-system NixOS hosts and standalone Home-Manager targets.
-- **Module Discovery:** Modules in `modules/nixos/` and `modules/home/` are automatically discovered via `import-tree` matching `default.nix`.
+- **Module Discovery:** Modules in `modules/nixos/` and `modules/home/` are automatically discovered via `import-tree`.
 - **Directory Structure:**
   - `hosts/<host>/`: Host-specific entrypoints (`default.nix` for NixOS, `home.nix` for Home-Manager).
   - `modules/`: Reusable NixOS and Home-Manager modules.

@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   config = {
     nixpkgs = {
       config = {
@@ -33,7 +34,7 @@
       };
 
       # Add nixpkgs input to NIX_PATH, to make nix2 commands consistent with the flake.
-      nixPath = ["nixpkgs=${inputs.nixpkgs.outPath}"];
+      nixPath = [ "nixpkgs=${inputs.nixpkgs.outPath}" ];
     };
   };
 }
