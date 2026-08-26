@@ -122,6 +122,8 @@ in
               gaps_in = 8;
               gaps_out = 10;
               border_size = 3;
+              "col.active_border" = "rgba(cba6f7ee) rgba(89b4faee) 45deg";
+              "col.inactive_border" = "rgba(585b70aa)";
             };
 
             dwindle = {

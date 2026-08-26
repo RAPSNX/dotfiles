@@ -11,17 +11,25 @@
     theme = {
       name = "Catppuccin-GTK-Mauve-Dark";
       package = pkgs.magnetic-catppuccin-gtk.override {
-        tweaks = [ "black" ];
         accent = [ "mauve" ];
       };
     };
 
-    # iconTheme = {
-    #   name = "Papirus-Dark";
-    #   package = pkgs.catppuccin-papirus-folders;
-    # };
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+    };
+
+    gtk4.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+    };
 
     gtk4.theme = null; # Legacy default due to stateVersion
+  };
+
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
   };
 
   home =
