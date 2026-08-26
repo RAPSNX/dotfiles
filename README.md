@@ -8,7 +8,7 @@
 ![Neovim](https://img.shields.io/badge/editor-neovim-%23f5e0dc?style=for-the-badge&color=a6e3a1&logo=neovim&logoColor=white)
 ![Love](https://img.shields.io/static/v1?logoColor=d8dee9&label=Built%20With&message=Love%20%E2%9D%A4%EF%B8%8F&color=cba6f7&style=for-the-badge)
 
-<img width="512" src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/mocha.png"></img>
+<img width="512" src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png"></img>
 
 This is my ever-evolving dotfiles repository, used to manage my desktop workstation, a MacBook Pro, and any Linux devbox capable of running Nix.
 This repository is constantly improved or changed in some way.
