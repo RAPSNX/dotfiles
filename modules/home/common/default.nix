@@ -1,7 +1,5 @@
 { lib, ... }:
 {
-  imports = [ ./roles.nix ];
-
   programs.home-manager.enable = true;
   xdg.enable = true;
 

@@ -19,7 +19,7 @@
 **Module structure**
 
 - It defines a `option` and `config` for it.
-- Every module has a `default.nix` which imports all module related files.
+- Modules are organized into clean 2-level category files (e.g. `cli/atuin.nix`, `browsers/firefox.nix`) and discovered automatically.
 
 
 ### `extra/`

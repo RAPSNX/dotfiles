@@ -8,5 +8,5 @@ final: _: {
 
   # Add my own packages also to pkgs
   # Use final here, to provide the "final" dependencies to build my packages.
-  mypkgs = import ../packages {pkgs = final;};
+  mypkgs = import ../packages { pkgs = final; };
 }

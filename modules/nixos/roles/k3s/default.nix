@@ -13,12 +13,6 @@ let
   '';
 in
 {
-  imports = [
-    ./service.nix
-    ./network.nix
-    ./zfs.nix
-  ];
-
   options.hostConfig.roles.k3s = lib.mkEnableOption "Enable k3s cluster configuration.";
 
   config = lib.mkIf cfg {
