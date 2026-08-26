@@ -3,13 +3,14 @@ let
   csshacks = pkgs.fetchFromGitHub {
     owner = "MrOtherGuy";
     repo = "firefox-csshacks";
-    rev = "bedf5da5134360f5031dbd5ea78f0ccb2937c99b";
-    sha256 = "sha256-XmBzgKFCHz3uE45NhUpbAYi4OP939wE8biufgudDzrc=";
+    rev = "d61130b4f4d056daa7018948193f1356e14841c2";
+    sha256 = "sha256-+6rNH0DFL72thjDCsmptibrnxcsg8jxjyhuhgqR7RMQ=";
   };
 in
 {
   programs.firefox = {
     enable = true;
+    configPath = ".mozilla/firefox";
     profiles.default = {
       name = "Default";
 
@@ -40,6 +41,8 @@ in
 
         "widget.use-xdg-desktop-portal.file-picker" = 0; # Use new gtk file picker instead of legacy one
 
+        "widget.wayland.fractional-scale.enabled" = false; # Disable buggy scaling
+
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         "layers.acceleration.force-enabled" = true;
         "gfx.webrender.all" = true;
@@ -49,7 +52,7 @@ in
       };
 
       userChrome = ''
-        @import url(${csshacks}/chrome/hide_tabs_toolbar_v2.css)
+        @import url(${csshacks}/chrome/hide_tabs_toolbar_v2.css);
       '';
 
       search = {

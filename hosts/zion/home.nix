@@ -11,6 +11,12 @@
     stateVersion = lib.mkDefault "22.05";
   };
 
+  # UMU uses Steam's Proton 11+ runtime instead of maintaining a second copy.
+  xdg.dataFile."umu/steamrt4" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamLinuxRuntime_4";
+    force = true;
+  };
+
   roles = {
     work = false;
     email = "mail@rapsn.me";
@@ -31,10 +37,6 @@
           "ddcutil --display 2 setvcp 60 0x09" # Focus secondary display
         ];
       };
-    };
-
-    desktop.niri = {
-      enable = true;
     };
   };
 }

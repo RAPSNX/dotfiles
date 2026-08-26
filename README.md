@@ -8,7 +8,7 @@
 ![Neovim](https://img.shields.io/badge/editor-neovim-%23f5e0dc?style=for-the-badge&color=a6e3a1&logo=neovim&logoColor=white)
 ![Love](https://img.shields.io/static/v1?logoColor=d8dee9&label=Built%20With&message=Love%20%E2%9D%A4%EF%B8%8F&color=cba6f7&style=for-the-badge)
 
-<img width="512" src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png"></img>
+<img width="512" src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/mocha.png"></img>
 
 This is my ever-evolving dotfiles repository, used to manage my desktop workstation, a MacBook Pro, and any Linux devbox capable of running Nix.
 This repository is constantly improved or changed in some way.
@@ -45,9 +45,9 @@ nh home switch -c nix@firefly .
 # nix build installer iso
 nix build .#nixosConfigurations.vinox.config.system.build.isoImage
 
-# nh remote switch
-nh os switch --hostname kubex . -d always --target-host kubex
-nh os switch --hostname nixberry . -d always --target-host <IP>
+# nh remote switch / update
+nh os boot --hostname kubex . -d always --target-host kubex
+nh os boot --hostname nixberry . -d always --target-host <IP>
 
 # nix remote switch
 nixos-rebuild switch --flake .#kubex --target-host 192.168.55.10 --sudo
@@ -78,7 +78,8 @@ sudo nixos-install --flake .#zion
 
 ## :open_book: Docs
 
-- [Hyprland - Keymap](./docs/hyprland.md#keymap)
+- [Gaming and Battle.net](./docs/guides/gaming.md)
+- [Hyprland - Keymap](./docs/reference/hyprland.md#keymap)
 - [NVIM - Keymap](https://github.com/RAPSNX/neonix/tree/main/docs/keymap.md)
 
 ## Licenses

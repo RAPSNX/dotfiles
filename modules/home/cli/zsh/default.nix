@@ -13,6 +13,10 @@
       inherit (pkgs) zsh-completions;
     };
 
+    home.sessionPath = [
+      "$HOME/.local/bin"
+    ];
+
     programs.zsh = {
       enable = true;
 
@@ -43,7 +47,7 @@
       initContent = lib.mkMerge [
         (lib.mkOrder 500 "")
         (lib.mkOrder 1000 ''
-          export GOPATH=$(go env GOPATH)
+          export GOPATH="''${GOPATH:-$HOME/go}"
           ${config.roles.cli.zsh.zshrc}
         '')
         (lib.mkOrder 1500 "")
@@ -52,8 +56,8 @@
       shellAliases = {
         # Overwrites
         cat = "bat";
-        ls = "exa --icons";
-        ll = "exa --icons -la";
+        ls = "exa --icons=auto";
+        ll = "exa --icons=auto -la";
         cd = "z";
         j = "z";
         n = "nix-shell -p";
@@ -71,6 +75,9 @@
         kk = "k9s -c pods";
         kns = "kubectl ns";
         selc = "source selc_";
+
+        pett = "pet clip -t";
+        petc = "pet  -t";
 
         clean = "nix-collect-garbage -d && nix-store --gc && nix-store --verify --check-contents --repair";
       };

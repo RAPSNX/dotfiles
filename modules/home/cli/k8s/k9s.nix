@@ -4,6 +4,23 @@
   ...
 }:
 let
+  gardenerScopes = [
+    "shoots"
+    # all resources in extensions.gardener.cloud/v1alpha1
+    "backupbuckets"
+    "backupentries"
+    "bastions"
+    "clusters"
+    "containerruntimes"
+    "controlplanes"
+    "dnsrecords"
+    "extensions"
+    "infrastructures"
+    "networks"
+    "operatingsystemconfigs"
+    "workers"
+  ];
+
   defaultPlugins = {
     edit-secret = {
       description = "Edit Decoded Secret";
@@ -23,22 +40,7 @@ let
     reconcile = {
       description = "Reconcile resource";
       shortCut = "r";
-      scopes = [
-        "shoots"
-        # all resources in extensions.gardener.cloud/v1alpha1
-        "backupbuckets"
-        "backupentries"
-        "bastions"
-        "clusters"
-        "containerruntimes"
-        "controlplanes"
-        "dnsrecords"
-        "extensions"
-        "infrastructures"
-        "networks"
-        "operatingsystemconfigs"
-        "workers"
-      ];
+      scopes = gardenerScopes;
       command = "kubectl";
       background = true;
       args = [

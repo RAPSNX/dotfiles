@@ -1,10 +1,32 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
   cfg = config.roles.desktop.hyprland;
+  toggleFirefox = pkgs.writeShellScriptBin "toggleFirefox" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    CLASS="firefox"
+    DEDICATED_WS="3"
+
+    current_ws="$(hyprctl activeworkspace -j | jq -r '.id')"
+
+    firefox_on_current="$(
+      hyprctl clients -j | jq -r --arg class "$CLASS" --argjson ws "$current_ws" '
+        any(.[]; (.class | ascii_downcase) == $class and .workspace.id == $ws)
+      '
+    )"
+
+    if [[ "$firefox_on_current" == "true" ]]; then
+      hyprctl dispatch movetoworkspacesilent "$DEDICATED_WS,class:$CLASS"
+    else
+      hyprctl dispatch movetoworkspace "+0,class:$CLASS"
+    fi
+  '';
 in
 {
   config = lib.mkIf cfg.enable {
@@ -45,10 +67,6 @@ in
         "SUPER,3, workspace, 3"
         "SUPER,4, workspace, 4"
         "SUPER,5, workspace, 5"
-        "SUPER,6, workspace, 6"
-        "SUPER,7, workspace, 7"
-        "SUPER,8, workspace, 8"
-        "SUPER,9, workspace, 9"
 
         # Workpace handling sratchy
         "SUPER,O, togglespecialworkspace, scratchy"
@@ -57,16 +75,15 @@ in
         "SUPER SHIFT,M, movetoworkspace, special:aux"
 
         # -- Programs
-
         # Mumble
         "SUPER,Z, exec, mumble rpc togglemute"
         "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
 
         # Emoji picker
-        "SUPER,period, exec, rofimoji --action copy --action type"
+        "SUPER,period, exec, rofimoji --action copy type"
 
-        # Emoji picker
-        "SUPER,I, exec, systemctl restart --user kanshi.service"
+        # Reload kanshi
+        "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
       ];
 
       extraConfig = ''
@@ -91,10 +108,8 @@ in
           bind = , escape, submap, reset
         submap = reset
 
-
         # Window mode
         bind = SUPER, G, submap, windows
-
         submap = windows
           bind = , Q, movetoworkspace, 1
           bind = , Q, submap, reset
@@ -108,21 +123,12 @@ in
           bind = , R, movetoworkspace, 4
           bind = , R, submap, reset
 
-          bind = , B, movetoworkspace, +0,class:firefox
-          bind = , B, submap, reset
-
-          bind = SHIFT, B, movetoworkspacesilent, 3,class:firefox
-          bind = SHIFT, B, submap, reset
+          # Special app toggle
+          bind = , B, exec, ${lib.getExe toggleFirefox}
 
           bind = , return, submap, reset
           bind = , escape, submap, reset
         submap = reset
-
-        # Lid closed: disable internal laptop display
-        bindl = , switch:on:Lid Switch, exec, hyprctl keyword monitor "eDP-1, disable"
-
-        # Lid opened: enable internal laptop display again
-        bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, 1920x1200@60, 0x0, 1"
       '';
     };
   };

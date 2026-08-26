@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -8,14 +9,15 @@
     inputs.nixos-hardware.nixosModules.raspberry-pi-3
   ];
 
+  boot.kernelPackages = pkgs.linuxPackages;
+
   # Host specific configuration
   hostConfig = {
+    cli.starship.enable = true;
+
     user = {
       name = "rap";
       initialHashedPassword = "$y$j9T$8uQSJbY6w9kjXnj74JKjA1$pWYgNf.gb497suX//oIw6aggEPoD2Xv1kvMKZfDTOU/";
-      keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGqKYXW07z0llbDKRIakLD1PjHe3HxK9iu6czXs+ZU7v techkey@rapsn"
-      ];
       extraOptions = { };
       extraGroups = [ ];
     };
@@ -23,6 +25,8 @@
     boot.enable = false;
 
     services = {
+      nh = false;
+      ssh = true;
       tailscale = true;
     };
   };

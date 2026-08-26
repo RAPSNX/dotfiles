@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   home.packages = builtins.attrValues {
     # Core utility
@@ -46,13 +49,29 @@
       openssh
       libfido2
       keepassxc
-      sops
 
       # Clipboard
       wl-clipboard
 
+      # AI Shit
+      codex
+      claude-code
+      nodejs
+
       # Monitor / I2C com
       ddcutil
+
       ;
+  };
+  programs = {
+    bat.enable = true;
+    fzf = {
+      enable = true;
+      historyWidget.command = "";
+    };
+    btop.enable = true;
+    zoxide.enable = true;
+    neonix.enable = true;
+    eza.enable = true;
   };
 }

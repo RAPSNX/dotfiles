@@ -26,13 +26,15 @@ nix develop
 switch-firefly
 ```
 
-4. Create `hyprland` desktop file.
+4. Create Hyprland desktop file.
+
+`firefly` uses `roles.desktop.hyprland.configOnly = true`, so Home Manager only writes Hyprland configuration. Hyprland itself must come from the cppiber PPA and the display manager must start the APT/PPA binary directly.
 
 ```bash
 echo "[Desktop Entry]
 Name=Hyprland
 Comment=An intelligent dynamic tiling Wayland compositor
-Exec=/home/$USER/.nix-profile/bin/start-hyprland
+Exec=/usr/bin/Hyprland
 Type=Application" | sudo tee /usr/share/wayland-sessions/hyprland.desktop
 ```
 
@@ -82,12 +84,30 @@ dconf read /org/gnome/desktop/interface/gtk-theme # Read the actual name
 Those programs are installed via apt, since they do not work within `nix`.
 
 ```bash
-# TODO: Check why hyprlock not working
 sudo add-apt-repository ppa:cppiber/hyprland
 sudo apt update
 sudo apt -y install \
-  xdg-desktop-portal-wlr \
+  hyprland \
+  xdg-desktop-portal \
+  xdg-desktop-portal-hyprland \
+  xdg-desktop-portal-gtk \
   mumble \
   swaylock \
   podman
 ```
+
+Home Manager must not manage Hyprland or portal packages on `firefly`. Verify the active setup after switching:
+
+```bash
+readlink -f "$(command -v Hyprland)"
+systemctl --user cat xdg-desktop-portal*.service
+systemctl --user show-environment | grep NIX_XDG_DESKTOP_PORTAL_DIR
+find ~/.config/xdg-desktop-portal ~/.nix-profile/share/xdg-desktop-portal -maxdepth 3 -type f 2>/dev/null
+```
+
+Expected results:
+
+- `Hyprland` resolves to `/usr/bin/Hyprland`.
+- Portal services come from the host packages, not Home Manager-generated user units.
+- `NIX_XDG_DESKTOP_PORTAL_DIR` is absent from the user systemd environment.
+- The `find` command does not show Home Manager-generated portal config under `~/.config/xdg-desktop-portal` or Nix profile portal definitions under `~/.nix-profile/share/xdg-desktop-portal`.

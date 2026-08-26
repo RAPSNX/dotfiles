@@ -24,8 +24,9 @@
       initialHashedPassword = "";
       extraOptions = { };
       extraGroups = [ ];
-      keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGqKYXW07z0llbDKRIakLD1PjHe3HxK9iu6czXs+ZU7v" ];
     };
+
+    services.ssh = true;
   };
 
   networking.hostName = "vinox";

@@ -9,6 +9,7 @@
     commandLineArgs = [
       "--enable-features=UseOzonePlatform"
       "--ozone-platform=wayland"
+      "--disable-features=WebRtcAllowInputVolumeAdjustment"
     ];
   };
 }

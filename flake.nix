@@ -12,10 +12,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     neonix = {
-      url = "github:rgroemmer/neonix";
+      url = "github:rapsnx/neonix";
     };
     krewfile = {
       url = "github:brumhard/krewfile";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    tflow = {
+      url = "github:rapsnx/tflow";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -28,16 +32,6 @@
     };
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
-
-    niri = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nfsm = {
-      # Niri fullscreen manager
-      url = "github:gvolpe/nfsm";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     import-tree.url = "github:vic/import-tree";
   };
@@ -61,7 +55,6 @@
 
       overlays = [
         (import ./overlays)
-        inputs.niri.overlays.niri
       ];
 
       pkgsFor = lib.genAttrs systems (
@@ -75,7 +68,6 @@
 
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
-        inputs.niri.nixosModules.niri
         (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
         ./modules/nix.nix
       ];
@@ -84,7 +76,7 @@
         inputs.catppuccin.homeModules.catppuccin
         inputs.neonix.homeManagerModules.neonix
         inputs.krewfile.homeManagerModules.krewfile
-        inputs.niri.homeModules.niri
+        inputs.tflow.homeManagerModules.default
         (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
         ./modules/nix.nix
       ];

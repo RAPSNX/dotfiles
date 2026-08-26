@@ -26,14 +26,13 @@ in
 
       kernelParams = [
         "quiet"
-        "splash"
         "boot.shell_on_fail"
         "udev.log_priority=3"
         "rd.systemd.show_status=auto"
       ];
 
       loader = {
-        timeout = lib.mkDefault 3;
+        timeout = lib.mkDefault 0;
 
         systemd-boot = {
           enable = true;
