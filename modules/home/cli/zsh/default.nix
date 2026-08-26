@@ -47,7 +47,7 @@
       initContent = lib.mkMerge [
         (lib.mkOrder 500 "")
         (lib.mkOrder 1000 ''
-          export GOPATH=$(go env GOPATH)
+          export GOPATH="''${GOPATH:-$HOME/go}"
           ${config.roles.cli.zsh.zshrc}
         '')
         (lib.mkOrder 1500 "")

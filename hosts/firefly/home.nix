@@ -41,8 +41,13 @@
 
     cli = {
       zsh.zshrc = ''
-        [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID=$(uuidgen)
-        source <(gardenctl completion zsh)
+        [ -n "$GCTL_SESSION_ID" ] || [ -n "$TERM_SESSION_ID" ] || export GCTL_SESSION_ID="$(< /proc/sys/kernel/random/uuid)"
+        GCTL_CACHE="''${XDG_CACHE_HOME:-$HOME/.cache}/gardenctl/completion.zsh"
+        if [ ! -f "$GCTL_CACHE" ]; then
+          mkdir -p "''${GCTL_CACHE%/*}"
+          gardenctl completion zsh > "$GCTL_CACHE" 2>/dev/null
+        fi
+        [ -f "$GCTL_CACHE" ] && source "$GCTL_CACHE"
         eval $(gardenctl kubectl-env zsh)
       '';
     };

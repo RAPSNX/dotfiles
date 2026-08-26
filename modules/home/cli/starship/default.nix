@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   ...
 }:
 {
@@ -8,7 +7,27 @@
     enable = true;
     settings = {
       add_newline = true;
-      command_timeout = 2000;
+      command_timeout = 500;
+      palette = "catppuccin_mocha";
+
+      palettes.catppuccin_mocha = {
+        base = "#1e1e2e";
+        mantle = "#181825";
+        crust = "#11111b";
+        text = "#cdd6f4";
+        blue = "#89b4fa";
+        lavender = "#b4befe";
+        sapphire = "#74c7ec";
+        sky = "#89dceb";
+        teal = "#94e2d5";
+        green = "#a6e3a1";
+        yellow = "#f9e2af";
+        peach = "#fab387";
+        maroon = "#eba0ac";
+        red = "#f38ba8";
+        mauve = "#cba6f7";
+        pink = "#f5c2e7";
+      };
 
       # saubere Powerline-Form mit Catppuccin-Farben
       format = lib.concatStrings [
@@ -17,9 +36,9 @@
         "[](fg:blue bg:teal)"
         "$directory"
         "[](fg:teal bg:yellow)"
-        "$git_branch$git_status"
+        "$git_branch"
         "[](fg:yellow bg:base)"
-        "$git_metrics"
+        "$git_status"
         "$nix_shell"
 
         "$line_break"
@@ -29,8 +48,8 @@
 
       right_format = lib.concatStrings [
         "$kubernetes"
-        "\${custom.openstack}"
-        "\${custom.proxy}"
+        "\${env_var.OS_TENANT_NAME}"
+        "\${env_var.http_proxy}"
         "$cmd_duration"
       ];
 
@@ -65,25 +84,22 @@
       };
 
       git_status = {
-        conflicted = "=$count";
-        ahead = "⇡$count";
-        behind = "⇣$count";
-        diverged = "⇕⇡$ahead_count⇣$behind_count";
-        untracked = "?$count";
-        stashed = "\\$$count";
-        modified = "!$count";
-        staged = "+$count";
-        renamed = "»$count";
-        deleted = "✘$count";
-        format = "([$all_status$ahead_behind ]($style))";
-        style = "fg:base bg:yellow";
+        conflicted = "[=$count ](bold fg:red)";
+        ahead = "[⇡$count ](bold fg:blue)";
+        behind = "[⇣$count ](bold fg:peach)";
+        diverged = "[⇕⇡$ahead_count⇣$behind_count ](bold fg:red)";
+        untracked = "[?$count ](bold fg:sapphire)";
+        stashed = "[📦$count ](bold fg:mauve)";
+        modified = "[!$count ](bold fg:yellow)";
+        staged = "[+$count ](bold fg:green)";
+        renamed = "[»$count ](bold fg:teal)";
+        deleted = "[✘$count ](bold fg:red)";
+        format = "([ $all_status$ahead_behind]($style))";
+        style = "fg:base";
       };
 
       git_metrics = {
-        disabled = false;
-        format = "([ +$added ]($added_style))([-$deleted ]($deleted_style))";
-        added_style = "fg:green bg:base";
-        deleted_style = "fg:red bg:base";
+        disabled = true;
       };
 
       nix_shell = {
@@ -113,32 +129,18 @@
         Ubuntu = " ";
       };
 
-      custom = {
-        proxy = {
-          description = "The currently used proxy";
-          when = ''test -n "$http_proxy"'';
-          command = ''echo "$http_proxy"'';
-          shell = [
-            "${lib.getExe pkgs.bash}"
-            "--noprofile"
-            "--norc"
-          ];
+      env_var = {
+        http_proxy = {
+          variable = "http_proxy";
           symbol = "🔀 ";
           style = "bright-yellow";
-          format = "[$symbol$output]($style) ";
+          format = "[$symbol$env_value]($style) ";
         };
-        openstack = {
-          description = "The currently targeted openstack tenant";
-          when = ''test -n "$OS_TENANT_NAME"'';
-          command = ''echo "$OS_TENANT_NAME"'';
-          shell = [
-            "${lib.getExe pkgs.bash}"
-            "--noprofile"
-            "--norc"
-          ];
+        OS_TENANT_NAME = {
+          variable = "OS_TENANT_NAME";
           symbol = "☁️ ";
           style = "bright-red";
-          format = "[$symbol$output]($style) ";
+          format = "[$symbol$env_value]($style) ";
         };
       };
     };
