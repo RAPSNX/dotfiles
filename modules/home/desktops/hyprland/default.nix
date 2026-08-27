@@ -81,11 +81,13 @@ in
           ];
         };
 
-        # xdg.configFile."hypr/xdph.conf".text = ''
-        #   screencopy {
-        #       force_shm = true
-        #   }
-        # '';
+        xdg.configFile."hypr/xdph.conf".text = ''
+          screencopy {
+              cursor_mode = 2
+              force_shm = 1
+              allow_token_by_default = 1
+          }
+        '';
 
         home.packages = builtins.attrValues {
           inherit (pkgs)
