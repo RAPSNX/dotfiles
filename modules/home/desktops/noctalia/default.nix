@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  inputs ? { },
   ...
 }:
 let
@@ -116,6 +117,12 @@ in
 
     programs.noctalia = {
       enable = true;
+      package = lib.mkDefault (
+        if inputs ? noctalia && inputs.noctalia ? packages then
+          inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+        else
+          pkgs.noctalia
+      );
       systemd.enable = true;
       settings = {
         accessibility.ui_scale = 1.0;
@@ -139,8 +146,11 @@ in
             session_placement = "attached";
           };
           launcher = {
-            categories = true;
+            categories = false;
             show_icons = true;
+            show_app_origin_indicator = false;
+            show_app_actions = false;
+            compact = true;
             sort_by_usage = true;
             provider_prefix = "/";
             providers = {
@@ -260,30 +270,29 @@ in
 
         bar.main = {
           position = "top";
-          thickness = 50;
+          thickness = 42;
           background_opacity = 1.0;
           margin_edge = 0;
           margin_ends = 0;
-          padding = 8;
+          padding = 6;
           widget_spacing = 6;
           reserve_space = true;
           capsule = true;
           capsule_fill = "surface_variant";
           start = [
-            "launcher"
             "workspaces"
           ];
           center = [ "clock" ];
           end = [
             "tray"
-            "sysmon"
+            "cpu"
+            "temp"
+            "ram"
             "network"
             "brightness"
             "volume"
             "battery"
-            "notifications"
             "clipboard"
-            "control-center"
             "session"
           ];
         };
@@ -297,19 +306,35 @@ in
             style = "regular";
             show_labels = true;
             label_source = "id";
+            focused_output_only = false;
+            hide_when_empty = false;
+            labels_only_when_occupied = false;
           };
-          sysmon = {
-            stat = "memory_usage";
-            visualization = "none";
+          cpu = {
             show_value = true;
+            show_glyph = true;
+            visualization = "none";
           };
-          volume.show_label = true;
-          network.show_label = true;
-          brightness.show_label = true;
-          battery.show_label = true;
+          temp = {
+            show_value = true;
+            show_glyph = true;
+            visualization = "none";
+          };
+          ram = {
+            show_value = true;
+            show_glyph = true;
+            visualization = "none";
+          };
+          network = {
+            show_label = true;
+            show_vpn_label = true;
+          };
+          volume.show_label = false;
+          brightness.show_label = false;
+          battery.show_label = false;
           tray = {
-            drawer = true;
-            drawer_columns = 3;
+            drawer = false;
+            hide_passive = false;
           };
         };
       };

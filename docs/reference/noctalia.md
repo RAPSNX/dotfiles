@@ -48,6 +48,8 @@ Remove that marker only when the declarative migration should be run again.
 | `Super+E` | Toggle launcher |
 | `Super+P` | Toggle session panel |
 | `Super+N` | Open notification controls |
-| `Super+V` | Toggle clipboard history |
+| `Alt+V` / `AltGr+V` | Toggle clipboard history |
+| `AltGr+C` | Toggle calendar |
+| `AltGr+S` | Toggle system monitor |
 | `Super+.` | Open emoji search |
 | `Alt+Tab` | Open window switcher |

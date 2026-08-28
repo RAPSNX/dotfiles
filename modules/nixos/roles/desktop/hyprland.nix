@@ -39,6 +39,8 @@ in
       withUWSM = false;
     };
 
+    security.pam.services.noctalia = { };
+
     security.sudo.extraRules = [
       {
         users = [ "greeter" ];

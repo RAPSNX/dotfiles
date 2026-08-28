@@ -91,7 +91,6 @@
 
       homeModules = [
         inputs.catppuccin.homeModules.catppuccin
-        inputs.noctalia.homeModules.default
         inputs.neonix.homeManagerModules.neonix
         inputs.krewfile.homeManagerModules.krewfile
         inputs.tflow.homeManagerModules.default

@@ -69,6 +69,21 @@ Comma-separated list of URLs:
 ```
 
 
+### Noctalia Lockscreen & PAM Setup
+
+On Ubuntu, the Noctalia uses PAM (`login` service) and expects the shadow helper at `/run/wrappers/bin/unix_chkpwd`. Because `/run` is a `tmpfs` (cleared on reboot), use `systemd-tmpfiles` to recreate the symlink automatically on every boot:
+Also the Ubuntu PAM configs use Debian-specific @include macros, which the upstream Linux-PAM library inside the Nix package does not support.
+
+```bash
+printf "d /run/wrappers/bin - - - -\nL+ /run/wrappers/bin/unix_chkpwd - - - - /sbin/unix_chkpwd\n" | sudo tee /etc/tmpfiles.d/nix-wrappers.conf > /dev/null
+sudo systemd-tmpfiles --create /etc/tmpfiles.d/nix-wrappers.conf
+```
+
+```bash
+sudo cp -n /etc/pam.d/login /etc/pam.d/login.bak
+printf "auth    sufficient pam_unix.so try_first_pass nullok\nauth    required   pam_deny.so\naccount required   pam_unix.so\nsession required   pam_unix.so\n" | sudo tee /etc/pam.d/login > /dev/null
+```
+
 ### GTK Theme
 
 `nwg-look` is used to configure theme in multiple locations.
