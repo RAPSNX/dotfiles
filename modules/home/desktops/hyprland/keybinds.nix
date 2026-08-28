@@ -30,108 +30,102 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    wayland.windowManager.hyprland.settings = {
-      bind = [
-        # Common
-        "SUPER,RETURN, exec, alacritty"
-        "SUPER,E, exec, noctalia msg panel-toggle launcher"
-        "SUPER,P, exec, noctalia msg panel-toggle session"
-        "SUPER,Q, killactive"
-        "SUPER,V, exec, noctalia msg panel-toggle clipboard"
-        "ALT,TAB, exec, noctalia msg window-switcher"
+    wayland.windowManager.hyprland.extraLuaFiles."keybinds" = ''
+      -- Common
+      hl.bind("SUPER", "RETURN", "exec, alacritty")
+      hl.bind("SUPER", "E", "exec, noctalia msg panel-toggle launcher")
+      hl.bind("SUPER", "P", "exec, noctalia msg panel-toggle session")
+      hl.bind("SUPER", "Q", "killactive")
+      hl.bind("ALT", "TAB", "exec, noctalia msg window-switcher")
+      hl.bind("ALT", "V", "exec, noctalia msg panel-toggle clipboard")
 
-        # Notification center
-        "SUPER,N, exec, noctalia msg panel-toggle control-center notifications"
+      -- Noctalia panels
+      hl.bind("SUPER", "N", "exec, noctalia msg panel-toggle control-center notifications")
+      hl.bind("MOD5", "C", "exec, noctalia msg panel-toggle control-center calendar")
+      hl.bind("MOD5", "S", "exec, noctalia msg panel-toggle control-center monitor")
+      hl.bind("MOD5", "V", "exec, noctalia msg panel-toggle clipboard")
 
-        # Window actions
-        "SUPER,F, fullscreen, 1"
-        "SUPER+SHIFT,F, fullscreen"
+      -- Window actions
+      hl.bind("SUPER", "F", "fullscreen, 1")
+      hl.bind("SUPER+SHIFT", "F", "fullscreen")
 
-        # Movement
-        "SUPER,H, movefocus, l"
-        "SUPER,J, movefocus, d"
-        "SUPER,K, movefocus, u"
-        "SUPER,L, movefocus, r"
+      -- Movement
+      hl.bind("SUPER", "H", "movefocus, l")
+      hl.bind("SUPER", "J", "movefocus, d")
+      hl.bind("SUPER", "K", "movefocus, u")
+      hl.bind("SUPER", "L", "movefocus, r")
 
-        # Window movement
-        "SUPER+SHIFT,H, movewindow,l"
-        "SUPER+SHIFT,J, movewindow, d"
-        "SUPER+SHIFT,K, movewindow, u"
-        "SUPER+SHIFT,L, movewindow, r"
+      -- Window movement
+      hl.bind("SUPER+SHIFT", "H", "movewindow, l")
+      hl.bind("SUPER+SHIFT", "J", "movewindow, d")
+      hl.bind("SUPER+SHIFT", "K", "movewindow, u")
+      hl.bind("SUPER+SHIFT", "L", "movewindow, r")
 
-        # Layout toggle
-        "SUPER,T, layoutmsg, togglesplit"
-        "SUPER,U, togglefloating,"
+      -- Layout toggle
+      hl.bind("SUPER", "T", "layoutmsg, togglesplit")
+      hl.bind("SUPER", "U", "togglefloating,")
 
-        # Workspace selection
-        "SUPER,1, workspace, 1"
-        "SUPER,2, workspace, 2"
-        "SUPER,3, workspace, 3"
-        "SUPER,4, workspace, 4"
-        "SUPER,5, workspace, 5"
+      -- Workspace selection
+      hl.bind("SUPER", "1", "workspace, 1")
+      hl.bind("SUPER", "2", "workspace, 2")
+      hl.bind("SUPER", "3", "workspace, 3")
+      hl.bind("SUPER", "4", "workspace, 4")
+      hl.bind("SUPER", "5", "workspace, 5")
 
-        # Workpace handling sratchy
-        "SUPER,O, togglespecialworkspace, scratchy"
-        "SUPER,M, togglespecialworkspace, aux"
-        "SUPER SHIFT,O, movetoworkspace, special:scratchy"
-        "SUPER SHIFT,M, movetoworkspace, special:aux"
+      -- Workspace handling scratchy
+      hl.bind("SUPER", "O", "togglespecialworkspace, scratchy")
+      hl.bind("SUPER", "M", "togglespecialworkspace, aux")
+      hl.bind("SUPER SHIFT", "O", "movetoworkspace, special:scratchy")
+      hl.bind("SUPER SHIFT", "M", "movetoworkspace, special:aux")
 
-        # -- Programs
-        # Mumble
-        "SUPER,Z, exec, mumble rpc togglemute"
-        "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
+      -- Programs
+      hl.bind("SUPER", "Z", "exec, mumble rpc togglemute")
+      hl.bind("SUPER+SHIFT", "Z", "exec, mumble rpc toggledeaf")
+      hl.bind("SUPER", "period", 'exec, noctalia msg panel-toggle launcher "/emo "')
+      hl.bind("SUPER+SHIFT", "I", "exec, systemctl restart --user kanshi.service")
 
-        # Emoji picker
-        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo"
+      -- Mouse binds
+      hl.bindm("SUPER", "mouse:272", "movewindow")
+      hl.bindm("SUPER", "mouse:273", "resizewindow")
 
-        # Reload kanshi
-        "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
-      ];
+      -- Resize mode
+      hl.define_submap("resize", function()
+        hl.bind("", "H", "resizeactive, -60 0")
+        hl.bind("", "J", "resizeactive, 0 60")
+        hl.bind("", "K", "resizeactive, 0 -60")
+        hl.bind("", "L", "resizeactive, 60 0")
 
-      extraConfig = ''
-        # Resize mouse
-        bindm = SUPER, mouse:272, movewindow
-        bindm = SUPER, mouse:273, resizewindow
+        hl.bind("SHIFT", "H", "resizeactive, -20 0")
+        hl.bind("SHIFT", "J", "resizeactive, 0 20")
+        hl.bind("SHIFT", "K", "resizeactive, 0 -20")
+        hl.bind("SHIFT", "L", "resizeactive, 20 0")
 
-        # Resize mode
-        bind = SUPER, R, submap, resize
-        submap = resize
-          bind = , H, resizeactive, -60 0
-          bind = , J, resizeactive, 0 60
-          bind = , K, resizeactive, 0 -60
-          bind = , L, resizeactive, 60 0
+        hl.bind("", "return", "submap, reset")
+        hl.bind("", "escape", "submap, reset")
+      end)
+      hl.bind("SUPER", "R", "submap, resize")
 
-          bind = SHIFT, H, resizeactive, -20 0
-          bind = SHIFT, J, resizeactive, 0 20
-          bind = SHIFT, K, resizeactive, 0 -20
-          bind = SHIFT, L, resizeactive, 20 0
+      -- Window mode
+      hl.define_submap("windows", function()
+        hl.bind("", "Q", "movetoworkspace, 1")
+        hl.bind("", "Q", "submap, reset")
 
-          bind = , return, submap, reset
-          bind = , escape, submap, reset
-        submap = reset
+        hl.bind("", "W", "movetoworkspace, 2")
+        hl.bind("", "W", "submap, reset")
 
-        # Window mode
-        bind = SUPER, G, submap, windows
-        submap = windows
-          bind = , Q, movetoworkspace, 1
-          bind = , Q, submap, reset
+        hl.bind("", "E", "movetoworkspace, 3")
+        hl.bind("", "E", "submap, reset")
 
-          bind = , W, movetoworkspace, 2
-          bind = , W, submap, reset
+        hl.bind("", "R", "movetoworkspace, 4")
+        hl.bind("", "R", "submap, reset")
 
-          bind = , E, movetoworkspace, 3
-          bind = , E, submap, reset
+        -- Special app toggle
+        hl.bind("", "B", "exec, ${lib.getExe toggleFirefox}")
 
-          bind = , R, movetoworkspace, 4
-          bind = , R, submap, reset
-
-          # Special app toggle
-          bind = , B, exec, ${lib.getExe toggleFirefox}
-
-          bind = , return, submap, reset
-          bind = , escape, submap, reset
-        submap = reset
-      '';
-    };
+        hl.bind("", "return", "submap, reset")
+        hl.bind("", "escape", "submap, reset")
+      end)
+      hl.bind("SUPER", "G", "submap, windows")
+    '';
   };
 }

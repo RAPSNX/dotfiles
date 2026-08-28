@@ -15,9 +15,12 @@ General docs for hyprland.
 | `Super+E` | Launcher |
 | `Super+P` | Noctalia session panel |
 | `Super+Q` | Kill active |
-| `Super+V` | Clipboard history |
+| `Alt+V` / `AltGr+V` | Clipboard history |
+| `Alt+Shift` | Switch keyboard layout |
 | `Alt+Tab` | Window switcher |
 | `Super+N` | Noctalia notification controls |
+| `AltGr+C` | Noctalia calendar |
+| `AltGr+S` | Noctalia system monitor |
 | `Super+.` | Noctalia emoji search |
 
 ## Window

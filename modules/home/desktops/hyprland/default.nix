@@ -50,7 +50,7 @@ in
 
         wayland.windowManager.hyprland = {
           enable = true;
-          configType = "hyprlang";
+          configType = "lua";
 
           inherit (cfg) package;
 
@@ -59,75 +59,72 @@ in
             variables = [ "--all" ];
           };
 
-          settings = {
-            env = [
-              "XDG_CURRENT_DESKTOP,Hyprland"
-              "XDG_SESSION_DESKTOP,Hyprland"
-              "XDG_SESSION_TYPE,wayland"
-            ];
+          extraLuaFiles = {
+            "settings" = ''
+              -- Environment
+              hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
+              hl.env("XDG_SESSION_DESKTOP", "Hyprland")
+              hl.env("XDG_SESSION_TYPE", "wayland")
 
-            general = {
-              gaps_in = 8;
-              gaps_out = 10;
-              border_size = 3;
-              "col.active_border" = "rgba(cba6f7ee) rgba(89b4faee) 45deg";
-              "col.inactive_border" = "rgba(585b70aa)";
-            };
+              -- General, dwindle, input, xwayland, decoration configuration
+              hl.config({
+                general = {
+                  gaps_in = 8,
+                  gaps_out = 10,
+                  border_size = 3,
+                  ["col.active_border"] = "rgba(cba6f7ee) rgba(89b4faee) 45deg",
+                  ["col.inactive_border"] = "rgba(585b70aa)",
+                },
+                dwindle = {
+                  preserve_split = true,
+                  special_scale_factor = 0.8,
+                },
+                input = {
+                  kb_layout = "eu,de,de",
+                  kb_variant = ",neo_qwertz,",
+                  kb_options = "grp:alt_shift_toggle",
+                  repeat_rate = 40,
+                  repeat_delay = 250,
+                  accel_profile = "flat",
+                  sensitivity = 1,
+                },
+                xwayland = {
+                  force_zero_scaling = true,
+                },
+                decoration = {
+                  rounding = 5,
+                  blur = {
+                    enabled = true,
+                    size = 3,
+                    passes = 2,
+                    ignore_opacity = true,
+                    new_optimizations = true,
+                  },
+                },
+              })
+            '';
 
-            dwindle = {
-              preserve_split = "yes";
-              special_scale_factor = 0.8;
-            };
+            "rules" = ''
+              -- Workspaces
+              hl.workspace("1, monitor:desc:Dell Inc. AW2725Q G2QC174, default:true")
+              hl.workspace("2, monitor:desc:Dell Inc. AW2725Q G2QC174")
+              hl.workspace("3, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167, default:true")
+              hl.workspace("4, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167")
 
-            input = {
-              kb_layout = "eu,de,de";
-              kb_variant = ",neo_qwertz,";
-              repeat_rate = 40;
-              repeat_delay = 250;
-              accel_profile = "flat";
-              sensitivity = 1;
-            };
+              -- Window rules
+              hl.windowrule("match:class ^(firefox)$, workspace 3")
+              hl.windowrule("match:class ^(chromium-browser)$, workspace 4")
+              hl.windowrule("match:class ^(.*mumble.*)$, workspace special:aux silent")
+              hl.windowrule("match:class ^(.*keepassxc.*)$, workspace special:aux silent")
+              hl.windowrule("match:class steam, float yes")
+              hl.windowrule("match:class ^(.*nextcloud.*)$, float yes")
+            '';
 
-            xwayland = {
-              force_zero_scaling = true;
-            };
-
-            decoration = {
-              blur = {
-                enabled = true;
-                size = 3;
-                passes = 2;
-                ignore_opacity = true;
-                new_optimizations = true;
-              };
-
-              rounding = 5;
-            };
-
-            exec-once = [
-              "[ workspace special:scratchy silent ] alacritty -t scratchy"
-              # todoist app
-              "[ workspace special:aux silent ] sleep 2 && chromium --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga"
-            ]
-            ++ cfg.autostart;
-
-            workspace = [
-              "1, monitor:desc:Dell Inc. AW2725Q G2QC174, default:true"
-              "2, monitor:desc:Dell Inc. AW2725Q G2QC174"
-              "3, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167, default:true"
-              "4, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167"
-            ];
-
-            windowrule = [
-              "match:class ^(firefox)$, workspace 3"
-              "match:class ^(chromium-browser)$, workspace 4"
-
-              "match:class ^(.*mumble.*)$, workspace special:aux silent"
-              "match:class ^(.*keepassxc.*)$, workspace special:aux silent"
-
-              "match:class steam, float yes"
-              "match:class ^(.*nextcloud.*)$, float yes"
-            ];
+            "autostart" = ''
+              hl.exec_once("[ workspace special:scratchy silent ] alacritty -t scratchy")
+              hl.exec_once("[ workspace special:aux silent ] sleep 2 && chromium --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga")
+              ${lib.concatMapStringsSep "\n" (cmd: "hl.exec_once(\"${cmd}\")") cfg.autostart}
+            '';
           };
         };
       }
