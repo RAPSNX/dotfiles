@@ -37,13 +37,6 @@ in
       hl.bind("SUPER", "P", "exec, noctalia msg panel-toggle session")
       hl.bind("SUPER", "Q", "killactive")
       hl.bind("ALT", "TAB", "exec, noctalia msg window-switcher")
-      hl.bind("ALT", "V", "exec, noctalia msg panel-toggle clipboard")
-
-      -- Noctalia panels
-      hl.bind("SUPER", "N", "exec, noctalia msg panel-toggle control-center notifications")
-      hl.bind("MOD5", "C", "exec, noctalia msg panel-toggle control-center calendar")
-      hl.bind("MOD5", "S", "exec, noctalia msg panel-toggle control-center monitor")
-      hl.bind("MOD5", "V", "exec, noctalia msg panel-toggle clipboard")
 
       -- Window actions
       hl.bind("SUPER", "F", "fullscreen, 1")
@@ -88,6 +81,34 @@ in
       hl.bindm("SUPER", "mouse:272", "movewindow")
       hl.bindm("SUPER", "mouse:273", "resizewindow")
 
+      -- Noctalia Mode
+      hl.define_submap("noctalia", function()
+        hl.bind("", "n", "exec, noctalia msg panel-toggle control-center notifications; noctalia msg notification-clear-active")
+        hl.bind("", "n", "submap, reset")
+
+        hl.bind("", "m", "exec, noctalia msg panel-toggle control-center monitor; noctalia msg notification-clear-active")
+        hl.bind("", "m", "submap, reset")
+
+        hl.bind("", "c", "exec, noctalia msg panel-toggle control-center calendar; noctalia msg notification-clear-active")
+        hl.bind("", "c", "submap, reset")
+
+        hl.bind("", "s", "exec, noctalia msg screenshot-region; noctalia msg notification-clear-active")
+        hl.bind("", "s", "submap, reset")
+
+        hl.bind("SHIFT", "S", "exec, noctalia msg screenshot-fullscreen; noctalia msg notification-clear-active")
+        hl.bind("SHIFT", "S", "submap, reset")
+
+        hl.bind("", "a", 'exec, ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} --filename -; noctalia msg notification-clear-active')
+        hl.bind("", "a", "submap, reset")
+
+        hl.bind("", "return", "exec, noctalia msg notification-clear-active")
+        hl.bind("", "return", "submap, reset")
+        hl.bind("", "escape", "exec, noctalia msg notification-clear-active")
+        hl.bind("", "escape", "submap, reset")
+      end)
+      hl.bind("SUPER", "N", "exec, noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate'")
+      hl.bind("SUPER", "N", "submap, noctalia")
+
       -- Resize mode
       hl.define_submap("resize", function()
         hl.bind("", "H", "resizeactive, -60 0")
@@ -100,31 +121,42 @@ in
         hl.bind("SHIFT", "K", "resizeactive, 0 -20")
         hl.bind("SHIFT", "L", "resizeactive, 20 0")
 
+        hl.bind("", "return", "exec, noctalia msg notification-clear-active")
         hl.bind("", "return", "submap, reset")
+        hl.bind("", "escape", "exec, noctalia msg notification-clear-active")
         hl.bind("", "escape", "submap, reset")
       end)
+      hl.bind("SUPER", "R", "exec, noctalia msg notification-show 'MODE: RESIZE' '[H/J/K/L] Resize  [Shift+H/J/K/L] Fine  [Esc/Enter] Exit'")
       hl.bind("SUPER", "R", "submap, resize")
 
       -- Window mode
       hl.define_submap("windows", function()
         hl.bind("", "Q", "movetoworkspace, 1")
+        hl.bind("", "Q", "exec, noctalia msg notification-clear-active")
         hl.bind("", "Q", "submap, reset")
 
         hl.bind("", "W", "movetoworkspace, 2")
+        hl.bind("", "W", "exec, noctalia msg notification-clear-active")
         hl.bind("", "W", "submap, reset")
 
         hl.bind("", "E", "movetoworkspace, 3")
+        hl.bind("", "E", "exec, noctalia msg notification-clear-active")
         hl.bind("", "E", "submap, reset")
 
         hl.bind("", "R", "movetoworkspace, 4")
+        hl.bind("", "R", "exec, noctalia msg notification-clear-active")
         hl.bind("", "R", "submap, reset")
 
         -- Special app toggle
-        hl.bind("", "B", "exec, ${lib.getExe toggleFirefox}")
+        hl.bind("", "B", "exec, ${lib.getExe toggleFirefox}; noctalia msg notification-clear-active")
+        hl.bind("", "B", "submap, reset")
 
+        hl.bind("", "return", "exec, noctalia msg notification-clear-active")
         hl.bind("", "return", "submap, reset")
+        hl.bind("", "escape", "exec, noctalia msg notification-clear-active")
         hl.bind("", "escape", "submap, reset")
       end)
+      hl.bind("SUPER", "G", "exec, noctalia msg notification-show 'MODE: WINDOWS' '[Q/W/E/R] Move to WS  [B] Toggle Firefox  [Esc/Enter] Exit'")
       hl.bind("SUPER", "G", "submap, windows")
     '';
   };

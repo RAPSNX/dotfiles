@@ -47,9 +47,6 @@ Remove that marker only when the declarative migration should be run again.
 |---|---|
 | `Super+E` | Toggle launcher |
 | `Super+P` | Toggle session panel |
-| `Super+N` | Open notification controls |
-| `Alt+V` / `AltGr+V` | Toggle clipboard history |
-| `AltGr+C` | Toggle calendar |
-| `AltGr+S` | Toggle system monitor |
+| `Super+N` | Enter Noctalia mode (`n` notifications, `m` monitor, `c` calendar, `s` region capture, `S` full capture, `a` annotate with satty) |
 | `Super+.` | Open emoji search |
 | `Alt+Tab` | Open window switcher |

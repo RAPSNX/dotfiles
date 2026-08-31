@@ -9,6 +9,9 @@
       # Screenshot / Recording
       wf-recorder
       noisetorch
+      satty
+      grim
+      slurp
 
       # Tools
       nwg-displays
