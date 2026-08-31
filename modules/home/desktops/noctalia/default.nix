@@ -52,7 +52,10 @@ let
   };
   sessionActions = [
     {
-      action = "lock";
+      action = "command";
+      label = "Lock";
+      glyph = "lock";
+      command = "swaylock";
       shortcut = "1";
     }
     {
@@ -63,7 +66,10 @@ let
       shortcut = "2";
     }
     {
-      action = "logout";
+      action = "command";
+      label = "Log Out";
+      glyph = "logout";
+      command = "loginctl terminate-session self";
       shortcut = "3";
     }
     {
@@ -72,9 +78,10 @@ let
       variant = "destructive";
     }
     {
-      action = "lock_and_suspend";
+      action = "command";
       label = "Suspend";
       glyph = "power";
+      command = "swaylock && systemctl suspend";
       shortcut = "5";
     }
     {
@@ -205,20 +212,14 @@ in
         };
 
         lockscreen = {
-          enabled = true;
-          lock_before_suspend = true;
-          blurred_desktop = true;
-          blur_intensity = 0.5;
-          tint_intensity = 0.3;
+          enabled = false;
         };
 
         idle = {
           pre_action_fade_seconds = 2.0;
           behavior = {
             lock = {
-              timeout = 300;
-              action = "lock";
-              enabled = true;
+              enabled = false;
             };
             screen-off = {
               timeout = 3600;

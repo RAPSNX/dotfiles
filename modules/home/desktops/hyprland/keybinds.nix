@@ -30,134 +30,138 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    wayland.windowManager.hyprland.extraLuaFiles."keybinds" = ''
-      -- Common
-      hl.bind("SUPER", "RETURN", "exec, alacritty")
-      hl.bind("SUPER", "E", "exec, noctalia msg panel-toggle launcher")
-      hl.bind("SUPER", "P", "exec, noctalia msg panel-toggle session")
-      hl.bind("SUPER", "Q", "killactive")
-      hl.bind("ALT", "TAB", "exec, noctalia msg window-switcher")
+    wayland.windowManager.hyprland.settings = {
+      bind = [
+        # Common
+        "SUPER,RETURN, exec, alacritty"
+        "SUPER,E, exec, noctalia msg panel-toggle launcher"
+        "SUPER,P, exec, noctalia msg panel-toggle session"
+        "SUPER,Q, killactive"
+        "ALT,TAB, exec, noctalia msg window-switcher"
 
-      -- Window actions
-      hl.bind("SUPER", "F", "fullscreen, 1")
-      hl.bind("SUPER+SHIFT", "F", "fullscreen")
+        # Window actions
+        "SUPER,F, fullscreen, 1"
+        "SUPER+SHIFT,F, fullscreen"
 
-      -- Movement
-      hl.bind("SUPER", "H", "movefocus, l")
-      hl.bind("SUPER", "J", "movefocus, d")
-      hl.bind("SUPER", "K", "movefocus, u")
-      hl.bind("SUPER", "L", "movefocus, r")
+        # Movement
+        "SUPER,H, movefocus, l"
+        "SUPER,J, movefocus, d"
+        "SUPER,K, movefocus, u"
+        "SUPER,L, movefocus, r"
 
-      -- Window movement
-      hl.bind("SUPER+SHIFT", "H", "movewindow, l")
-      hl.bind("SUPER+SHIFT", "J", "movewindow, d")
-      hl.bind("SUPER+SHIFT", "K", "movewindow, u")
-      hl.bind("SUPER+SHIFT", "L", "movewindow, r")
+        # Window movement
+        "SUPER+SHIFT,H, movewindow,l"
+        "SUPER+SHIFT,J, movewindow, d"
+        "SUPER+SHIFT,K, movewindow, u"
+        "SUPER+SHIFT,L, movewindow, r"
 
-      -- Layout toggle
-      hl.bind("SUPER", "T", "layoutmsg, togglesplit")
-      hl.bind("SUPER", "U", "togglefloating,")
+        # Layout toggle
+        "SUPER,T, layoutmsg, togglesplit"
+        "SUPER,U, togglefloating,"
 
-      -- Workspace selection
-      hl.bind("SUPER", "1", "workspace, 1")
-      hl.bind("SUPER", "2", "workspace, 2")
-      hl.bind("SUPER", "3", "workspace, 3")
-      hl.bind("SUPER", "4", "workspace, 4")
-      hl.bind("SUPER", "5", "workspace, 5")
+        # Workspace selection
+        "SUPER,1, workspace, 1"
+        "SUPER,2, workspace, 2"
+        "SUPER,3, workspace, 3"
+        "SUPER,4, workspace, 4"
+        "SUPER,5, workspace, 5"
 
-      -- Workspace handling scratchy
-      hl.bind("SUPER", "O", "togglespecialworkspace, scratchy")
-      hl.bind("SUPER", "M", "togglespecialworkspace, aux")
-      hl.bind("SUPER SHIFT", "O", "movetoworkspace, special:scratchy")
-      hl.bind("SUPER SHIFT", "M", "movetoworkspace, special:aux")
+        # Workspace handling scratchy
+        "SUPER,O, togglespecialworkspace, scratchy"
+        "SUPER,M, togglespecialworkspace, aux"
+        "SUPER SHIFT,O, movetoworkspace, special:scratchy"
+        "SUPER SHIFT,M, movetoworkspace, special:aux"
 
-      -- Programs
-      hl.bind("SUPER", "Z", "exec, mumble rpc togglemute")
-      hl.bind("SUPER+SHIFT", "Z", "exec, mumble rpc toggledeaf")
-      hl.bind("SUPER", "period", 'exec, noctalia msg panel-toggle launcher "/emo "')
-      hl.bind("SUPER+SHIFT", "I", "exec, systemctl restart --user kanshi.service")
+        # Programs
+        "SUPER,Z, exec, mumble rpc togglemute"
+        "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
+        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo"
+        "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
+      ];
 
-      -- Mouse binds
-      hl.bindm("SUPER", "mouse:272", "movewindow")
-      hl.bindm("SUPER", "mouse:273", "resizewindow")
+      extraConfig = ''
+        # Mouse binds
+        bindm = SUPER, mouse:272, movewindow
+        bindm = SUPER, mouse:273, resizewindow
 
-      -- Noctalia Mode
-      hl.define_submap("noctalia", function()
-        hl.bind("", "n", "exec, noctalia msg panel-toggle control-center notifications; noctalia msg notification-clear-active")
-        hl.bind("", "n", "submap, reset")
+        # Noctalia Mode
+        bind = SUPER, N, exec, noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate'
+        bind = SUPER, N, submap, noctalia
+        submap = noctalia
+          bind = , n, exec, noctalia msg panel-toggle control-center notifications; noctalia msg notification-clear-active
+          bind = , n, submap, reset
 
-        hl.bind("", "m", "exec, noctalia msg panel-toggle control-center monitor; noctalia msg notification-clear-active")
-        hl.bind("", "m", "submap, reset")
+          bind = , m, exec, noctalia msg panel-toggle control-center monitor; noctalia msg notification-clear-active
+          bind = , m, submap, reset
 
-        hl.bind("", "c", "exec, noctalia msg panel-toggle control-center calendar; noctalia msg notification-clear-active")
-        hl.bind("", "c", "submap, reset")
+          bind = , c, exec, noctalia msg panel-toggle control-center calendar; noctalia msg notification-clear-active
+          bind = , c, submap, reset
 
-        hl.bind("", "s", "exec, noctalia msg screenshot-region; noctalia msg notification-clear-active")
-        hl.bind("", "s", "submap, reset")
+          bind = , s, exec, noctalia msg screenshot-region; noctalia msg notification-clear-active
+          bind = , s, submap, reset
 
-        hl.bind("SHIFT", "S", "exec, noctalia msg screenshot-fullscreen; noctalia msg notification-clear-active")
-        hl.bind("SHIFT", "S", "submap, reset")
+          bind = SHIFT, S, exec, noctalia msg screenshot-fullscreen; noctalia msg notification-clear-active
+          bind = SHIFT, S, submap, reset
 
-        hl.bind("", "a", 'exec, ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} --filename -; noctalia msg notification-clear-active')
-        hl.bind("", "a", "submap, reset")
+          bind = , a, exec, ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} --filename -; noctalia msg notification-clear-active
+          bind = , a, submap, reset
 
-        hl.bind("", "return", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "return", "submap, reset")
-        hl.bind("", "escape", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "escape", "submap, reset")
-      end)
-      hl.bind("SUPER", "N", "exec, noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate'")
-      hl.bind("SUPER", "N", "submap, noctalia")
+          bind = , return, exec, noctalia msg notification-clear-active
+          bind = , return, submap, reset
+          bind = , escape, exec, noctalia msg notification-clear-active
+          bind = , escape, submap, reset
+        submap = reset
 
-      -- Resize mode
-      hl.define_submap("resize", function()
-        hl.bind("", "H", "resizeactive, -60 0")
-        hl.bind("", "J", "resizeactive, 0 60")
-        hl.bind("", "K", "resizeactive, 0 -60")
-        hl.bind("", "L", "resizeactive, 60 0")
+        # Resize mode
+        bind = SUPER, R, exec, noctalia msg notification-show 'MODE: RESIZE' '[H/J/K/L] Resize  [Shift+H/J/K/L] Fine  [Esc/Enter] Exit'
+        bind = SUPER, R, submap, resize
+        submap = resize
+          bind = , H, resizeactive, -60 0
+          bind = , J, resizeactive, 0 60
+          bind = , K, resizeactive, 0 -60
+          bind = , L, resizeactive, 60 0
 
-        hl.bind("SHIFT", "H", "resizeactive, -20 0")
-        hl.bind("SHIFT", "J", "resizeactive, 0 20")
-        hl.bind("SHIFT", "K", "resizeactive, 0 -20")
-        hl.bind("SHIFT", "L", "resizeactive, 20 0")
+          bind = SHIFT, H, resizeactive, -20 0
+          bind = SHIFT, J, resizeactive, 0 20
+          bind = SHIFT, K, resizeactive, 0 -20
+          bind = SHIFT, L, resizeactive, 20 0
 
-        hl.bind("", "return", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "return", "submap, reset")
-        hl.bind("", "escape", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "escape", "submap, reset")
-      end)
-      hl.bind("SUPER", "R", "exec, noctalia msg notification-show 'MODE: RESIZE' '[H/J/K/L] Resize  [Shift+H/J/K/L] Fine  [Esc/Enter] Exit'")
-      hl.bind("SUPER", "R", "submap, resize")
+          bind = , return, exec, noctalia msg notification-clear-active
+          bind = , return, submap, reset
+          bind = , escape, exec, noctalia msg notification-clear-active
+          bind = , escape, submap, reset
+        submap = reset
 
-      -- Window mode
-      hl.define_submap("windows", function()
-        hl.bind("", "Q", "movetoworkspace, 1")
-        hl.bind("", "Q", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "Q", "submap, reset")
+        # Window mode
+        bind = SUPER, G, exec, noctalia msg notification-show 'MODE: WINDOWS' '[Q/W/E/R] Move to WS  [B] Toggle Firefox  [Esc/Enter] Exit'
+        bind = SUPER, G, submap, windows
+        submap = windows
+          bind = , Q, movetoworkspace, 1
+          bind = , Q, exec, noctalia msg notification-clear-active
+          bind = , Q, submap, reset
 
-        hl.bind("", "W", "movetoworkspace, 2")
-        hl.bind("", "W", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "W", "submap, reset")
+          bind = , W, movetoworkspace, 2
+          bind = , W, exec, noctalia msg notification-clear-active
+          bind = , W, submap, reset
 
-        hl.bind("", "E", "movetoworkspace, 3")
-        hl.bind("", "E", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "E", "submap, reset")
+          bind = , E, movetoworkspace, 3
+          bind = , E, exec, noctalia msg notification-clear-active
+          bind = , E, submap, reset
 
-        hl.bind("", "R", "movetoworkspace, 4")
-        hl.bind("", "R", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "R", "submap, reset")
+          bind = , R, movetoworkspace, 4
+          bind = , R, exec, noctalia msg notification-clear-active
+          bind = , R, submap, reset
 
-        -- Special app toggle
-        hl.bind("", "B", "exec, ${lib.getExe toggleFirefox}; noctalia msg notification-clear-active")
-        hl.bind("", "B", "submap, reset")
+          # Special app toggle
+          bind = , B, exec, ${lib.getExe toggleFirefox}; noctalia msg notification-clear-active
+          bind = , B, submap, reset
 
-        hl.bind("", "return", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "return", "submap, reset")
-        hl.bind("", "escape", "exec, noctalia msg notification-clear-active")
-        hl.bind("", "escape", "submap, reset")
-      end)
-      hl.bind("SUPER", "G", "exec, noctalia msg notification-show 'MODE: WINDOWS' '[Q/W/E/R] Move to WS  [B] Toggle Firefox  [Esc/Enter] Exit'")
-      hl.bind("SUPER", "G", "submap, windows")
-    '';
+          bind = , return, exec, noctalia msg notification-clear-active
+          bind = , return, submap, reset
+          bind = , escape, exec, noctalia msg notification-clear-active
+          bind = , escape, submap, reset
+        submap = reset
+      '';
+    };
   };
 }
