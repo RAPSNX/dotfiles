@@ -6,7 +6,61 @@
 }:
 let
   cfg = config.roles.desktop.hyprland;
-  toggleFirefox = pkgs.writeShellScriptBin "toggleFirefox" ''
+
+  inherit (lib.generators) mkLuaInline;
+  toLua = lib.generators.toLua { };
+
+  mkLuaArgs = args: { _args = args; };
+  mkBind =
+    keys: dispatcher: options:
+    mkLuaArgs (
+      [
+        keys
+        (mkLuaInline dispatcher)
+      ]
+      ++ lib.optional (options != { }) options
+    );
+  mkSequence = dispatchers: ''
+    function()
+    ${lib.concatMapStrings (dispatcher: "  hl.dispatch(${dispatcher})\n") dispatchers}end
+  '';
+
+  dispatcher = {
+    exec = command: "hl.dsp.exec_cmd(${toLua command})";
+    focus = direction: "hl.dsp.focus({ direction = ${toLua direction} })";
+    fullscreen = options: "hl.dsp.window.fullscreen(${toLua options})";
+    layout = message: "hl.dsp.layout(${toLua message})";
+    moveWindow = options: "hl.dsp.window.move(${toLua options})";
+    resizeWindow = options: "hl.dsp.window.resize(${toLua options})";
+    selectWorkspace = workspace: "hl.dsp.focus({ workspace = ${toLua workspace} })";
+    submap = name: "hl.dsp.submap(${toLua name})";
+    toggleFloating = "hl.dsp.window.float({ action = \"toggle\" })";
+    toggleSpecialWorkspace = workspace: "hl.dsp.workspace.toggle_special(${toLua workspace})";
+  };
+
+  clearNotification = dispatcher.exec "noctalia msg notification-clear-active";
+  mkModeBind =
+    keys: mode: command:
+    mkBind keys
+      (mkSequence [
+        (dispatcher.exec command)
+        (dispatcher.submap mode)
+      ])
+      {
+        description = "Enter ${mode} mode";
+      };
+  mkSubmapBind =
+    keys: command: description:
+    mkBind keys
+      (mkSequence [
+        (dispatcher.exec command)
+        clearNotification
+      ])
+      {
+        inherit description;
+      };
+
+  toggleFirefox = pkgs.writeShellScriptBin "toggle-firefox" ''
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -30,138 +84,197 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    wayland.windowManager.hyprland.settings = {
-      bind = [
+    wayland.windowManager.hyprland = {
+      settings.bind = [
         # Common
-        "SUPER,RETURN, exec, alacritty"
-        "SUPER,E, exec, noctalia msg panel-toggle launcher"
-        "SUPER,P, exec, noctalia msg panel-toggle session"
-        "SUPER,Q, killactive"
-        "ALT,TAB, exec, noctalia msg window-switcher"
+        (mkBind "SUPER + RETURN" (dispatcher.exec "alacritty") { description = "Open terminal"; })
+        (mkBind "SUPER + E" (dispatcher.exec "noctalia msg panel-toggle launcher") {
+          description = "Open launcher";
+        })
+        (mkBind "SUPER + P" (dispatcher.exec "noctalia msg panel-toggle session") {
+          description = "Open session panel";
+        })
+        (mkBind "SUPER + Q" "hl.dsp.window.close()" { description = "Close active window"; })
+        (mkBind "ALT + TAB" (dispatcher.exec "noctalia msg window-switcher") {
+          description = "Open window switcher";
+        })
 
         # Window actions
-        "SUPER,F, fullscreen, 1"
-        "SUPER+SHIFT,F, fullscreen"
+        (mkBind "SUPER + F" (dispatcher.fullscreen { mode = 1; }) { description = "Toggle fullscreen"; })
+        (mkBind "SUPER + SHIFT + F" (dispatcher.fullscreen { }) { description = "Toggle full fullscreen"; })
 
         # Movement
-        "SUPER,H, movefocus, l"
-        "SUPER,J, movefocus, d"
-        "SUPER,K, movefocus, u"
-        "SUPER,L, movefocus, r"
+        (mkBind "SUPER + H" (dispatcher.focus "left") { description = "Focus left"; })
+        (mkBind "SUPER + J" (dispatcher.focus "down") { description = "Focus down"; })
+        (mkBind "SUPER + K" (dispatcher.focus "up") { description = "Focus up"; })
+        (mkBind "SUPER + L" (dispatcher.focus "right") { description = "Focus right"; })
 
         # Window movement
-        "SUPER+SHIFT,H, movewindow,l"
-        "SUPER+SHIFT,J, movewindow, d"
-        "SUPER+SHIFT,K, movewindow, u"
-        "SUPER+SHIFT,L, movewindow, r"
+        (mkBind "SUPER + SHIFT + H" (dispatcher.moveWindow { direction = "left"; }) {
+          description = "Move window left";
+        })
+        (mkBind "SUPER + SHIFT + J" (dispatcher.moveWindow { direction = "down"; }) {
+          description = "Move window down";
+        })
+        (mkBind "SUPER + SHIFT + K" (dispatcher.moveWindow { direction = "up"; }) {
+          description = "Move window up";
+        })
+        (mkBind "SUPER + SHIFT + L" (dispatcher.moveWindow { direction = "right"; }) {
+          description = "Move window right";
+        })
 
         # Layout toggle
-        "SUPER,T, layoutmsg, togglesplit"
-        "SUPER,U, togglefloating,"
+        (mkBind "SUPER + T" (dispatcher.layout "togglesplit") { description = "Toggle split"; })
+        (mkBind "SUPER + U" dispatcher.toggleFloating { description = "Toggle floating"; })
 
         # Workspace selection
-        "SUPER,1, workspace, 1"
-        "SUPER,2, workspace, 2"
-        "SUPER,3, workspace, 3"
-        "SUPER,4, workspace, 4"
-        "SUPER,5, workspace, 5"
+        (mkBind "SUPER + 1" (dispatcher.selectWorkspace "1") { description = "Focus workspace 1"; })
+        (mkBind "SUPER + 2" (dispatcher.selectWorkspace "2") { description = "Focus workspace 2"; })
+        (mkBind "SUPER + 3" (dispatcher.selectWorkspace "3") { description = "Focus workspace 3"; })
+        (mkBind "SUPER + 4" (dispatcher.selectWorkspace "4") { description = "Focus workspace 4"; })
+        (mkBind "SUPER + 5" (dispatcher.selectWorkspace "5") { description = "Focus workspace 5"; })
 
-        # Workspace handling scratchy
-        "SUPER,O, togglespecialworkspace, scratchy"
-        "SUPER,M, togglespecialworkspace, aux"
-        "SUPER SHIFT,O, movetoworkspace, special:scratchy"
-        "SUPER SHIFT,M, movetoworkspace, special:aux"
+        # Special workspaces
+        (mkBind "SUPER + O" (dispatcher.toggleSpecialWorkspace "scratchy") {
+          description = "Toggle scratch workspace";
+        })
+        (mkBind "SUPER + M" (dispatcher.toggleSpecialWorkspace "aux") {
+          description = "Toggle auxiliary workspace";
+        })
+        (mkBind "SUPER + SHIFT + O" (dispatcher.moveWindow { workspace = "special:scratchy"; }) {
+          description = "Move window to scratch workspace";
+        })
+        (mkBind "SUPER + SHIFT + M" (dispatcher.moveWindow { workspace = "special:aux"; }) {
+          description = "Move window to auxiliary workspace";
+        })
 
         # Programs
-        "SUPER,Z, exec, mumble rpc togglemute"
-        "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
-        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo"
-        "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
+        (mkBind "SUPER + Z" (dispatcher.exec "mumble rpc togglemute") {
+          description = "Toggle Mumble mute";
+        })
+        (mkBind "SUPER + SHIFT + Z" (dispatcher.exec "mumble rpc toggledeaf") {
+          description = "Toggle Mumble deafen";
+        })
+        (mkBind "SUPER + period" (dispatcher.exec "noctalia msg panel-toggle launcher /emo") {
+          description = "Open emoji launcher";
+        })
+        (mkBind "SUPER + SHIFT + I" (dispatcher.exec "systemctl restart --user kanshi.service") {
+          description = "Restart Kanshi";
+        })
+
+        # Mouse
+        (mkBind "SUPER + mouse:272" "hl.dsp.window.drag()" {
+          mouse = true;
+          description = "Move window with mouse";
+        })
+        (mkBind "SUPER + mouse:273" "hl.dsp.window.resize()" {
+          mouse = true;
+          description = "Resize window with mouse";
+        })
+
+        # Modes
+        (mkModeBind "SUPER + N" "noctalia"
+          "noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate'"
+        )
+        (mkModeBind "SUPER + R" "resize"
+          "noctalia msg notification-show 'MODE: RESIZE' '[H/J/K/L] Resize  [Shift+H/J/K/L] Fine  [Esc/Enter] Exit'"
+        )
+        (mkModeBind "SUPER + G" "windows"
+          "noctalia msg notification-show 'MODE: WINDOWS' '[Q/W/E/R] Move to WS  [B] Toggle Firefox  [Esc/Enter] Exit'"
+        )
       ];
 
-      extraConfig = ''
-        # Mouse binds
-        bindm = SUPER, mouse:272, movewindow
-        bindm = SUPER, mouse:273, resizewindow
+      submaps = {
+        noctalia = {
+          onDispatch = "reset";
+          settings.bind = [
+            (mkSubmapBind "N" "noctalia msg panel-toggle control-center notifications" "Open notifications")
+            (mkSubmapBind "M" "noctalia msg panel-toggle control-center monitor" "Open system monitor")
+            (mkSubmapBind "C" "noctalia msg panel-toggle control-center calendar" "Open calendar")
+            (mkSubmapBind "S" "noctalia msg screenshot-region" "Capture region")
+            (mkSubmapBind "SHIFT + S" "noctalia msg screenshot-fullscreen" "Capture screen")
+            (mkSubmapBind "A"
+              "${lib.getExe pkgs.grim} -g \"$(${lib.getExe pkgs.slurp})\" - | ${lib.getExe pkgs.satty} --filename -"
+              "Capture annotated region"
+            )
+            (mkSubmapBind "RETURN" "noctalia msg notification-clear-active" "Exit mode")
+            (mkSubmapBind "ESCAPE" "noctalia msg notification-clear-active" "Exit mode")
+          ];
+        };
 
-        # Noctalia Mode
-        bind = SUPER, N, exec, noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate'
-        bind = SUPER, N, submap, noctalia
-        submap = noctalia
-          bind = , n, exec, noctalia msg panel-toggle control-center notifications; noctalia msg notification-clear-active
-          bind = , n, submap, reset
+        resize = {
+          onDispatch = "reset";
+          settings.bind = [
+            (mkBind "H" (dispatcher.resizeWindow {
+              x = -60;
+              y = 0;
+              relative = true;
+            }) { description = "Resize left"; })
+            (mkBind "J" (dispatcher.resizeWindow {
+              x = 0;
+              y = 60;
+              relative = true;
+            }) { description = "Resize down"; })
+            (mkBind "K" (dispatcher.resizeWindow {
+              x = 0;
+              y = -60;
+              relative = true;
+            }) { description = "Resize up"; })
+            (mkBind "L" (dispatcher.resizeWindow {
+              x = 60;
+              y = 0;
+              relative = true;
+            }) { description = "Resize right"; })
+            (mkBind "SHIFT + H" (dispatcher.resizeWindow {
+              x = -20;
+              y = 0;
+              relative = true;
+            }) { description = "Resize left finely"; })
+            (mkBind "SHIFT + J" (dispatcher.resizeWindow {
+              x = 0;
+              y = 20;
+              relative = true;
+            }) { description = "Resize down finely"; })
+            (mkBind "SHIFT + K" (dispatcher.resizeWindow {
+              x = 0;
+              y = -20;
+              relative = true;
+            }) { description = "Resize up finely"; })
+            (mkBind "SHIFT + L" (dispatcher.resizeWindow {
+              x = 20;
+              y = 0;
+              relative = true;
+            }) { description = "Resize right finely"; })
+            (mkSubmapBind "RETURN" "noctalia msg notification-clear-active" "Exit mode")
+            (mkSubmapBind "ESCAPE" "noctalia msg notification-clear-active" "Exit mode")
+          ];
+        };
 
-          bind = , m, exec, noctalia msg panel-toggle control-center monitor; noctalia msg notification-clear-active
-          bind = , m, submap, reset
-
-          bind = , c, exec, noctalia msg panel-toggle control-center calendar; noctalia msg notification-clear-active
-          bind = , c, submap, reset
-
-          bind = , s, exec, noctalia msg screenshot-region; noctalia msg notification-clear-active
-          bind = , s, submap, reset
-
-          bind = SHIFT, S, exec, noctalia msg screenshot-fullscreen; noctalia msg notification-clear-active
-          bind = SHIFT, S, submap, reset
-
-          bind = , a, exec, ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} --filename -; noctalia msg notification-clear-active
-          bind = , a, submap, reset
-
-          bind = , return, exec, noctalia msg notification-clear-active
-          bind = , return, submap, reset
-          bind = , escape, exec, noctalia msg notification-clear-active
-          bind = , escape, submap, reset
-        submap = reset
-
-        # Resize mode
-        bind = SUPER, R, exec, noctalia msg notification-show 'MODE: RESIZE' '[H/J/K/L] Resize  [Shift+H/J/K/L] Fine  [Esc/Enter] Exit'
-        bind = SUPER, R, submap, resize
-        submap = resize
-          bind = , H, resizeactive, -60 0
-          bind = , J, resizeactive, 0 60
-          bind = , K, resizeactive, 0 -60
-          bind = , L, resizeactive, 60 0
-
-          bind = SHIFT, H, resizeactive, -20 0
-          bind = SHIFT, J, resizeactive, 0 20
-          bind = SHIFT, K, resizeactive, 0 -20
-          bind = SHIFT, L, resizeactive, 20 0
-
-          bind = , return, exec, noctalia msg notification-clear-active
-          bind = , return, submap, reset
-          bind = , escape, exec, noctalia msg notification-clear-active
-          bind = , escape, submap, reset
-        submap = reset
-
-        # Window mode
-        bind = SUPER, G, exec, noctalia msg notification-show 'MODE: WINDOWS' '[Q/W/E/R] Move to WS  [B] Toggle Firefox  [Esc/Enter] Exit'
-        bind = SUPER, G, submap, windows
-        submap = windows
-          bind = , Q, movetoworkspace, 1
-          bind = , Q, exec, noctalia msg notification-clear-active
-          bind = , Q, submap, reset
-
-          bind = , W, movetoworkspace, 2
-          bind = , W, exec, noctalia msg notification-clear-active
-          bind = , W, submap, reset
-
-          bind = , E, movetoworkspace, 3
-          bind = , E, exec, noctalia msg notification-clear-active
-          bind = , E, submap, reset
-
-          bind = , R, movetoworkspace, 4
-          bind = , R, exec, noctalia msg notification-clear-active
-          bind = , R, submap, reset
-
-          # Special app toggle
-          bind = , B, exec, ${lib.getExe toggleFirefox}; noctalia msg notification-clear-active
-          bind = , B, submap, reset
-
-          bind = , return, exec, noctalia msg notification-clear-active
-          bind = , return, submap, reset
-          bind = , escape, exec, noctalia msg notification-clear-active
-          bind = , escape, submap, reset
-        submap = reset
-      '';
+        windows = {
+          onDispatch = "reset";
+          settings.bind = [
+            (mkBind "Q" (mkSequence [
+              (dispatcher.moveWindow { workspace = "1"; })
+              clearNotification
+            ]) { description = "Move window to workspace 1"; })
+            (mkBind "W" (mkSequence [
+              (dispatcher.moveWindow { workspace = "2"; })
+              clearNotification
+            ]) { description = "Move window to workspace 2"; })
+            (mkBind "E" (mkSequence [
+              (dispatcher.moveWindow { workspace = "3"; })
+              clearNotification
+            ]) { description = "Move window to workspace 3"; })
+            (mkBind "R" (mkSequence [
+              (dispatcher.moveWindow { workspace = "4"; })
+              clearNotification
+            ]) { description = "Move window to workspace 4"; })
+            (mkSubmapBind "B" (lib.getExe toggleFirefox) "Toggle Firefox")
+            (mkSubmapBind "RETURN" "noctalia msg notification-clear-active" "Exit mode")
+            (mkSubmapBind "ESCAPE" "noctalia msg notification-clear-active" "Exit mode")
+          ];
+        };
+      };
     };
   };
 }
