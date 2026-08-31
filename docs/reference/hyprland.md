@@ -1,5 +1,9 @@
 # Hyprland
 
+## Lua configuration
+
+Home Manager generates `~/.config/hypr/hyprland.lua` from the shared Hyprland module. Edit the Nix module instead of the generated Lua file, then rebuild the relevant Home Manager profile. To validate the rendered configuration before activation, run `Hyprland --verify-config -c <generated-hyprland.lua>`.
+
 General docs for hyprland.
 
 ## Keymap
