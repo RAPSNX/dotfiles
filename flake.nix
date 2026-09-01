@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     neonix = {
-      url = "github:rapsnx/neonix";
+      url = "github:rapsnx/neonix/fancy";
     };
     krewfile = {
       url = "github:brumhard/krewfile";

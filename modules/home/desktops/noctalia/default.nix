@@ -135,7 +135,7 @@ in
         accessibility.ui_scale = 1.0;
 
         shell = {
-          font_family = "CaskaydiaCove Nerd Font";
+          font_family = "FiraCode Nerd Font";
           time_format = "{:%H:%M}";
           date_format = "%A, %x";
           setup_wizard_enabled = false;
@@ -219,7 +219,10 @@ in
           pre_action_fade_seconds = 2.0;
           behavior = {
             lock = {
-              enabled = false;
+              timeout = 300;
+              action = "custom";
+              command = "swaylock";
+              enabled = true;
             };
             screen-off = {
               timeout = 3600;
