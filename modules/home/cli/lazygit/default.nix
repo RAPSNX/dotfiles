@@ -8,9 +8,10 @@
       };
       git = {
         autoFetch = true;
-        pagers = [
+        diffRenderers = [
           {
-            externalDiffCommand = "${pkgs.difftastic}/bin/difft --color=always";
+            type = "extDiff";
+            command = "${pkgs.difftastic}/bin/difft --color=always";
           }
         ];
       };
