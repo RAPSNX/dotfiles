@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, ... }:
 {
   programs.lazygit = {
     enable = true;
@@ -8,10 +8,9 @@
       };
       git = {
         autoFetch = true;
-        diffRenderers = [
+        pagers = [
           {
-            colorArg = "always";
-            command = "${config.programs.delta.package}/bin/delta --dark --paging=never";
+            externalDiffCommand = "${pkgs.difftastic}/bin/difft --color=always";
           }
         ];
       };
