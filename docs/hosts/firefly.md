@@ -110,3 +110,20 @@ Expected results:
 - Portal services come from the host packages, not Home Manager-generated user units.
 - `NIX_XDG_DESKTOP_PORTAL_DIR` is absent from the user systemd environment.
 - The `find` command does not show Home Manager-generated portal config under `~/.config/xdg-desktop-portal` or Nix profile portal definitions under `~/.nix-profile/share/xdg-desktop-portal`.
+
+## Screen Locking
+
+Firefly uses the Ubuntu-managed `/usr/bin/swaylock`, rather than a Nix-built
+locker. This keeps authentication in Ubuntu's PAM stack and avoids mixing Nix
+and Ubuntu PAM libraries. Noctalia's built-in lockscreen remains disabled;
+Noctalia invokes Swaylock for manual locking, idle locking, suspend, and
+hibernate.
+
+Do not add custom PAM files, `/run/wrappers` symlinks, or setuid lock binaries
+for this setup. Verify the native locker after switching:
+
+```bash
+readlink -f /usr/bin/swaylock
+/usr/bin/swaylock --version
+test -r /etc/pam.d/swaylock
+```

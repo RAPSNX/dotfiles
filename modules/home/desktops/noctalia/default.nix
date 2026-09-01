@@ -50,26 +50,37 @@ let
       touch "$marker"
     '';
   };
+  inherit (cfg) externalLockCommand;
   sessionActions = [
-    {
-      action = "command";
-      label = "Lock";
-      glyph = "lock";
-      command = "swaylock";
-      shortcut = "1";
-    }
+    (
+      {
+        action = if externalLockCommand == null then "lock" else "command";
+        label = "Lock";
+        glyph = "lock";
+      }
+      // lib.optionalAttrs (externalLockCommand != null) {
+        command = externalLockCommand;
+      }
+      // {
+        shortcut = "1";
+      }
+    )
     {
       action = "command";
       label = "Hibernate";
       glyph = "bed";
-      command = "systemctl hibernate";
+      command =
+        if externalLockCommand == null then
+          "systemctl hibernate"
+        else
+          "${externalLockCommand} && systemctl hibernate";
       shortcut = "2";
     }
     {
       action = "command";
       label = "Log Out";
       glyph = "logout";
-      command = "loginctl terminate-session self";
+      command = lib.getExe pkgs.hyprshutdown;
       shortcut = "3";
     }
     {
@@ -77,13 +88,19 @@ let
       shortcut = "4";
       variant = "destructive";
     }
-    {
-      action = "command";
-      label = "Suspend";
-      glyph = "power";
-      command = "swaylock && systemctl suspend";
-      shortcut = "5";
-    }
+    (
+      {
+        action = if externalLockCommand == null then "lock_and_suspend" else "command";
+        label = "Suspend";
+        glyph = "power";
+      }
+      // lib.optionalAttrs (externalLockCommand != null) {
+        command = "${externalLockCommand} && systemctl suspend";
+      }
+      // {
+        shortcut = "5";
+      }
+    )
     {
       action = "reboot";
       shortcut = "6";
@@ -106,6 +123,13 @@ in
     enable = lib.mkEnableOption "Enable the Noctalia desktop shell";
 
     windowsReboot.enable = lib.mkEnableOption "Add the Windows boot-loader action to Noctalia";
+
+    externalLockCommand = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "/usr/bin/swaylock --daemonize";
+      description = "External screen-lock command. When unset, Noctalia uses its native lock screen.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -221,7 +245,13 @@ in
         };
 
         lockscreen = {
-          enabled = false;
+          enabled = externalLockCommand == null;
+        }
+        // lib.optionalAttrs (externalLockCommand == null) {
+          lock_before_suspend = true;
+          blurred_desktop = true;
+          blur_intensity = 0.5;
+          tint_intensity = 0.3;
         };
 
         idle = {
@@ -229,8 +259,12 @@ in
           behavior = {
             lock = {
               timeout = 300;
-              action = "custom";
-              command = "swaylock";
+              action = if externalLockCommand == null then "lock" else "custom";
+            }
+            // lib.optionalAttrs (externalLockCommand != null) {
+              command = externalLockCommand;
+            }
+            // {
               enabled = true;
             };
             screen-off = {

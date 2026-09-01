@@ -22,7 +22,10 @@
     ];
 
     desktop = {
-      noctalia.enable = true;
+      noctalia = {
+        enable = true;
+        externalLockCommand = "/usr/bin/swaylock --daemonize";
+      };
 
       hyprland = {
         enable = true;
