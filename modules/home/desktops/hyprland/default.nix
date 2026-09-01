@@ -34,6 +34,8 @@ in
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
+        home.packages = [ pkgs.hyprshutdown ];
+
         catppuccin.hyprland.enable = false;
 
         xdg.configFile."hypr/xdph.conf".text = ''
