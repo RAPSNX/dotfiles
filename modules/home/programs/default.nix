@@ -18,6 +18,7 @@
       nwg-look
       gparted
       gnome-disk-utility
+      socat
 
       # Explorer
       thunar

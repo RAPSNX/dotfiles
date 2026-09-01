@@ -14,7 +14,7 @@ Zion also enables Noctalia Greeter through Greetd. Firefly uses the shell role o
 
 | Previous component | Noctalia replacement |
 |---|---|
-| Waybar | Top bar: launcher, workspaces, clock, tray, system monitors and quick controls |
+| Waybar | Top bar: launcher, workspaces, submap indicator (plugin), clock, tray, system monitors and quick controls |
 | Fuzzel and Rofi Emoji | Launcher with application, calculator, emoji, wallpaper and window providers |
 | SwayNC | Notification daemon and notification history |
 | Wlogout | Session panel with lock (delegated to `swaylock`), hibernate, logout, suspend, shutdown and reboot actions |
@@ -24,7 +24,7 @@ Zion also enables Noctalia Greeter through Greetd. Firefly uses the shell role o
 | Pavucontrol | Noctalia audio controls |
 | Grimblast package | Noctalia screenshot service |
 
-Noctalia additionally enables clipboard history, screen time, per-output wallpapers, a system monitor, calendar, scheduled night light, brightness OSD, and a Windows-reboot session action on Zion.
+Noctalia additionally enables clipboard history, screen time, per-output wallpapers, a system monitor, calendar, scheduled night light, brightness OSD, a Windows-reboot session action on Zion, and a dynamic `hypr-submap` bar plugin widget to visually display active Hyprland modes (`resize`, `windows`, `noctalia`).
 
 ## Wallpaper migration
 

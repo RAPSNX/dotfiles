@@ -122,6 +122,11 @@ in
       Install.WantedBy = [ config.wayland.systemd.target ];
     };
 
+    xdg.dataFile = {
+      "noctalia/plugins/hypr-submap/plugin.toml".source = ./plugins/hypr-submap/plugin.toml;
+      "noctalia/plugins/hypr-submap/widget.luau".source = ./plugins/hypr-submap/widget.luau;
+    };
+
     programs.noctalia = {
       enable = true;
       package = lib.mkDefault (
@@ -133,6 +138,10 @@ in
       systemd.enable = true;
       settings = {
         accessibility.ui_scale = 1.0;
+
+        plugins = {
+          enabled = [ "rapsnx/hypr-submap" ];
+        };
 
         shell = {
           font_family = "FiraCode Nerd Font";
@@ -285,6 +294,7 @@ in
           capsule_fill = "surface_variant";
           start = [
             "workspaces"
+            "submap"
           ];
           center = [ "clock" ];
           end = [
@@ -302,6 +312,9 @@ in
         };
 
         widget = {
+          submap = {
+            type = "rapsnx/hypr-submap:submap";
+          };
           clock = {
             format = "{:%H:%M}";
             tooltip_format = "{:%A, %d %B %Y}";
