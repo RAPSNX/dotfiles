@@ -4,6 +4,8 @@
   ...
 }:
 {
+  home.packages = [ pkgs.ginkgo ];
+
   programs.go = {
     enable = true;
     package = pkgs.go;

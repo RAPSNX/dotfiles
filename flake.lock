@@ -581,11 +581,11 @@
         "pre-commit-hooks": "pre-commit-hooks_2"
       },
       "locked": {
-        "lastModified": 1788216395,
-        "narHash": "sha256-znEtfNq3rZSbPE00fLyzNWOXWtc3RgMdVk45iSot3gU=",
+        "lastModified": 1788265946,
+        "narHash": "sha256-j2se5GBojdED1eGtCpXHsjxUXFKBYNavQJZpXNxQ8p0=",
         "owner": "rapsnx",
         "repo": "neonix",
-        "rev": "6b63faeb5c337bb8c5073fa4e2a0efe86483067c",
+        "rev": "97aa61d3d85e5836738da36aa23e68771d4a9491",
         "type": "github"
       },
       "original": {
