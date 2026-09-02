@@ -7,49 +7,6 @@
 }:
 let
   cfg = config.roles.desktop.noctalia;
-  wallpaperMigration = pkgs.writeShellApplication {
-    name = "noctalia-wallpaper-migration";
-    runtimeInputs = [
-      config.programs.noctalia.package
-      pkgs.coreutils
-      pkgs.hyprland
-      pkgs.jq
-    ];
-    text = ''
-      marker="${config.xdg.stateHome}/noctalia/.wallpapers-migrated-v1"
-      test -e "$marker" && exit 0
-      mkdir -p "$(dirname "$marker")"
-
-      attempt=1
-      while ! noctalia msg wallpaper-get >/dev/null 2>&1; do
-        if [ "$attempt" -ge 20 ]; then
-          exit 1
-        fi
-        attempt=$((attempt + 1))
-        sleep 1
-      done
-
-      noctalia msg wallpaper-set eDP-1 ${toString ../../../../extra/wallpapers/anime-city.jpg}
-      noctalia msg wallpaper-set DP-1 ${toString ../../../../extra/wallpapers/gohan-supersaiyan.png}
-
-      monitors="$(hyprctl -j monitors)"
-      find_connector() {
-        printf '%s' "$monitors" | jq -r --arg description "$1" 'first(.[] | select(.description == $description) | .name) // empty'
-      }
-
-      connector="$(find_connector 'Dell Inc. AW2725Q G2QC174')"
-      if [ -n "$connector" ]; then
-        noctalia msg wallpaper-set "$connector" ${toString ../../../../extra/wallpapers/luffy-gear-5.jpg}
-      fi
-
-      connector="$(find_connector 'Samsung Electric Company LC27G7xT H4ZNC00167')"
-      if [ -n "$connector" ]; then
-        noctalia msg wallpaper-set "$connector" ${toString ../../../../extra/wallpapers/one-piece-logo.jpg}
-      fi
-
-      touch "$marker"
-    '';
-  };
   inherit (cfg) externalLockCommand;
   sessionActions = [
     (
@@ -80,7 +37,7 @@ let
       action = "command";
       label = "Log Out";
       glyph = "logout";
-      command = lib.getExe pkgs.hyprshutdown;
+      command = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch exec ${lib.getExe pkgs.hyprshutdown}";
       shortcut = "3";
     }
     {
@@ -133,19 +90,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.user.services.noctalia-wallpaper-migration = {
-      Unit = {
-        Description = "Migrate Hyprpaper output assignments to Noctalia";
-        After = [ "noctalia.service" ];
-        Wants = [ "noctalia.service" ];
-      };
-      Service = {
-        Type = "oneshot";
-        ExecStart = lib.getExe wallpaperMigration;
-      };
-      Install.WantedBy = [ config.wayland.systemd.target ];
-    };
-
     xdg.dataFile = {
       "noctalia/plugins/hypr-submap/plugin.toml".source = ./plugins/hypr-submap/plugin.toml;
       "noctalia/plugins/hypr-submap/widget.luau".source = ./plugins/hypr-submap/widget.luau;

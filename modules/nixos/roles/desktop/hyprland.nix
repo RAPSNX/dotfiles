@@ -14,6 +14,7 @@ let
 in
 {
   config = lib.mkIf cfg {
+    # TODO: Extract this into boot or host
     boot.plymouth.enable = true;
 
     environment.systemPackages = [ rebootWindows ];

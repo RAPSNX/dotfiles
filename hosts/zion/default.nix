@@ -44,11 +44,13 @@
     };
   };
 
+  # TODO: Why is this in the zion host file?
   programs.noctalia = {
     enable = true;
     recommendedServices.enable = true;
   };
 
+  # TODO: Why is this in the zion host file?
   programs.noctalia-greeter = {
     enable = true;
     settings = {
@@ -60,6 +62,7 @@
     };
   };
 
+  # TODO: Why is this in the zion host file?
   services.greetd.settings.default_session = {
     command = lib.mkForce "${config.programs.noctalia-greeter.package}/bin/noctalia-greeter-session --";
     user = "greeter";

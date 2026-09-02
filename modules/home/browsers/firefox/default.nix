@@ -168,8 +168,4 @@ in
       "x-scheme-handler/about" = browser;
       "x-scheme-handler/unknown" = browser;
     };
-
-  home.sessionVariables = {
-    MOZ_CRASHREPORTER_DISABLE = "1";
-  };
 }

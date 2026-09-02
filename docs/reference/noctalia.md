@@ -1,14 +1,7 @@
 # Noctalia
 
-Noctalia is the desktop shell for the Hyprland profiles. Hyprland remains the compositor and window-management layer; Noctalia provides the panel, application and emoji launcher, notifications, session actions, wallpapers, clipboard history, tray, OSD, and control centre. Noctalia uses its native lock screen by default. Hosts with incompatible PAM stacks can set `roles.desktop.noctalia.externalLockCommand` to delegate locking to a locally installed locker.
-
-The dock is deliberately disabled.
-
-## Configuration model
-
-`modules/home/desktops/noctalia/default.nix` is the declarative baseline. Noctalia's Settings UI may store user-level overrides in its state directory; these survive rebuilds. The shipped baseline is reapplied only when the Home Manager configuration changes.
-
-Zion also enables Noctalia Greeter through Greetd. Firefly uses the shell role only because it is configured as a Home Manager-only profile.
+Noctalia is the desktop shell for Hyprland.
+Hyprland remains the compositor and window-management layer, Noctalia provides the panel, application and emoji launcher, notifications, session actions, wallpapers, clipboard history, tray, OSD, and control centre.
 
 ## Migrated components
 
@@ -24,21 +17,11 @@ Zion also enables Noctalia Greeter through Greetd. Firefly uses the shell role o
 | Pavucontrol | Noctalia audio controls |
 | Grimblast package | Noctalia screenshot service |
 
-Noctalia additionally enables clipboard history, screen time, per-output wallpapers, a system monitor, calendar, scheduled night light, brightness OSD, a Windows-reboot session action on Zion, and a dynamic `hypr-submap` bar plugin widget to visually display active Hyprland modes (`resize`, `windows`, `noctalia`).
+Noctalia additionally enables clipboard history, screen time, per-output wallpaper selection, a system monitor, calendar, scheduled night light, brightness OSD, a Windows-reboot session action on Zion, and a dynamic `hypr-submap` bar plugin widget to visually display active Hyprland modes (`resize`, `windows`, `noctalia`).
 
-## Wallpaper migration
+## Wallpapers
 
-A one-time user service transfers the legacy Hyprpaper assignments after Noctalia starts. It records completion in `$XDG_STATE_HOME/noctalia/.wallpapers-migrated-v1`, so subsequent rebuilds preserve changes made through Noctalia.
-
-| Previous output selector | Wallpaper |
-|---|---|
-| `eDP-1` | `anime-city.jpg` |
-| `DP-1` | `gohan-supersaiyan.png` |
-| Dell `AW2725Q G2QC174` | `luffy-gear-5.jpg` |
-| Samsung `LC27G7xT H4ZNC00167` | `one-piece-logo.jpg` |
-| fallback | `minimal-space.jpg` |
-
-Remove that marker only when the declarative migration should be run again.
+Noctalia manages wallpapers directly. The declarative configuration supplies `minimal-space.jpg` as the global fallback; use Noctalia's wallpaper picker to assign images to individual outputs. Those per-output selections are stored in Noctalia's state directory and persist across rebuilds.
 
 ## Shell shortcuts
 
