@@ -1,9 +1,4 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -42,30 +37,6 @@
       desktop = true;
       gaming.enable = true;
     };
-  };
-
-  # TODO: Why is this in the zion host file?
-  programs.noctalia = {
-    enable = true;
-    recommendedServices.enable = true;
-  };
-
-  # TODO: Why is this in the zion host file?
-  programs.noctalia-greeter = {
-    enable = true;
-    settings = {
-      keyboard = {
-        layout = "eu,de,de";
-        variant = ",neo_qwertz,";
-      };
-      idle.timeout = 300;
-    };
-  };
-
-  # TODO: Why is this in the zion host file?
-  services.greetd.settings.default_session = {
-    command = lib.mkForce "${config.programs.noctalia-greeter.package}/bin/noctalia-greeter-session --";
-    user = "greeter";
   };
 
   security = {
