@@ -3,6 +3,10 @@
 Noctalia is the desktop shell for Hyprland.
 Hyprland remains the compositor and window-management layer, Noctalia provides the panel, application and emoji launcher, notifications, session actions, wallpapers, clipboard history, tray, OSD, and control centre.
 
+## Login session
+
+On NixOS, Greetd runs Noctalia Greeter. It discovers Wayland sessions and, after login, starts the selected session; choosing Hyprland runs its generated `start-hyprland` wrapper. The picker remembers the last selection unless a default is configured.
+
 ## Migrated components
 
 | Previous component | Noctalia replacement |
@@ -10,7 +14,7 @@ Hyprland remains the compositor and window-management layer, Noctalia provides t
 | Waybar | Top bar: launcher, workspaces, submap indicator (plugin), clock, tray, system monitors and quick controls |
 | Fuzzel and Rofi Emoji | Launcher with application, calculator, emoji, wallpaper and window providers |
 | SwayNC | Notification daemon and notification history |
-| Wlogout | Session panel with native lock, hibernate, logout, suspend, shutdown and reboot actions |
+| Wlogout | Session panel with lock, logout, shutdown and reboot actions |
 | Hyprpaper | Native wallpaper service |
 | Hyprlock | Native Noctalia screen locking; Firefly delegates to its system `swaylock` |
 | NetworkManager and Blueman tray applets | Noctalia control-centre widgets and tray |

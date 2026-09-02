@@ -8,59 +8,41 @@
 let
   cfg = config.roles.desktop.noctalia;
   inherit (cfg) externalLockCommand;
-  sessionActions = [
-    (
+
+  lockAction =
+    if externalLockCommand == null then
       {
-        action = if externalLockCommand == null then "lock" else "command";
+        action = "lock";
         label = "Lock";
         glyph = "lock";
-      }
-      // lib.optionalAttrs (externalLockCommand != null) {
-        command = externalLockCommand;
-      }
-      // {
         shortcut = "1";
       }
-    )
-    {
-      action = "command";
-      label = "Hibernate";
-      glyph = "bed";
-      command =
-        if externalLockCommand == null then
-          "systemctl hibernate"
-        else
-          "${externalLockCommand} && systemctl hibernate";
-      shortcut = "2";
-    }
+    else
+      {
+        action = "command";
+        label = "Lock";
+        glyph = "lock";
+        command = externalLockCommand;
+        shortcut = "1";
+      };
+
+  sessionActions = [
+    lockAction
     {
       action = "command";
       label = "Log Out";
       glyph = "logout";
       command = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch exec ${lib.getExe pkgs.hyprshutdown}";
-      shortcut = "3";
+      shortcut = "2";
     }
     {
       action = "shutdown";
-      shortcut = "4";
+      shortcut = "3";
       variant = "destructive";
     }
-    (
-      {
-        action = if externalLockCommand == null then "lock_and_suspend" else "command";
-        label = "Suspend";
-        glyph = "power";
-      }
-      // lib.optionalAttrs (externalLockCommand != null) {
-        command = "${externalLockCommand} && systemctl suspend";
-      }
-      // {
-        shortcut = "5";
-      }
-    )
     {
       action = "reboot";
-      shortcut = "6";
+      shortcut = "4";
       variant = "destructive";
     }
   ]
@@ -70,7 +52,7 @@ let
       label = "Reboot to Windows";
       glyph = "brand-windows";
       command = "sudo /run/current-system/sw/bin/reboot-windows";
-      shortcut = "7";
+      shortcut = "5";
       variant = "destructive";
     }
   ];
@@ -104,6 +86,7 @@ in
           pkgs.noctalia
       );
       systemd.enable = true;
+
       settings = {
         accessibility.ui_scale = 1.0;
 
@@ -111,59 +94,9 @@ in
           enabled = [ "rapsnx/hypr-submap" ];
         };
 
-        shell = {
-          font_family = "FiraCode Nerd Font";
-          time_format = "{:%H:%M}";
-          date_format = "%A, %x";
-          setup_wizard_enabled = false;
-          polkit_agent = true;
-          launch_apps_as_systemd_services = true;
-          screen_time_enabled = true;
-          clipboard_enabled = true;
-          clipboard_history_max_entries = 100;
-          clipboard_keep_from_closed_apps = true;
-          clipboard_auto_paste = "auto";
-          panel = {
-            launcher_placement = "floating";
-            clipboard_placement = "floating";
-            control_center_placement = "attached";
-            session_placement = "attached";
-          };
-          launcher = {
-            categories = false;
-            show_icons = true;
-            show_app_origin_indicator = false;
-            show_app_actions = false;
-            compact = true;
-            sort_by_usage = true;
-            provider_prefix = "/";
-            providers = {
-              calculator = {
-                prefix = "calc";
-                global = true;
-              };
-              emoji.prefix = "emo";
-              session = {
-                prefix = "session";
-                global = false;
-              };
-              wallpaper.prefix = "wall";
-              windows.prefix = "win";
-            };
-          };
-          screenshot = {
-            save_to_file = true;
-            directory = "~/Pictures";
-            copy_to_clipboard = true;
-            freeze_screen = true;
-          };
-          session = {
-            grid = true;
-            grid_columns = 3;
-            show_shortcuts = true;
-            actions = sessionActions;
-          };
-          greeter_sync.auto_sync = cfg.windowsReboot.enable;
+        shell = import ./settings/shell.nix {
+          inherit sessionActions;
+          windowsReboot = cfg.windowsReboot.enable;
         };
 
         theme = {
@@ -246,93 +179,8 @@ in
         };
         dock.enabled = false;
 
-        control_center = {
-          sidebar = "compact";
-          hidden_tabs = [ "weather" ];
-          shortcuts = [
-            { type = "wifi"; }
-            { type = "bluetooth"; }
-            { type = "nightlight"; }
-            { type = "notification"; }
-            { type = "wallpaper"; }
-            { type = "session"; }
-          ];
-        };
-
-        bar.main = {
-          position = "top";
-          thickness = 42;
-          background_opacity = 1.0;
-          margin_edge = 0;
-          margin_ends = 0;
-          padding = 6;
-          widget_spacing = 6;
-          reserve_space = true;
-          capsule = true;
-          capsule_fill = "surface_variant";
-          start = [
-            "workspaces"
-            "submap"
-          ];
-          center = [ "clock" ];
-          end = [
-            "tray"
-            "cpu"
-            "temp"
-            "ram"
-            "network"
-            "brightness"
-            "volume"
-            "battery"
-            "clipboard"
-            "session"
-          ];
-        };
-
-        widget = {
-          submap = {
-            type = "rapsnx/hypr-submap:submap";
-          };
-          clock = {
-            format = "{:%H:%M}";
-            tooltip_format = "{:%A, %d %B %Y}";
-          };
-          workspaces = {
-            style = "regular";
-            show_labels = true;
-            label_source = "id";
-            focused_output_only = false;
-            hide_when_empty = false;
-            labels_only_when_occupied = false;
-          };
-          cpu = {
-            show_value = true;
-            show_glyph = true;
-            visualization = "none";
-          };
-          temp = {
-            show_value = true;
-            show_glyph = true;
-            visualization = "none";
-          };
-          ram = {
-            show_value = true;
-            show_glyph = true;
-            visualization = "none";
-          };
-          network = {
-            show_label = true;
-            show_vpn_label = true;
-          };
-          volume.show_label = false;
-          brightness.show_label = false;
-          battery.show_label = false;
-          tray = {
-            drawer = false;
-            hide_passive = false;
-          };
-        };
-      };
+      }
+      // import ./settings/panel.nix;
     };
   };
 }
