@@ -33,8 +33,7 @@ in
         check = "nix flake check";
 
         sw-zion = ''
-          nh os switch
-          nh home switch
+          nh os switch && nh home switch
         '';
 
         swh-zion = ''
@@ -50,7 +49,7 @@ in
         '';
 
         bld-fly = ''
-          nh build switch -c nix@firefly . --show-activation-logs
+          nh home build -c nix@firefly . --show-activation-logs
         '';
 
         bld-iso = ''

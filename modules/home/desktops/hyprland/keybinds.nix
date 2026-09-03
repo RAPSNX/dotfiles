@@ -75,7 +75,7 @@ in
         # Programs
         "SUPER,Z, exec, mumble rpc togglemute"
         "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
-        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo"
+        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo "
         "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
       ];
 
@@ -104,7 +104,7 @@ in
           bind = SHIFT, S, exec, noctalia msg screenshot-fullscreen; noctalia msg notification-clear-active
           bind = SHIFT, S, submap, reset
 
-          bind = , a, exec, ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} --filename -; noctalia msg notification-clear-active
+          bind = , a, exec, noctalia msg notification-clear-active; sleep 0.1; ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} --filename -
           bind = , a, submap, reset
 
           bind = , return, exec, noctalia msg notification-clear-active

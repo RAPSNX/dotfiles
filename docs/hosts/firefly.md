@@ -23,7 +23,7 @@ sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
 
 ```bash
 nix develop
-switch-firefly
+sw-fly
 ```
 
 4. Create Hyprland desktop file.

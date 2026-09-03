@@ -8,6 +8,11 @@
 let
   cfg = config.roles.desktop.noctalia;
   inherit (cfg) externalLockCommand;
+  hyprctl =
+    if config.roles.desktop.hyprland.configOnly then
+      "/usr/bin/hyprctl"
+    else
+      lib.getExe' pkgs.hyprland "hyprctl";
 
   lockAction =
     if externalLockCommand == null then
@@ -32,7 +37,7 @@ let
       action = "command";
       label = "Log Out";
       glyph = "logout";
-      command = "${lib.getExe' pkgs.hyprland "hyprctl"} dispatch exec ${lib.getExe pkgs.hyprshutdown}";
+      command = "${hyprctl} dispatch exec ${lib.getExe pkgs.hyprshutdown}";
       shortcut = "2";
     }
     {

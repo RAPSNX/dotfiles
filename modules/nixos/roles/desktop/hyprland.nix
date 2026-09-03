@@ -45,7 +45,7 @@ in
 
         commands = [
           {
-            command = lib.getExe rebootWindows;
+            command = "/run/current-system/sw/bin/reboot-windows";
             options = [ "NOPASSWD" ];
           }
         ];
