@@ -44,24 +44,17 @@
     import-tree.url = "github:vic/import-tree";
   };
 
-  nixConfig = {
-    extra-substituters = [ "https://noctalia.cachix.org" ];
-    extra-trusted-public-keys = [
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-    ];
-  };
-
   outputs =
     inputs@{
-      self,
       nixpkgs,
       home-manager,
       pre-commit-hooks,
       ...
     }:
     let
-      lib = nixpkgs.lib // home-manager.lib;
-      mylib = import ./lib { inherit lib; };
+      baseLib = nixpkgs.lib // home-manager.lib;
+      mylib = import ./lib { lib = baseLib; };
+      lib = baseLib // mylib;
 
       systems = [
         "aarch64-linux"
@@ -137,14 +130,14 @@
         "rap@zion" = lib.homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/zion/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs self mylib; };
+          extraSpecialArgs = { inherit inputs mylib; };
         };
 
         # Firefly workmachine
         "nix@firefly" = lib.homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/firefly/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs self mylib; };
+          extraSpecialArgs = { inherit inputs mylib; };
         };
       };
     };

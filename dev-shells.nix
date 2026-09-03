@@ -12,35 +12,61 @@ let
       deadnix.enable = true;
     };
   };
-
-  # Makefile like targets
-  switch-firefly = pkgs.writeShellScriptBin "switch-firefly" ''
-    NIX_CONFIG="experimental-features = nix-command flakes" \
-      nh home switch -c nix@firefly . --show-activation-logs
-  '';
-
-  switch-zion = pkgs.writeShellScriptBin "switch-zion" ''
-    nh os switch && nh home switch
-  '';
+  mkTargets = t: builtins.mapAttrs (name: script: pkgs.writeShellScriptBin name script) t;
 in
 {
   default = pkgs.mkShell {
     inherit (pre-commit-check) shellHook;
 
-    packages = builtins.attrValues {
-      inherit (pkgs)
-        nh
-        statix
-        deadnix
-        nixfmt
-        nix-inspect
-        nix-tree
-        ;
+    packages = builtins.attrValues (
+      {
+        inherit (pkgs)
+          nh
+          statix
+          deadnix
+          nixfmt
+          nix-inspect
+          nix-tree
+          ;
+      }
+      // mkTargets {
+        check = "nix flake check";
 
-      inherit
-        switch-firefly
-        switch-zion
-        ;
-    };
+        sw-zion = ''
+          nh os switch
+          nh home switch
+        '';
+
+        swh-zion = ''
+          nh home switch
+        '';
+
+        swo-zion = ''
+          nh os switch
+        '';
+
+        sw-fly = ''
+          nh home switch -c nix@firefly . --show-activation-logs
+        '';
+
+        bld-fly = ''
+          nh build switch -c nix@firefly . --show-activation-logs
+        '';
+
+        bld-iso = ''
+          nix build .#nixosConfigurations.vinox.config.system.build.isoImage
+        '';
+
+        swr-kubex = ''
+          nh os boot --hostname kubex . -d always --target-host kubex
+        '';
+
+        swr-berry = ''
+          nh os boot --hostname nixberry . -d always --target-host nixberry
+        '';
+      }
+    );
+
+    NIX_CONFIG = "experimental-features = nix-command flakes";
   };
 }
