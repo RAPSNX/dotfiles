@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, ... }:
 {
   programs.lazygit = {
     enable = true;
@@ -10,8 +10,8 @@
         autoFetch = true;
         diffRenderers = [
           {
-            type = "extDiff";
-            command = "${pkgs.difftastic}/bin/difft --color=always";
+            colorArg = "always";
+            command = "${config.programs.delta.package}/bin/delta --dark --paging=never";
           }
         ];
       };
