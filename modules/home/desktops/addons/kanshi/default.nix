@@ -9,6 +9,7 @@
           criteria = "eDP-1";
           position = "6000,0";
           mode = "1920x1200@60.00Hz";
+          scale = 1.0;
         };
       }
 
@@ -40,7 +41,23 @@
         };
       }
 
-      # TODO: Add meeting room here
+      {
+        profile = {
+          name = "office";
+          outputs = [
+            {
+              criteria = "LTM RallyBar Mini 0x88888800";
+              mode = "1920x1080@60.00Hz";
+              scale = 1.0;
+            }
+            {
+              criteria = "eDP-1";
+              mode = "1920x1200@60.00Hz";
+              scale = 1.0;
+            }
+          ];
+        };
+      }
 
       {
         profile = {
