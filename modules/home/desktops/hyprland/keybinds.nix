@@ -84,7 +84,8 @@ in
         bindm = SUPER, mouse:272, movewindow
         bindm = SUPER, mouse:273, resizewindow
 
-        # Noctalia Mode
+        #-- Noctalia Mode
+        #
         bind = SUPER, N, exec, noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate'
         bind = SUPER, N, submap, noctalia
         submap = noctalia
@@ -112,7 +113,8 @@ in
           bind = , escape, submap, reset
         submap = reset
 
-        # Resize mode
+        #-- Resize mode
+        #
         bind = SUPER, R, exec, noctalia msg notification-show 'MODE: RESIZE' '[H/J/K/L] Resize  [Shift+H/J/K/L] Fine  [Esc/Enter] Exit'
         bind = SUPER, R, submap, resize
         submap = resize
@@ -132,7 +134,8 @@ in
           bind = , escape, submap, reset
         submap = reset
 
-        # Window mode
+        #-- Window mode
+        #
         bind = SUPER, G, exec, noctalia msg notification-show 'MODE: WINDOWS' '[Q/W/E/R] Move to WS  [B] Toggle Firefox  [Esc/Enter] Exit'
         bind = SUPER, G, submap, windows
         submap = windows
