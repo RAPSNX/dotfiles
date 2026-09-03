@@ -27,59 +27,16 @@ in
     };
 
     autostart = mylib.mkOpt (lib.types.listOf lib.types.str) "autostart";
-
-    hyprlock = {
-      enable = lib.mkEnableOption "Enable hyprlock";
-    };
-
-    hypridle = {
-      enable = lib.mkEnableOption "Enable hypridle";
-      cmd = mylib.mkOpt lib.types.str "Path to binary";
-    };
   };
 
-  imports = [
-    ./addons/hypridle.nix
-    ./addons/hyprlock.nix
-    ./keybinds.nix
-  ];
+  imports = [ ./keybinds.nix ];
 
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
-        catppuccin.hyprland.enable = false;
-        catppuccin.hyprlock.enable = false;
+        home.packages = [ pkgs.hyprshutdown ];
 
-        services.hyprpaper = {
-          enable = true;
-          settings.wallpaper = [
-            {
-              monitor = "eDP-1";
-              path = toString ../../../../extra/wallpapers/anime-city.jpg;
-              fit_mode = "cover";
-            }
-            {
-              monitor = "DP-1";
-              path = toString ../../../../extra/wallpapers/gohan-supersaiyan.png;
-              fit_mode = "cover";
-            }
-            {
-              monitor = "desc:Dell Inc. AW2725Q G2QC174";
-              path = toString ../../../../extra/wallpapers/luffy-gear-5.jpg;
-              fit_mode = "cover";
-            }
-            {
-              monitor = "desc:Samsung Electric Company LC27G7xT H4ZNC00167";
-              path = toString ../../../../extra/wallpapers/one-piece-logo.jpg;
-              fit_mode = "cover";
-            }
-            {
-              monitor = "";
-              path = toString ../../../../extra/wallpapers/minimal-space.jpg;
-              fit_mode = "cover";
-            }
-          ];
-        };
+        catppuccin.hyprland.enable = false;
 
         xdg.configFile."hypr/xdph.conf".text = ''
           screencopy {
@@ -89,18 +46,9 @@ in
           }
         '';
 
-        home.packages = builtins.attrValues {
-          inherit (pkgs)
-            rofimoji
-            slurp
-            ;
-        };
-
         xdg.configFile."environment.d/envvars.conf".text = ''
           PATH="$HOME/.nix-profile/bin:$PATH"
         '';
-
-        programs.waybar.systemd.targets = lib.mkDefault [ "hyprland-session.target" ];
 
         wayland.windowManager.hyprland = {
           enable = true;
@@ -136,6 +84,7 @@ in
             input = {
               kb_layout = "eu,de,de";
               kb_variant = ",neo_qwertz,";
+              kb_options = "grp:alt_shift_toggle";
               repeat_rate = 40;
               repeat_delay = 250;
               accel_profile = "flat";

@@ -23,10 +23,6 @@ It follows a structure to keep related configurations together, but not too much
 ```bash
 # On fresh systems
 nix develop
-
-# Dedicated devshell targets
-switch-zion
-switch-firefly
 ```
 
 <details>
@@ -48,9 +44,6 @@ nix build .#nixosConfigurations.vinox.config.system.build.isoImage
 # nh remote switch / update
 nh os boot --hostname kubex . -d always --target-host kubex
 nh os boot --hostname nixberry . -d always --target-host <IP>
-
-# nix remote switch
-nixos-rebuild switch --flake .#kubex --target-host 192.168.55.10 --sudo
 
 # enable experimental-features
 export NIX_CONFIG="experimental-features = nix-command flakes"
@@ -80,6 +73,7 @@ sudo nixos-install --flake .#zion
 
 - [Gaming and Battle.net](./docs/guides/gaming.md)
 - [Hyprland - Keymap](./docs/reference/hyprland.md#keymap)
+- [Noctalia shell](./docs/reference/noctalia.md)
 - [NVIM - Keymap](https://github.com/RAPSNX/neonix/tree/main/docs/keymap.md)
 
 ## Licenses

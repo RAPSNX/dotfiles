@@ -9,6 +9,7 @@ in
 {
   imports = [
     ./hyprland.nix
+    ./noctalia.nix
     ./fonts.nix
     ./power.nix
     ./explorer.nix
@@ -17,9 +18,6 @@ in
   config = lib.mkIf cfg {
     services.gnome.gnome-keyring.enable = true;
 
-    security.pam.services = {
-      greetd.enableGnomeKeyring = true;
-      login.enableGnomeKeyring = true;
-    };
+    security.pam.services.login.enableGnomeKeyring = true;
   };
 }

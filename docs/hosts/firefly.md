@@ -23,7 +23,7 @@ sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
 
 ```bash
 nix develop
-switch-firefly
+sw-fly
 ```
 
 4. Create Hyprland desktop file.
@@ -68,7 +68,6 @@ Comma-separated list of URLs:
 *://*.google.com/*, *://chat.ske.eu01.stackit.cloud/*
 ```
 
-
 ### GTK Theme
 
 `nwg-look` is used to configure theme in multiple locations.
@@ -111,3 +110,19 @@ Expected results:
 - Portal services come from the host packages, not Home Manager-generated user units.
 - `NIX_XDG_DESKTOP_PORTAL_DIR` is absent from the user systemd environment.
 - The `find` command does not show Home Manager-generated portal config under `~/.config/xdg-desktop-portal` or Nix profile portal definitions under `~/.nix-profile/share/xdg-desktop-portal`.
+
+## Screen Locking
+
+Firefly uses the Ubuntu-managed `/usr/bin/swaylock`, rather than a Nix-built
+locker.
+May swaylock needs to be build without PAM support and copied over.
+Verify the native locker after switching:
+
+```bash
+readlink -f /usr/bin/swaylock
+/usr/bin/swaylock --version
+test -r /etc/pam.d/swaylock
+
+# For testing, use a autounclock as fallback
+sleep 15 && loginctl unlock-session self
+```
