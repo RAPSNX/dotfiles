@@ -7,6 +7,20 @@
 }:
 let
   cfg = config.roles.desktop.hyprland;
+
+  inherit (lib.generators) mkLuaInline;
+  toLua = lib.generators.toLua { };
+
+  mkLuaArgs = args: { _args = args; };
+  autostart = [
+    "[ workspace special:scratchy silent ] alacritty -t scratchy"
+    "[ workspace special:aux silent ] sleep 2 && chromium --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga"
+  ]
+  ++ cfg.autostart;
+  startHook = mkLuaInline ''
+    function()
+    ${lib.concatMapStrings (command: "  hl.exec_cmd(${toLua command})\n") autostart}end
+  '';
 in
 {
   options.roles.desktop.hyprland = {
@@ -38,98 +52,138 @@ in
 
         catppuccin.hyprland.enable = false;
 
-        xdg.configFile."hypr/xdph.conf".text = ''
-          screencopy {
-              cursor_mode = 2
-              force_shm = 1
-              allow_token_by_default = 1
-          }
-        '';
-
         xdg.configFile."environment.d/envvars.conf".text = ''
           PATH="$HOME/.nix-profile/bin:$PATH"
         '';
 
         wayland.windowManager.hyprland = {
           enable = true;
-          configType = "hyprlang";
+          configType = "lua";
 
           inherit (cfg) package;
 
-          systemd = {
-            enable = true;
-            variables = [ "--all" ];
+          systemd.enable = true;
+
+          xdph.settings.screencopy = {
+            cursor_mode = 2;
+            force_shm = true;
+            allow_token_by_default = true;
           };
 
           settings = {
-            env = [
-              "XDG_CURRENT_DESKTOP,Hyprland"
-              "XDG_SESSION_DESKTOP,Hyprland"
-              "XDG_SESSION_TYPE,wayland"
+            env = map mkLuaArgs [
+              [
+                "XDG_CURRENT_DESKTOP"
+                "Hyprland"
+              ]
+              [
+                "XDG_SESSION_DESKTOP"
+                "Hyprland"
+              ]
+              [
+                "XDG_SESSION_TYPE"
+                "wayland"
+              ]
             ];
 
-            general = {
-              gaps_in = 8;
-              gaps_out = 10;
-              border_size = 3;
-              "col.active_border" = "rgba(cba6f7ee) rgba(89b4faee) 45deg";
-              "col.inactive_border" = "rgba(585b70aa)";
-            };
-
-            dwindle = {
-              preserve_split = "yes";
-              special_scale_factor = 0.8;
-            };
-
-            input = {
-              kb_layout = "eu,de,de";
-              kb_variant = ",neo_qwertz,";
-              kb_options = "grp:alt_shift_toggle";
-              repeat_rate = 40;
-              repeat_delay = 250;
-              accel_profile = "flat";
-              sensitivity = 1;
-            };
-
-            xwayland = {
-              force_zero_scaling = true;
-            };
-
-            decoration = {
-              blur = {
-                enabled = true;
-                size = 3;
-                passes = 2;
-                ignore_opacity = true;
-                new_optimizations = true;
+            config = {
+              general = {
+                gaps_in = 8;
+                gaps_out = 10;
+                border_size = 3;
+                col = {
+                  active_border = {
+                    colors = [
+                      "rgba(cba6f7ee)"
+                      "rgba(89b4faee)"
+                    ];
+                    angle = 45;
+                  };
+                  inactive_border = "rgba(585b70aa)";
+                };
               };
 
-              rounding = 5;
+              dwindle = {
+                preserve_split = true;
+                special_scale_factor = 0.8;
+              };
+
+              input = {
+                kb_layout = "eu,de,de";
+                kb_variant = ",neo_qwertz,";
+                kb_options = "grp:alt_shift_toggle";
+                repeat_rate = 40;
+                repeat_delay = 250;
+                accel_profile = "flat";
+                sensitivity = 1;
+              };
+
+              xwayland.force_zero_scaling = true;
+
+              decoration = {
+                blur = {
+                  enabled = true;
+                  size = 3;
+                  passes = 2;
+                  ignore_opacity = true;
+                  new_optimizations = true;
+                };
+
+                rounding = 5;
+              };
             };
 
-            exec-once = [
-              "[ workspace special:scratchy silent ] alacritty -t scratchy"
-              # todoist app
-              "[ workspace special:aux silent ] sleep 2 && chromium --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga"
-            ]
-            ++ cfg.autostart;
-
-            workspace = [
-              "1, monitor:desc:Dell Inc. AW2725Q G2QC174, default:true"
-              "2, monitor:desc:Dell Inc. AW2725Q G2QC174"
-              "3, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167, default:true"
-              "4, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167"
+            on = mkLuaArgs [
+              "hyprland.start"
+              startHook
             ];
 
-            windowrule = [
-              "match:class ^(firefox)$, workspace 3"
-              "match:class ^(chromium-browser)$, workspace 4"
+            workspace_rule = [
+              {
+                workspace = "1";
+                monitor = "desc:Dell Inc. AW2725Q G2QC174";
+                default = true;
+              }
+              {
+                workspace = "2";
+                monitor = "desc:Dell Inc. AW2725Q G2QC174";
+              }
+              {
+                workspace = "3";
+                monitor = "desc:Samsung Electric Company LC27G7xT H4ZNC00167";
+                default = true;
+              }
+              {
+                workspace = "4";
+                monitor = "desc:Samsung Electric Company LC27G7xT H4ZNC00167";
+              }
+            ];
 
-              "match:class ^(.*mumble.*)$, workspace special:aux silent"
-              "match:class ^(.*keepassxc.*)$, workspace special:aux silent"
-
-              "match:class steam, float yes"
-              "match:class ^(.*nextcloud.*)$, float yes"
+            window_rule = [
+              {
+                match.class = "^(firefox)$";
+                workspace = "3";
+              }
+              {
+                match.class = "^(chromium-browser)$";
+                workspace = "4";
+              }
+              {
+                match.class = "^(.*mumble.*)$";
+                workspace = "special:aux silent";
+              }
+              {
+                match.class = "^(.*keepassxc.*)$";
+                workspace = "special:aux silent";
+              }
+              {
+                match.class = "steam";
+                float = true;
+              }
+              {
+                match.class = "^(.*nextcloud.*)$";
+                float = true;
+              }
             ];
           };
         };
