@@ -15,7 +15,7 @@ in
       fontDir.enable = true;
       packages = builtins.attrValues {
         inherit (pkgs) joypixels;
-        inherit (pkgs.nerd-fonts) caskaydia-cove;
+        inherit (pkgs.nerd-fonts) caskaydia-cove fira-code jetbrains-mono;
       };
 
       fontconfig = {

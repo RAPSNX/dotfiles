@@ -34,12 +34,10 @@ in
       bind = [
         # Common
         "SUPER,RETURN, exec, alacritty"
-        "SUPER,E, exec, fuzzel"
-        "SUPER,P, exec, wlogout"
+        "SUPER,E, exec, noctalia msg panel-toggle launcher"
+        "SUPER,P, exec, noctalia msg panel-toggle session"
         "SUPER,Q, killactive"
-
-        # Notification center
-        "SUPER,N, exec, swaync-client -t"
+        "ALT,TAB, exec, noctalia msg window-switcher"
 
         # Window actions
         "SUPER,F, fullscreen, 1"
@@ -68,30 +66,54 @@ in
         "SUPER,4, workspace, 4"
         "SUPER,5, workspace, 5"
 
-        # Workpace handling sratchy
+        # Workspace handling scratchy
         "SUPER,O, togglespecialworkspace, scratchy"
         "SUPER,M, togglespecialworkspace, aux"
         "SUPER SHIFT,O, movetoworkspace, special:scratchy"
         "SUPER SHIFT,M, movetoworkspace, special:aux"
 
-        # -- Programs
-        # Mumble
+        # Programs
         "SUPER,Z, exec, mumble rpc togglemute"
         "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
-
-        # Emoji picker
-        "SUPER,period, exec, rofimoji --action copy type"
-
-        # Reload kanshi
+        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo"
         "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
       ];
 
       extraConfig = ''
-        # Resize mouse
+        # Mouse binds
         bindm = SUPER, mouse:272, movewindow
         bindm = SUPER, mouse:273, resizewindow
 
+        # Noctalia Mode
+        bind = SUPER, N, exec, noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate'
+        bind = SUPER, N, submap, noctalia
+        submap = noctalia
+          bind = , n, exec, noctalia msg panel-toggle control-center notifications; noctalia msg notification-clear-active
+          bind = , n, submap, reset
+
+          bind = , m, exec, noctalia msg panel-toggle control-center monitor; noctalia msg notification-clear-active
+          bind = , m, submap, reset
+
+          bind = , c, exec, noctalia msg panel-toggle control-center calendar; noctalia msg notification-clear-active
+          bind = , c, submap, reset
+
+          bind = , s, exec, noctalia msg screenshot-region; noctalia msg notification-clear-active
+          bind = , s, submap, reset
+
+          bind = SHIFT, S, exec, noctalia msg screenshot-fullscreen; noctalia msg notification-clear-active
+          bind = SHIFT, S, submap, reset
+
+          bind = , a, exec, ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} --filename -; noctalia msg notification-clear-active
+          bind = , a, submap, reset
+
+          bind = , return, exec, noctalia msg notification-clear-active
+          bind = , return, submap, reset
+          bind = , escape, exec, noctalia msg notification-clear-active
+          bind = , escape, submap, reset
+        submap = reset
+
         # Resize mode
+        bind = SUPER, R, exec, noctalia msg notification-show 'MODE: RESIZE' '[H/J/K/L] Resize  [Shift+H/J/K/L] Fine  [Esc/Enter] Exit'
         bind = SUPER, R, submap, resize
         submap = resize
           bind = , H, resizeactive, -60 0
@@ -104,29 +126,39 @@ in
           bind = SHIFT, K, resizeactive, 0 -20
           bind = SHIFT, L, resizeactive, 20 0
 
+          bind = , return, exec, noctalia msg notification-clear-active
           bind = , return, submap, reset
+          bind = , escape, exec, noctalia msg notification-clear-active
           bind = , escape, submap, reset
         submap = reset
 
         # Window mode
+        bind = SUPER, G, exec, noctalia msg notification-show 'MODE: WINDOWS' '[Q/W/E/R] Move to WS  [B] Toggle Firefox  [Esc/Enter] Exit'
         bind = SUPER, G, submap, windows
         submap = windows
           bind = , Q, movetoworkspace, 1
+          bind = , Q, exec, noctalia msg notification-clear-active
           bind = , Q, submap, reset
 
           bind = , W, movetoworkspace, 2
+          bind = , W, exec, noctalia msg notification-clear-active
           bind = , W, submap, reset
 
           bind = , E, movetoworkspace, 3
+          bind = , E, exec, noctalia msg notification-clear-active
           bind = , E, submap, reset
 
           bind = , R, movetoworkspace, 4
+          bind = , R, exec, noctalia msg notification-clear-active
           bind = , R, submap, reset
 
           # Special app toggle
-          bind = , B, exec, ${lib.getExe toggleFirefox}
+          bind = , B, exec, ${lib.getExe toggleFirefox}; noctalia msg notification-clear-active
+          bind = , B, submap, reset
 
+          bind = , return, exec, noctalia msg notification-clear-active
           bind = , return, submap, reset
+          bind = , escape, exec, noctalia msg notification-clear-active
           bind = , escape, submap, reset
         submap = reset
       '';
