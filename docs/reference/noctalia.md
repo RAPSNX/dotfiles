@@ -21,7 +21,7 @@ On NixOS, Greetd runs Noctalia Greeter. It discovers Wayland sessions and, after
 | Pavucontrol | Noctalia audio controls |
 | Grimblast package | Noctalia screenshot service |
 
-Noctalia additionally enables clipboard history, screen time, per-output wallpaper selection, a system monitor, calendar, scheduled night light, brightness OSD, a Windows-reboot session action on Zion, and a dynamic `hypr-submap` bar plugin widget to visually display active Hyprland modes (`resize`, `windows`, `noctalia`).
+Noctalia additionally enables clipboard history, keyboard layout indicator and switcher, screen time, per-output wallpaper selection, a system monitor, calendar, scheduled night light, brightness and keyboard layout OSD, a Windows-reboot session action on Zion, and a dynamic `hypr-submap` bar plugin widget to visually display active Hyprland modes (`resize`, `windows`, `noctalia`).
 
 ## Wallpapers
 
@@ -36,3 +36,13 @@ Noctalia manages wallpapers directly. The declarative configuration supplies `mi
 | `Super+N` | Enter Noctalia mode (`n` notifications, `m` monitor, `c` calendar, `s` region capture, `S` full capture, `a` annotate with satty) |
 | `Super+.` | Open emoji search |
 | `Alt+Tab` | Open window switcher |
+
+## trusted-substituters
+On `home-manager`, the flake setup can not add trusted-substituters, because this is a administrative action.
+To add noctalia cache, change the `/etc/nix/nix.conf`
+
+```
+extra-substituters = https://noctalia.cachix.org
+trusted-substituters = https://noctalia.cachix.org
+extra-trusted-public-keys = noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
+```

@@ -166,6 +166,7 @@ in
             brightness = true;
             wifi = true;
             bluetooth = true;
+            keyboard_layout = true;
             dnd = true;
           };
         };

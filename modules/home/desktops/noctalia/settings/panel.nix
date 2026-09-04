@@ -5,6 +5,7 @@
     shortcuts = [
       { type = "wifi"; }
       { type = "bluetooth"; }
+      { type = "keyboard_layout"; }
       { type = "nightlight"; }
       { type = "notification"; }
       { type = "wallpaper"; }
@@ -38,6 +39,7 @@
       "volume"
       "battery"
       "clipboard"
+      "keyboard_layout"
       "session"
     ];
   };
@@ -83,6 +85,10 @@
     tray = {
       drawer = false;
       hide_passive = false;
+    };
+    keyboard_layout = {
+      hide_when_single_layout = false;
+      show_glyph = true;
     };
   };
 }
