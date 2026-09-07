@@ -24,7 +24,6 @@
       noctalia = {
         enable = true;
         externalLockCommand = "/usr/bin/swaylock --daemonize";
-        polkitAgent = false;
       };
 
       hyprland.enable = true;
@@ -60,6 +59,46 @@
   };
 
   xdg = {
+    configFile = {
+      "autostart/nm-applet.desktop".text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=NetworkManager Applet
+        Comment=Manage your network connections
+        Icon=nm-device-wireless
+        Exec=nm-applet
+        Terminal=false
+        NoDisplay=true
+        NotShowIn=KDE;GNOME;Hyprland;
+        X-GNOME-UsesNotifications=true
+        X-Ubuntu-Gettext-Domain=nm-applet
+      '';
+
+      "autostart/blueman.desktop".text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=Blueman Applet
+        Comment=Blueman Bluetooth Manager
+        Icon=blueman
+        Exec=blueman-applet
+        Terminal=false
+        NotShowIn=Hyprland;
+      '';
+
+      "autostart/update-notifier.desktop".text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=Update Notifier
+        Icon=update-notifier
+        Exec=update-notifier
+        Terminal=false
+        NoDisplay=true
+        NotShowIn=KDE;Hyprland;
+        X-GNOME-Autostart-Delay=60
+        X-Ubuntu-Gettext-Domain=update-notifier
+      '';
+    };
+
     # Wayland session definition for display managers
     dataFile."wayland-sessions/hyprland-nix.desktop".text = ''
       [Desktop Entry]
@@ -70,39 +109,7 @@
       DesktopNames=Hyprland
       Keywords=tiling;wayland;compositor;
     '';
-
-    portal = {
-      enable = true;
-      extraPortals = [
-        pkgs.xdg-desktop-portal-gtk
-      ];
-
-      config = {
-        common.default = [
-          "hyprland"
-          "gtk"
-        ];
-
-        hyprland.default = [
-          "hyprland"
-          "gtk"
-        ];
-
-        gnome.default = [
-          "gnome"
-          "gtk"
-        ];
-      };
-    };
   };
-
-  # NOTE: Need to add also portal and gtk, because otherwise the ubuntu portal will not discover the
-  # hyprland portal (hardcoded path)
-  systemd.user.packages = [
-    pkgs.xdg-desktop-portal
-    pkgs.xdg-desktop-portal-gtk
-    config.wayland.windowManager.hyprland.finalPortalPackage
-  ];
 
   targets.genericLinux = {
     enable = true;

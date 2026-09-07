@@ -35,16 +35,9 @@ in
 
         catppuccin.hyprland.enable = false;
 
-        xdg.configFile."hypr/xdph.conf".text = ''
-          screencopy {
-              cursor_mode = 2
-              allow_token_by_default = 1
-          }
-        '';
-
-        xdg.configFile."environment.d/envvars.conf".text = ''
-          PATH="$HOME/.nix-profile/bin:$PATH"
-        '';
+        systemd.user.sessionVariables = {
+          PATH = "$HOME/.nix-profile/bin:$PATH";
+        };
 
         wayland.windowManager.hyprland = {
           enable = true;
@@ -52,9 +45,25 @@ in
 
           inherit (cfg) package;
 
+          xdph.settings = {
+            screencopy = {
+              cursor_mode = 2;
+              allow_token_by_default = true;
+              max_fps = 60;
+            };
+          };
+
           systemd = {
             enable = true;
-            variables = [ "--all" ];
+            variables = [
+              "DISPLAY"
+              "WAYLAND_DISPLAY"
+              "HYPRLAND_INSTANCE_SIGNATURE"
+              "XDG_CURRENT_DESKTOP"
+              "XDG_SESSION_DESKTOP"
+              "XDG_DATA_DIRS"
+              "PATH"
+            ];
             enableXdgAutostart = true;
           };
 
@@ -136,6 +145,18 @@ in
         };
 
         xdg.portal.enable = lib.mkForce false;
+      })
+
+      (lib.mkIf (config.targets.genericLinux.enable && !cfg.configOnly) {
+        xdg.portal.extraPortals = [
+          pkgs.xdg-desktop-portal-gtk
+        ];
+
+        systemd.user.packages = [
+          pkgs.xdg-desktop-portal
+          pkgs.xdg-desktop-portal-gtk
+          config.wayland.windowManager.hyprland.finalPortalPackage
+        ];
       })
     ]
   );

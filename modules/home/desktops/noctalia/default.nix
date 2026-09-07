@@ -84,34 +84,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    xdg = {
-      configFile = {
-        "autostart/nm-applet.desktop".text = ''
-          [Desktop Entry]
-          Type=Application
-          Name=Network
-          Hidden=true
-        '';
-
-        "autostart/blueman.desktop".text = ''
-          [Desktop Entry]
-          Type=Application
-          Name=Blueman
-          Hidden=true
-        '';
-
-        "autostart/update-notifier.desktop".text = ''
-          [Desktop Entry]
-          Type=Application
-          Name=Update Notifier
-          Hidden=true
-        '';
-      };
-
-      dataFile = {
-        "noctalia/plugins/hypr-submap/plugin.toml".source = ./plugins/hypr-submap/plugin.toml;
-        "noctalia/plugins/hypr-submap/widget.luau".source = ./plugins/hypr-submap/widget.luau;
-      };
+    xdg.dataFile = {
+      "noctalia/plugins/hypr-submap/plugin.toml".source = ./plugins/hypr-submap/plugin.toml;
+      "noctalia/plugins/hypr-submap/widget.luau".source = ./plugins/hypr-submap/widget.luau;
     };
 
     programs.noctalia = {
@@ -226,8 +201,8 @@ in
     # Make Noctalia's tray watcher ready before XDG autostart starts.
     # Noctalia owns org.kde.StatusNotifierWatcher on Hyprland, so Type=dbus makes
     # systemd consider the service ready only after the tray watcher is registered.
-    # This prevents tray applications from beeing racy.
-    systemd.user.services.noctalia = {
+    # This prevents tray applications from being racy.
+    systemd.user.services.noctalia = lib.mkIf config.roles.desktop.hyprland.enable {
       Unit = {
         PartOf = lib.mkForce [ "hyprland-session.target" ];
         After = lib.mkForce [ ];
@@ -239,7 +214,7 @@ in
         BusName = "org.kde.StatusNotifierWatcher";
       };
 
-      Install.WantedBy = lib.mkForce [ "graphical-session-pre.target" ];
+      Install.WantedBy = lib.mkForce [ "hyprland-session.target" ];
     };
   };
 }

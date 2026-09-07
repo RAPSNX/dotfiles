@@ -7,10 +7,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland-git = {
-      url = "github:hyprwm/hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     neonix = {
       url = "github:rapsnx/neonix/fancy";
     };
@@ -40,6 +36,8 @@
       url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # TODO: Remove sofka from nix profile install and add here
 
     import-tree.url = "github:vic/import-tree";
   };
