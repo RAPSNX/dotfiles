@@ -20,6 +20,16 @@
     control_center_placement = "attached";
     session_placement = "attached";
   };
+  keyboard_layout = {
+    custom_labels = {
+      "eu" = "EU";
+      "EurKEY (US)" = "EU";
+      "de" = "DE";
+      "German" = "DE";
+      "German (Neo, QWERTZ)" = "NEO";
+      "neo_qwertz" = "NEO";
+    };
+  };
   launcher = {
     categories = false;
     show_icons = true;

@@ -73,6 +73,7 @@ Enter: `Super+N`
 |---|---|
 | `N` | Notifications / Control Center |
 | `M` | System monitor |
+| `V` | Clipboard panel |
 | `C` | Calendar |
 | `S` | Screenshot region (Noctalia) |
 | `Shift+S` | Screenshot fullscreen (Noctalia) |

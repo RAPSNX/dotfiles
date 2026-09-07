@@ -12,7 +12,7 @@ local MODES = {
   noctalia = {
     glyph = "sparkles",
     label = "MODE: NOCTALIA",
-    tooltip = "MODE: NOCTALIA — [n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate",
+    tooltip = "MODE: NOCTALIA — [n] Notifications  [m] System  [v] Clipboard  [c] Calendar  [s] Region  [S] Full  [a] Annotate",
   },
 }
 

@@ -33,7 +33,7 @@ Noctalia manages wallpapers directly. The declarative configuration supplies `mi
 |---|---|
 | `Super+E` | Toggle launcher |
 | `Super+P` | Toggle session panel |
-| `Super+N` | Enter Noctalia mode (`n` notifications, `m` monitor, `c` calendar, `s` region capture, `S` full capture, `a` annotate with satty) |
+| `Super+N` | Enter Noctalia mode (`n` notifications, `m` system monitor, `v` clipboard, `c` calendar, `s` region capture, `S` full capture, `a` annotate with satty) |
 | `Super+.` | Open emoji search |
 | `Alt+Tab` | Open window switcher |
 

@@ -86,14 +86,17 @@ in
 
         #-- Noctalia Mode
         #
-        bind = SUPER, N, exec, noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] Monitor  [c] Calendar  [s] Region  [S] Full  [a] Annotate'
+        bind = SUPER, N, exec, noctalia msg notification-show 'MODE: NOCTALIA' '[n] Notifications  [m] System  [v] Clipboard  [c] Calendar  [s] Region  [S] Full  [a] Annotate'
         bind = SUPER, N, submap, noctalia
         submap = noctalia
           bind = , n, exec, noctalia msg panel-toggle control-center notifications; noctalia msg notification-clear-active
           bind = , n, submap, reset
 
-          bind = , m, exec, noctalia msg panel-toggle control-center monitor; noctalia msg notification-clear-active
+          bind = , m, exec, noctalia msg panel-toggle control-center system; noctalia msg notification-clear-active
           bind = , m, submap, reset
+
+          bind = , v, exec, noctalia msg panel-toggle clipboard; noctalia msg notification-clear-active
+          bind = , v, submap, reset
 
           bind = , c, exec, noctalia msg panel-toggle control-center calendar; noctalia msg notification-clear-active
           bind = , c, submap, reset
