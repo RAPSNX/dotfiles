@@ -24,10 +24,6 @@
       hyprland = {
         enable = true;
         package = pkgs.hyprland;
-        autostart = [
-          "firefox"
-          "ddcutil --display 2 setvcp 60 0x09" # Focus secondary display
-        ];
       };
     };
   };

@@ -10,6 +10,6 @@
   services.gnome-keyring.enable = lib.mkForce config.targets.genericLinux.enable;
 
   home.packages = builtins.attrValues {
-    inherit (pkgs) gcr seahorse;
+    inherit (pkgs) gcr_4 seahorse;
   };
 }

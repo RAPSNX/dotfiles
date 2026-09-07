@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  mylib,
   config,
   ...
 }:
@@ -25,8 +24,6 @@ in
     package = lib.mkPackageOption pkgs "hyprland" {
       nullable = true;
     };
-
-    autostart = mylib.mkOpt (lib.types.listOf lib.types.str) "autostart";
   };
 
   imports = [ ./keybinds.nix ];
@@ -41,7 +38,6 @@ in
         xdg.configFile."hypr/xdph.conf".text = ''
           screencopy {
               cursor_mode = 2
-              force_shm = 1
               allow_token_by_default = 1
           }
         '';
@@ -59,6 +55,7 @@ in
           systemd = {
             enable = true;
             variables = [ "--all" ];
+            enableXdgAutostart = true;
           };
 
           settings = {
@@ -109,10 +106,7 @@ in
 
             exec-once = [
               "[ workspace special:scratchy silent ] alacritty -t scratchy"
-              # todoist app
-              "[ workspace special:aux silent ] sleep 2 && chromium --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga"
-            ]
-            ++ cfg.autostart;
+            ];
 
             workspace = [
               "1, monitor:desc:Dell Inc. AW2725Q G2QC174, default:true"

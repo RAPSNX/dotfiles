@@ -75,7 +75,7 @@ in
         # Programs
         "SUPER,Z, exec, mumble rpc togglemute"
         "SUPER+SHIFT,Z, exec, mumble rpc toggledeaf"
-        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo "
+        "SUPER,period, exec, noctalia msg panel-toggle launcher /emo"
         "SUPER+SHIFT,I, exec, systemctl restart --user kanshi.service"
       ];
 

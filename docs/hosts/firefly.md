@@ -26,17 +26,19 @@ nix develop
 sw-fly
 ```
 
-4. Create Hyprland desktop file.
+4. Install the Nix Hyprland GDM session.
 
-`firefly` uses `roles.desktop.hyprland.configOnly = true`, so Home Manager only writes Hyprland configuration. Hyprland itself must come from the cppiber PPA and the display manager must start the APT/PPA binary directly.
+Home Manager manages the **Hyprland (Nix)** userspace session, including
+Hyprland and its portals. GDM reads sessions from `/usr/share`, so install the
+Home Manager-generated desktop file after switching the configuration:
 
 ```bash
-echo "[Desktop Entry]
-Name=Hyprland
-Comment=An intelligent dynamic tiling Wayland compositor
-Exec=/usr/bin/Hyprland
-Type=Application" | sudo tee /usr/share/wayland-sessions/hyprland.desktop
+sudo install -m 0644 \
+  ~/.local/share/wayland-sessions/hyprland-nix.desktop \
+  /usr/share/wayland-sessions/hyprland-nix.desktop
 ```
+
+The fallback session is the standard Ubuntu / GNOME session provided by the system.
 
 5. Copy user-certificate to firefox
 
@@ -80,22 +82,19 @@ dconf read /org/gnome/desktop/interface/gtk-theme # Read the actual name
 
 ## Installed via APT
 
-Those programs are installed via apt, since they do not work within `nix`.
+Those programs are installed via APT because they require host integration or
+PAM integration that is not managed within Home Manager:
 
 ```bash
-sudo add-apt-repository ppa:cppiber/hyprland
-sudo apt update
 sudo apt -y install \
-  hyprland \
   xdg-desktop-portal \
-  xdg-desktop-portal-hyprland \
   xdg-desktop-portal-gtk \
   mumble \
   swaylock \
   podman
 ```
 
-Home Manager must not manage Hyprland or portal packages on `firefly`. Verify the active setup after switching:
+Verify the Nix session after switching:
 
 ```bash
 readlink -f "$(command -v Hyprland)"
@@ -104,12 +103,13 @@ systemctl --user show-environment | grep NIX_XDG_DESKTOP_PORTAL_DIR
 find ~/.config/xdg-desktop-portal ~/.nix-profile/share/xdg-desktop-portal -maxdepth 3 -type f 2>/dev/null
 ```
 
-Expected results:
+Expected results in **Hyprland (Nix)**:
 
-- `Hyprland` resolves to `/usr/bin/Hyprland`.
-- Portal services come from the host packages, not Home Manager-generated user units.
-- `NIX_XDG_DESKTOP_PORTAL_DIR` is absent from the user systemd environment.
-- The `find` command does not show Home Manager-generated portal config under `~/.config/xdg-desktop-portal` or Nix profile portal definitions under `~/.nix-profile/share/xdg-desktop-portal`.
+- `Hyprland` resolves into `/nix/store`.
+- Portal services use Nix store binaries rather than `/usr/libexec`.
+- `NIX_XDG_DESKTOP_PORTAL_DIR` is present in the user systemd environment.
+
+The standard Ubuntu GNOME session remains the fallback desktop session if needed.
 
 ## Screen Locking
 
@@ -126,3 +126,56 @@ test -r /etc/pam.d/swaylock
 # For testing, use a autounclock as fallback
 sleep 15 && loginctl unlock-session self
 ```
+
+## Reverting to PPA Hyprland
+
+If you need to switch back to the PPA-provided Hyprland and host portal stack:
+
+1. **Re-add PPA and install packages**:
+   ```bash
+   sudo add-apt-repository ppa:cppiber/hyprland
+   sudo apt update
+   sudo apt -y install hyprland xdg-desktop-portal-hyprland hyprlock
+   ```
+
+2. **Revert Home Manager configuration** in `hosts/firefly/home.nix`:
+   - Set `roles.desktop.hyprland.configOnly = true;` under `roles.desktop.hyprland`.
+   - Remove or disable `xdg.portal` and `systemd.user.services.xdg-desktop-portal*` overrides so systemd user units fall back to host `/usr/lib/systemd/user/` definitions.
+   - Switch Home Manager:
+     ```bash
+     nix develop
+     sw-fly
+     ```
+
+3. **GDM Session**:
+   - APT installs `/usr/share/wayland-sessions/hyprland.desktop` automatically.
+   - Remove `/usr/share/wayland-sessions/hyprland-nix.desktop` if no longer used:
+     ```bash
+     sudo rm -f /usr/share/wayland-sessions/hyprland-nix.desktop
+     ```
+
+4. **Verify**:
+   - `readlink -f "$(command -v Hyprland)"` resolves to `/usr/bin/Hyprland`.
+   - Portal services (`systemctl --user status xdg-desktop-portal*`) run from `/usr/libexec` rather than `/nix/store`.
+
+## Rolling Back Home Manager Generations
+
+If a flake update or configuration change breaks the desktop environment or user services, you can roll back to a previously working Home Manager generation.
+
+1. **List available generations**:
+   ```bash
+   home-manager generations
+   ```
+
+2. **Activate a specific generation**:
+   Using the path output by the generations listing:
+   ```bash
+   ~/.local/state/nix/profiles/home-manager-<ID>-link/activate
+   ```
+
+3. **Restore Flake Lock (if broken by `nix flake update`)**:
+   ```bash
+   git checkout flake.lock
+   sw-fly
+   ```
+

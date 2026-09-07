@@ -1,13 +1,14 @@
 {
   sessionActions,
   windowsReboot,
+  polkitAgent ? true,
 }:
 {
   font_family = "FiraCode Nerd Font";
   time_format = "{:%H:%M}";
   date_format = "%A, %x";
   setup_wizard_enabled = false;
-  polkit_agent = true;
+  polkit_agent = polkitAgent;
   launch_apps_as_systemd_services = true;
   screen_time_enabled = true;
   clipboard_enabled = true;
@@ -43,7 +44,7 @@
         prefix = "calc";
         global = true;
       };
-      emoji.prefix = "emo ";
+      emoji.prefix = "emo";
       session = {
         prefix = "session";
         global = false;

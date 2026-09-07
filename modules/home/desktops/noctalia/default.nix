@@ -68,6 +68,13 @@ in
 
     windowsReboot.enable = lib.mkEnableOption "Add the Windows boot-loader action to Noctalia";
 
+    polkitAgent = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      example = false;
+      description = "Whether to enable Noctalia's built-in polkit authentication agent.";
+    };
+
     externalLockCommand = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
@@ -77,9 +84,34 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    xdg.dataFile = {
-      "noctalia/plugins/hypr-submap/plugin.toml".source = ./plugins/hypr-submap/plugin.toml;
-      "noctalia/plugins/hypr-submap/widget.luau".source = ./plugins/hypr-submap/widget.luau;
+    xdg = {
+      configFile = {
+        "autostart/nm-applet.desktop".text = ''
+          [Desktop Entry]
+          Type=Application
+          Name=Network
+          Hidden=true
+        '';
+
+        "autostart/blueman.desktop".text = ''
+          [Desktop Entry]
+          Type=Application
+          Name=Blueman
+          Hidden=true
+        '';
+
+        "autostart/update-notifier.desktop".text = ''
+          [Desktop Entry]
+          Type=Application
+          Name=Update Notifier
+          Hidden=true
+        '';
+      };
+
+      dataFile = {
+        "noctalia/plugins/hypr-submap/plugin.toml".source = ./plugins/hypr-submap/plugin.toml;
+        "noctalia/plugins/hypr-submap/widget.luau".source = ./plugins/hypr-submap/widget.luau;
+      };
     };
 
     programs.noctalia = {
@@ -101,6 +133,7 @@ in
 
         shell = import ./settings/shell.nix {
           inherit sessionActions;
+          inherit (cfg) polkitAgent;
           windowsReboot = cfg.windowsReboot.enable;
         };
 
@@ -187,6 +220,26 @@ in
 
       }
       // import ./settings/panel.nix;
+    };
+
+    # NOTE:
+    # Make Noctalia's tray watcher ready before XDG autostart starts.
+    # Noctalia owns org.kde.StatusNotifierWatcher on Hyprland, so Type=dbus makes
+    # systemd consider the service ready only after the tray watcher is registered.
+    # This prevents tray applications from beeing racy.
+    systemd.user.services.noctalia = {
+      Unit = {
+        PartOf = lib.mkForce [ "hyprland-session.target" ];
+        After = lib.mkForce [ ];
+        Before = [ "graphical-session-pre.target" ];
+      };
+
+      Service = {
+        Type = "dbus";
+        BusName = "org.kde.StatusNotifierWatcher";
+      };
+
+      Install.WantedBy = lib.mkForce [ "graphical-session-pre.target" ];
     };
   };
 }
