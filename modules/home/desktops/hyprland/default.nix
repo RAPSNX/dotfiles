@@ -35,9 +35,9 @@ in
 
         catppuccin.hyprland.enable = false;
 
-        systemd.user.sessionVariables = {
-          PATH = "$HOME/.nix-profile/bin:$PATH";
-        };
+        xdg.configFile."environment.d/envvars.conf".text = ''
+          PATH="$HOME/.nix-profile/bin:$PATH"
+        '';
 
         wayland.windowManager.hyprland = {
           enable = true;
