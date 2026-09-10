@@ -39,6 +39,8 @@
         fi
         [ -f "$GCTL_CACHE" ] && source "$GCTL_CACHE"
         eval $(gardenctl kubectl-env zsh)
+
+        source ~/.config/rapsn/additional.env
       '';
     };
   };
@@ -47,9 +49,14 @@
     inherit (pkgs)
       stackit-cli
       openstackclient
+      grafana-loki
       vault-bin
       brightnessctl
       gcc
+      ;
+
+    inherit (pkgs.prometheus)
+      cli
       ;
 
     inherit (pkgs.mypkgs)
@@ -104,7 +111,7 @@
       [Desktop Entry]
       Name=Hyprland (Nix)
       Comment=Hyprland with Nix-managed runtime libraries
-      Exec=${config.home.homeDirectory}/.nix-profile/bin/start-hyprland
+      Exec=/home/raphaelgroemmer/.nix-profile/bin/start-hyprland
       Type=Application
       DesktopNames=Hyprland
       Keywords=tiling;wayland;compositor;
