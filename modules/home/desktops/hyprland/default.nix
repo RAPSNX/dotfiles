@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  mylib,
   config,
   ...
 }:
@@ -25,82 +24,19 @@ in
     package = lib.mkPackageOption pkgs "hyprland" {
       nullable = true;
     };
-
-    autostart = mylib.mkOpt (lib.types.listOf lib.types.str) "autostart";
-
-    hyprlock = {
-      enable = lib.mkEnableOption "Enable hyprlock";
-    };
-
-    hypridle = {
-      enable = lib.mkEnableOption "Enable hypridle";
-      cmd = mylib.mkOpt lib.types.str "Path to binary";
-    };
   };
 
   imports = [
-    ./addons/hypridle.nix
-    ./addons/hyprlock.nix
     ./keybinds.nix
+    ./assertions.nix
   ];
 
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
+        home.packages = [ pkgs.hyprshutdown ];
+
         catppuccin.hyprland.enable = false;
-        catppuccin.hyprlock.enable = false;
-
-        services.hyprpaper = {
-          enable = true;
-          settings.wallpaper = [
-            {
-              monitor = "eDP-1";
-              path = toString ../../../../extra/wallpapers/anime-city.jpg;
-              fit_mode = "cover";
-            }
-            {
-              monitor = "DP-1";
-              path = toString ../../../../extra/wallpapers/gohan-supersaiyan.png;
-              fit_mode = "cover";
-            }
-            {
-              monitor = "desc:Dell Inc. AW2725Q G2QC174";
-              path = toString ../../../../extra/wallpapers/luffy-gear-5.jpg;
-              fit_mode = "cover";
-            }
-            {
-              monitor = "desc:Samsung Electric Company LC27G7xT H4ZNC00167";
-              path = toString ../../../../extra/wallpapers/one-piece-logo.jpg;
-              fit_mode = "cover";
-            }
-            {
-              monitor = "";
-              path = toString ../../../../extra/wallpapers/minimal-space.jpg;
-              fit_mode = "cover";
-            }
-          ];
-        };
-
-        xdg.configFile."hypr/xdph.conf".text = ''
-          screencopy {
-              cursor_mode = 2
-              force_shm = 1
-              allow_token_by_default = 1
-          }
-        '';
-
-        home.packages = builtins.attrValues {
-          inherit (pkgs)
-            rofimoji
-            slurp
-            ;
-        };
-
-        xdg.configFile."environment.d/envvars.conf".text = ''
-          PATH="$HOME/.nix-profile/bin:$PATH"
-        '';
-
-        programs.waybar.systemd.targets = lib.mkDefault [ "hyprland-session.target" ];
 
         wayland.windowManager.hyprland = {
           enable = true;
@@ -108,11 +44,29 @@ in
 
           inherit (cfg) package;
 
-          systemd = {
-            enable = true;
-            variables = [ "--all" ];
+          # NOTE: Configures screen sharing to include the cursor, reuse approved sources through restore tokens, and capture at no more than 60 FPS.
+          xdph.settings = {
+            screencopy = {
+              cursor_mode = 2;
+              allow_token_by_default = true;
+              max_fps = 60;
+            };
           };
 
+          systemd = {
+            enable = true;
+            # NOTE: Imports the live display and session identifiers into systemd so XDPH connects to the correct Hyprland instance; PATH must remain owned by environment.d.
+            variables = [
+              "DISPLAY"
+              "WAYLAND_DISPLAY"
+              "HYPRLAND_INSTANCE_SIGNATURE"
+              "XDG_CURRENT_DESKTOP"
+              "XDG_SESSION_DESKTOP"
+              "XDG_SESSION_TYPE"
+              "XDG_DATA_DIRS"
+            ];
+            enableXdgAutostart = true;
+          };
           settings = {
             env = [
               "XDG_CURRENT_DESKTOP,Hyprland"
@@ -136,6 +90,7 @@ in
             input = {
               kb_layout = "eu,de,de";
               kb_variant = ",neo_qwertz,";
+              kb_options = "grp:alt_shift_toggle";
               repeat_rate = 40;
               repeat_delay = 250;
               accel_profile = "flat";
@@ -160,10 +115,7 @@ in
 
             exec-once = [
               "[ workspace special:scratchy silent ] alacritty -t scratchy"
-              # todoist app
-              "[ workspace special:aux silent ] sleep 2 && chromium --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga"
-            ]
-            ++ cfg.autostart;
+            ];
 
             workspace = [
               "1, monitor:desc:Dell Inc. AW2725Q G2QC174, default:true"
@@ -193,6 +145,23 @@ in
         };
 
         xdg.portal.enable = lib.mkForce false;
+      })
+
+      # NOTE: Registers the portal frontend, GTK fallback, and Hyprland backend as user services because generic Linux does not expose the Nix packages to systemd automatically.
+      (lib.mkIf (config.targets.genericLinux.enable && !cfg.configOnly) {
+        xdg.portal.extraPortals = [
+          pkgs.xdg-desktop-portal-gtk
+        ];
+
+        systemd.user.packages = [
+          pkgs.xdg-desktop-portal
+          pkgs.xdg-desktop-portal-gtk
+          config.wayland.windowManager.hyprland.finalPortalPackage
+        ];
+        # NOTE: Prepends the Home Manager profile to PATH for the systemd user manager and every service it starts.
+        xdg.configFile."environment.d/envvars.conf".text = ''
+          PATH="$HOME/.nix-profile/bin:$PATH"
+        '';
       })
     ]
   );

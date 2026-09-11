@@ -7,12 +7,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland-git = {
-      url = "github:hyprwm/hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     neonix = {
-      url = "github:rapsnx/neonix";
+      url = "github:rapsnx/neonix/fancy";
     };
     krewfile = {
       url = "github:brumhard/krewfile";
@@ -33,20 +29,30 @@
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
 
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/cachix";
+    };
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # TODO: Remove sofka from nix profile install and add here
+
     import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
     inputs@{
-      self,
       nixpkgs,
       home-manager,
       pre-commit-hooks,
       ...
     }:
     let
-      lib = nixpkgs.lib // home-manager.lib;
-      mylib = import ./lib { inherit lib; };
+      baseLib = nixpkgs.lib // home-manager.lib;
+      mylib = import ./lib { lib = baseLib; };
+      lib = baseLib // mylib;
 
       systems = [
         "aarch64-linux"
@@ -68,6 +74,8 @@
 
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
+        inputs.noctalia.nixosModules.default
+        inputs.noctalia-greeter.nixosModules.default
         (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
         ./modules/nix.nix
       ];
@@ -120,14 +128,14 @@
         "rap@zion" = lib.homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/zion/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs self mylib; };
+          extraSpecialArgs = { inherit inputs mylib; };
         };
 
         # Firefly workmachine
         "nix@firefly" = lib.homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/firefly/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs self mylib; };
+          extraSpecialArgs = { inherit inputs mylib; };
         };
       };
     };

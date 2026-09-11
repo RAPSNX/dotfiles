@@ -4,6 +4,7 @@
 
   programs.home-manager.enable = true;
   xdg.enable = true;
+  xdg.autostart.enable = true;
 
   catppuccin = {
     enable = true;
