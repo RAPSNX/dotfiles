@@ -37,7 +37,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # TODO: Remove sofka from nix profile install and add here
+    sofka.url = "github:nklmilojevic/sofka/c2d4b808ec888f9fc2d5b06ca117c4c16a2b79bd";
 
     import-tree.url = "github:vic/import-tree";
   };
