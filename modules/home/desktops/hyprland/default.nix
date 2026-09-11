@@ -26,7 +26,10 @@ in
     };
   };
 
-  imports = [ ./keybinds.nix ];
+  imports = [
+    ./keybinds.nix
+    ./assertions.nix
+  ];
 
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
@@ -35,16 +38,13 @@ in
 
         catppuccin.hyprland.enable = false;
 
-        xdg.configFile."environment.d/envvars.conf".text = ''
-          PATH="$HOME/.nix-profile/bin:$PATH"
-        '';
-
         wayland.windowManager.hyprland = {
           enable = true;
           configType = "hyprlang";
 
           inherit (cfg) package;
 
+          # NOTE: Configures screen sharing to include the cursor, reuse approved sources through restore tokens, and capture at no more than 60 FPS.
           xdph.settings = {
             screencopy = {
               cursor_mode = 2;
@@ -55,18 +55,18 @@ in
 
           systemd = {
             enable = true;
+            # NOTE: Imports the live display and session identifiers into systemd so XDPH connects to the correct Hyprland instance; PATH must remain owned by environment.d.
             variables = [
               "DISPLAY"
               "WAYLAND_DISPLAY"
               "HYPRLAND_INSTANCE_SIGNATURE"
               "XDG_CURRENT_DESKTOP"
               "XDG_SESSION_DESKTOP"
+              "XDG_SESSION_TYPE"
               "XDG_DATA_DIRS"
-              "PATH"
             ];
             enableXdgAutostart = true;
           };
-
           settings = {
             env = [
               "XDG_CURRENT_DESKTOP,Hyprland"
@@ -147,6 +147,7 @@ in
         xdg.portal.enable = lib.mkForce false;
       })
 
+      # NOTE: Registers the portal frontend, GTK fallback, and Hyprland backend as user services because generic Linux does not expose the Nix packages to systemd automatically.
       (lib.mkIf (config.targets.genericLinux.enable && !cfg.configOnly) {
         xdg.portal.extraPortals = [
           pkgs.xdg-desktop-portal-gtk
@@ -157,6 +158,10 @@ in
           pkgs.xdg-desktop-portal-gtk
           config.wayland.windowManager.hyprland.finalPortalPackage
         ];
+        # NOTE: Prepends the Home Manager profile to PATH for the systemd user manager and every service it starts.
+        xdg.configFile."environment.d/envvars.conf".text = ''
+          PATH="$HOME/.nix-profile/bin:$PATH"
+        '';
       })
     ]
   );
