@@ -1,5 +1,17 @@
 # Hyprland
 
+## Lua configuration
+
+Home Manager generates and owns `~/.config/hypr/hyprland.lua` and loads the
+module-owned `bindings.lua` through `extraLuaFiles`. Change the Nix or Lua
+source rather than editing generated files, then rebuild the relevant Home
+Manager profile. Hyprland discovers the Lua entrypoint automatically at startup.
+When migrating an active session from Hyprlang, log out and back in after the
+switch; Hyprland cannot safely replace its config parser in place.
+
+To validate a rendered configuration before activation, run
+`Hyprland --verify-config -c <generated-hyprland.lua>`.
+
 General docs for hyprland.
 
 ## Keymap

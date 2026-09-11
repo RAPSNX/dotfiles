@@ -6,6 +6,16 @@
 }:
 let
   cfg = config.roles.desktop.hyprland;
+
+  inherit (lib.generators) mkLuaInline;
+  toLua = lib.generators.toLua { };
+
+  mkLuaArgs = args: { _args = args; };
+  startHook = mkLuaInline ''
+    function()
+      hl.exec_cmd(${toLua "[ workspace special:scratchy silent ] alacritty -t scratchy"})
+    end
+  '';
 in
 {
   options.roles.desktop.hyprland = {
@@ -40,7 +50,7 @@ in
 
         wayland.windowManager.hyprland = {
           enable = true;
-          configType = "hyprlang";
+          configType = "lua";
 
           inherit (cfg) package;
 
@@ -68,75 +78,143 @@ in
             enableXdgAutostart = true;
           };
           settings = {
-            env = [
-              "XDG_CURRENT_DESKTOP,Hyprland"
-              "XDG_SESSION_DESKTOP,Hyprland"
-              "XDG_SESSION_TYPE,wayland"
+            env = map mkLuaArgs [
+              [
+                "XDG_CURRENT_DESKTOP"
+                "Hyprland"
+              ]
+              [
+                "XDG_SESSION_DESKTOP"
+                "Hyprland"
+              ]
+              [
+                "XDG_SESSION_TYPE"
+                "wayland"
+              ]
             ];
 
-            general = {
-              gaps_in = 8;
-              gaps_out = 10;
-              border_size = 3;
-              "col.active_border" = "rgba(cba6f7ee) rgba(89b4faee) 45deg";
-              "col.inactive_border" = "rgba(585b70aa)";
-            };
-
-            dwindle = {
-              preserve_split = "yes";
-              special_scale_factor = 0.8;
-            };
-
-            input = {
-              kb_layout = "eu,de,de";
-              kb_variant = ",neo_qwertz,";
-              kb_options = "grp:alt_shift_toggle";
-              repeat_rate = 40;
-              repeat_delay = 250;
-              accel_profile = "flat";
-              sensitivity = 1;
-            };
-
-            xwayland = {
-              force_zero_scaling = true;
-            };
-
-            decoration = {
-              blur = {
-                enabled = true;
-                size = 3;
-                passes = 2;
-                ignore_opacity = true;
-                new_optimizations = true;
+            config = {
+              general = {
+                gaps_in = 8;
+                gaps_out = 10;
+                border_size = 3;
+                col = {
+                  active_border = {
+                    colors = [
+                      "rgba(cba6f7ee)"
+                      "rgba(89b4faee)"
+                    ];
+                    angle = 45;
+                  };
+                  inactive_border = "rgba(585b70aa)";
+                };
               };
 
-              rounding = 5;
+              dwindle = {
+                preserve_split = true;
+                special_scale_factor = 0.8;
+              };
+
+              input = {
+                kb_layout = "eu,de,de";
+                kb_variant = ",neo_qwertz,";
+                kb_options = "grp:alt_shift_toggle";
+                repeat_rate = 40;
+                repeat_delay = 250;
+                accel_profile = "flat";
+                sensitivity = 1;
+              };
+
+              xwayland.force_zero_scaling = true;
+
+              decoration = {
+                blur = {
+                  enabled = true;
+                  size = 3;
+                  passes = 2;
+                  ignore_opacity = true;
+                  new_optimizations = true;
+                };
+
+                rounding = 5;
+              };
             };
 
-            exec-once = [
-              "[ workspace special:scratchy silent ] alacritty -t scratchy"
+            on = mkLuaArgs [
+              "hyprland.start"
+              startHook
             ];
 
-            workspace = [
-              "1, monitor:desc:Dell Inc. AW2725Q G2QC174, default:true"
-              "2, monitor:desc:Dell Inc. AW2725Q G2QC174"
-              "3, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167, default:true"
-              "4, monitor:desc:Samsung Electric Company LC27G7xT H4ZNC00167"
+            workspace_rule = [
+              {
+                workspace = "1";
+                monitor = "desc:Dell Inc. AW2725Q G2QC174";
+                default = true;
+              }
+              {
+                workspace = "2";
+                monitor = "desc:Dell Inc. AW2725Q G2QC174";
+              }
+              {
+                workspace = "3";
+                monitor = "desc:Samsung Electric Company LC27G7xT H4ZNC00167";
+                default = true;
+              }
+              {
+                workspace = "4";
+                monitor = "desc:Samsung Electric Company LC27G7xT H4ZNC00167";
+              }
             ];
 
-            windowrule = [
-              "match:class ^(firefox)$, workspace 3"
-              "match:class ^(chromium-browser)$, workspace 4"
-
-              "match:class ^(.*mumble.*)$, workspace special:aux silent"
-              "match:class ^(.*keepassxc.*)$, workspace special:aux silent"
-
-              "match:class steam, float yes"
-              "match:class ^(.*nextcloud.*)$, float yes"
+            window_rule = [
+              {
+                match.class = "^(firefox)$";
+                workspace = "3";
+              }
+              {
+                match.class = "^(chromium-browser)$";
+                workspace = "4";
+              }
+              {
+                match.class = "^(.*mumble.*)$";
+                workspace = "special:aux silent";
+              }
+              {
+                match.class = "^(.*keepassxc.*)$";
+                workspace = "special:aux silent";
+              }
+              {
+                match.class = "steam";
+                float = true;
+              }
+              {
+                match.class = "^(.*nextcloud.*)$";
+                float = true;
+              }
             ];
           };
         };
       }
+
+      # NOTE: Hyprland cannot safely replace its config parser while a session is running.
+      (lib.mkIf (config.wayland.windowManager.hyprland.finalPackage != null) {
+        xdg.configFile."hypr/hyprland.lua".onChange = lib.mkForce ''
+          (
+            XDG_RUNTIME_DIR=''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+            if [[ -d "/tmp/hypr" || -d "$XDG_RUNTIME_DIR/hypr" ]]; then
+              for instance in $(
+                ${config.wayland.windowManager.hyprland.finalPackage}/bin/hyprctl instances -j |
+                  ${lib.getExe pkgs.jq} -r '.[].instance'
+              ); do
+                if ${config.wayland.windowManager.hyprland.finalPackage}/bin/hyprctl -i "$instance" systeminfo |
+                  ${lib.getExe pkgs.gnugrep} -q 'configProvider: lua'; then
+                  ${config.wayland.windowManager.hyprland.finalPackage}/bin/hyprctl -i "$instance" reload config-only
+                fi
+              done
+            fi
+          )
+        '';
+      })
 
       (lib.mkIf cfg.configOnly {
         wayland.windowManager.hyprland = {
