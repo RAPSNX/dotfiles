@@ -127,6 +127,11 @@ in
 
               xwayland.force_zero_scaling = true;
 
+              misc = {
+                lockdead_screen_delay = 5000;
+                allow_session_lock_restore = true;
+              };
+
               decoration = {
                 blur = {
                   enabled = true;

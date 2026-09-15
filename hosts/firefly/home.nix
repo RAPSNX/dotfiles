@@ -65,6 +65,26 @@
       ;
   };
 
+  systemd.user.services.noisetorch = {
+    Unit = {
+      Description = "NoiseTorch noise-cancelling microphone";
+      Wants = [ "pipewire-pulse.service" ];
+      After = [ "pipewire-pulse.service" ];
+      StartLimitIntervalSec = 0;
+    };
+
+    Service = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${lib.getExe pkgs.noisetorch} -i -s alsa_input.usb-the_t.bone_SC_360_USB_the_t.bone_SC_360_USB-00.analog-stereo";
+      ExecStop = "${lib.getExe pkgs.noisetorch} -u";
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+
+    Install.WantedBy = [ "default.target" ];
+  };
+
   xdg = {
     configFile = {
       "autostart/nm-applet.desktop".text = ''
