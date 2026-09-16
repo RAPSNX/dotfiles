@@ -37,7 +37,7 @@ let
       action = "command";
       label = "Log Out";
       glyph = "logout";
-      command = "${hyprctl} dispatch exec ${lib.getExe pkgs.hyprshutdown}";
+      command = "${hyprctl} dispatch 'hl.dsp.exec_cmd(\"${lib.getExe pkgs.hyprshutdown}\")'";
       shortcut = "2";
     }
     {
