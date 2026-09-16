@@ -50,7 +50,7 @@ local function clear_notification()
 end
 
 local function one_shot(keys, dispatcher, description)
-  bind(keys, sequence(dispatcher, clear_notification(), submap("reset")), description)
+  bind(keys, sequence(clear_notification(), dispatcher, submap("reset")), description)
 end
 
 local function exit_mode(keys)

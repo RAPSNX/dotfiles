@@ -14,6 +14,7 @@ let
   startHook = mkLuaInline ''
     function()
       hl.exec_cmd(${toLua "[ workspace special:scratchy silent ] alacritty -t scratchy"})
+      ${lib.concatMapStringsSep "\n      " (cmd: "hl.exec_cmd(${toLua cmd})") cfg.autostart}
     end
   '';
 in
@@ -33,6 +34,15 @@ in
 
     package = lib.mkPackageOption pkgs "hyprland" {
       nullable = true;
+    };
+
+    autostart = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = ''
+        Per-host shell commands to run once on Hyprland startup, using the same
+        `[ workspace ... silent ] command` bracket syntax as hyprctl dispatch exec.
+      '';
     };
   };
 

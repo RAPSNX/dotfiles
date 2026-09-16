@@ -84,6 +84,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.file.".local/share/wallpapers/.keep".text = "";
+
     xdg.dataFile = {
       "noctalia/plugins/hypr-submap/plugin.toml".source = ./plugins/hypr-submap/plugin.toml;
       "noctalia/plugins/hypr-submap/widget.luau".source = ./plugins/hypr-submap/widget.luau;

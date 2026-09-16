@@ -24,6 +24,10 @@
       hyprland = {
         enable = true;
         package = pkgs.hyprland;
+        autostart = [
+          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+          "firefox"
+        ];
       };
     };
   };

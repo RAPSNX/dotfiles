@@ -89,7 +89,7 @@ function update()
 end
 
 function onClick()
-  noctalia.runAsync({ "hyprctl", "dispatch", "submap", "reset" })
+  noctalia.runAsync({ "hyprctl", "dispatch", 'hl.dsp.submap("reset")' })
 end
 
 function onIpc(event, payload)

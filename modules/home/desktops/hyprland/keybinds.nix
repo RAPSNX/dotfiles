@@ -21,9 +21,9 @@ let
     ')"
 
     if [[ "$firefox_on_current" == "true" ]]; then
-      hyprctl dispatch movetoworkspacesilent "$DEDICATED_WS,class:$CLASS"
+      hyprctl dispatch movetoworkspacesilent "$DEDICATED_WS,class:^($CLASS)$"
     else
-      hyprctl dispatch movetoworkspace "+0,class:$CLASS"
+      hyprctl dispatch movetoworkspace "$current_ws,class:^($CLASS)$"
     fi
   '';
 in

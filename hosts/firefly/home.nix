@@ -27,7 +27,14 @@
         polkitAgent = false;
       };
 
-      hyprland.enable = true;
+      hyprland = {
+        enable = true;
+        autostart = [
+          "sleep 3 && mumble"
+          "firefox"
+          "chromium"
+        ];
+      };
     };
 
     cli = {
@@ -41,7 +48,7 @@
         [ -f "$GCTL_CACHE" ] && source "$GCTL_CACHE"
         eval $(gardenctl kubectl-env zsh)
 
-        source ~/.config/rapsn/additional.env
+        [ -f ~/.config/rapsn/additional.env ] && source ~/.config/rapsn/additional.env
       '';
     };
   };
@@ -54,6 +61,7 @@
       vault-bin
       brightnessctl
       gcc
+      hyprpolkitagent
       ;
 
     inherit (pkgs.prometheus)
@@ -64,6 +72,21 @@
       gardenctl
       gardenlogin
       ;
+  };
+
+  systemd.user.services.hyprpolkitagent = {
+    Unit = {
+      Description = "Polkit authentication agent";
+      PartOf = [ "hyprland-session.target" ];
+    };
+
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
+      Restart = "on-failure";
+    };
+
+    Install.WantedBy = [ "hyprland-session.target" ];
   };
 
   xdg = {
