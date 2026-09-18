@@ -3,37 +3,41 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   config = {
-    nixpkgs = {
-      config = {
-        allowUnfree = true;
-        allowUnfreePredicate = _: true;
-      };
+    nixpkgs.config = {
+      # Allow unfree packages globally.
+      allowUnfree = true;
+      allowUnfreePredicate = _: true;
     };
 
     nix = {
+      # Use the Nix package provided by the current nixpkgs input.
       package = lib.mkDefault pkgs.nix;
 
-      gc.randomizedDelaySec = "10min";
-
       settings = {
+        # Enable the modern Nix CLI and flakes.
         experimental-features = [
           "nix-command"
           "flakes"
         ];
+
+        # Do not warn when evaluating flakes from a dirty Git working tree.
         warn-dirty = false;
+
+        # Automatically accept nixConfig settings declared by flakes.
+        accept-flake-config = true;
+
       };
 
-      # Add nixpkgs flake input as a registry to make nix3 commands consistent with the flake.
-      registry = {
-        nixpkgs = {
-          flake = inputs.nixpkgs;
-        };
-      };
+      # Make `nixpkgs` resolve to the same nixpkgs input used by this flake.
+      registry.nixpkgs.flake = inputs.nixpkgs;
 
-      # Add nixpkgs input to NIX_PATH, to make nix2 commands consistent with the flake.
-      nixPath = ["nixpkgs=${inputs.nixpkgs.outPath}"];
+      # Keep legacy NIX_PATH based commands consistent with the flake input.
+      nixPath = [
+        "nixpkgs=${inputs.nixpkgs.outPath}"
+      ];
     };
   };
 }
