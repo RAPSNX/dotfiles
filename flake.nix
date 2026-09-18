@@ -140,9 +140,9 @@
 
         # Portable temporary VM
         "rap@devbox" = lib.homeManagerConfiguration {
-          modules = [ ./hosts/devbox/home.nix ];
+          modules = homeModules ++ [ ./hosts/devbox/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = { inherit inputs mylib; };
         };
       };
     };
