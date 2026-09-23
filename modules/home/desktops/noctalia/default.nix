@@ -162,7 +162,7 @@ in
             screen-off = {
               timeout = 3600;
               action = "screen_off";
-              enabled = true;
+              enabled = false; # TODO: This will crash swaylock, need a fix for proper locking
             };
           };
         };
