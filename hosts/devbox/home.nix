@@ -1,5 +1,4 @@
 {
-  inputs,
   lib,
   pkgs,
   ...
@@ -11,7 +10,6 @@
     stateVersion = "22.05";
 
     packages = [
-      inputs.neonix.packages.${pkgs.stdenv.hostPlatform.system}.mini
       pkgs.nerd-fonts.caskaydia-cove
     ];
 
@@ -38,7 +36,7 @@
       syntaxHighlighting.enable = true;
     };
 
-    starship = {
+    starship = lib.mkForce {
       enable = true;
       settings = {
         add_newline = true;
