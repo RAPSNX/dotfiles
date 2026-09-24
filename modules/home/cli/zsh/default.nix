@@ -72,7 +72,7 @@
         o = "openstack";
 
         k = "kubectl";
-        kk = "k9s -c pods";
+        kk = "sofka";
         kns = "kubectl ns";
         selc = "source selc_";
 
