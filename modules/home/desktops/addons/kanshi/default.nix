@@ -10,6 +10,7 @@
           position = "6000,0";
           mode = "1920x1200@60.00Hz";
           scale = 1.0;
+          status = "enable";
         };
       }
 

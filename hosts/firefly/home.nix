@@ -91,6 +91,33 @@
 
   xdg = {
     configFile = {
+      "systemd/user/app-.service.d/50-managed-oom.conf".text = ''
+        [Service]
+        ManagedOOMMemoryPressure=kill
+        ManagedOOMMemoryPressureLimit=35%
+        OOMPolicy=kill
+      '';
+
+      "systemd/user/app-.scope.d/50-managed-oom.conf".text = ''
+        [Scope]
+        ManagedOOMMemoryPressure=kill
+        ManagedOOMMemoryPressureLimit=35%
+        OOMPolicy=kill
+      '';
+
+      "systemd/user/app-firefox@.service.d/60-memory-limits.conf".text = ''
+        [Service]
+        MemoryHigh=10G
+        MemoryMax=14G
+        MemorySwapMax=1G
+      '';
+
+      "systemd/user/app-firefox-.scope.d/60-memory-limits.conf".text = ''
+        [Scope]
+        MemoryHigh=10G
+        MemoryMax=14G
+        MemorySwapMax=1G
+      '';
       "autostart/nm-applet.desktop".text = ''
         [Desktop Entry]
         Type=Application

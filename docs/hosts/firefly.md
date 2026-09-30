@@ -86,6 +86,25 @@ Comma-separated list of URLs:
 *://*.google.com/*, *://chat.ske.eu01.stackit.cloud/*
 ```
 
+### Application memory containment
+
+Home Manager installs systemd user drop-ins for desktop applications on
+Firefly. All `app-*` services and scopes become systemd-oomd candidates after
+20 seconds above 35% memory pressure. Firefox is additionally throttled above
+10 GB of memory, limited to 14 GB of memory, and limited to 1 GB of swap.
+
+The limits apply to newly started applications. Restart affected applications
+or the desktop session after switching the Home Manager configuration.
+
+Verify the active policy with:
+
+```bash
+oomctl dump
+systemctl --user show '<firefox-unit>' \
+  -p MemoryHigh -p MemoryMax -p MemorySwapMax \
+  -p ManagedOOMMemoryPressure -p OOMPolicy
+```
+
 ### GTK Theme
 
 `nwg-look` is used to configure theme in multiple locations.
