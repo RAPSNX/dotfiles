@@ -22,6 +22,7 @@
       htop
 
       # Network tools
+      gost
       inetutils
       curl
       wget
