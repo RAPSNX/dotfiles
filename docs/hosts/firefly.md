@@ -115,19 +115,6 @@ Set `widgets -> colorScheme -> prefer dark`.
 dconf read /org/gnome/desktop/interface/gtk-theme # Read the actual name
 ```
 
-## Installed via APT
-
-Those programs are installed via APT because they require host integration or
-PAM integration that is not managed within Home Manager:
-
-```bash
-sudo apt -y install \
-  xdg-desktop-portal \
-  xdg-desktop-portal-gtk \
-  mumble \
-  swaylock \
-  podman
-```
 
 ## Verifying the Nix Hyprland Session
 
@@ -246,3 +233,16 @@ If a flake update or configuration change breaks the desktop environment or user
    sw-fly
    ```
 
+## Imperative installations
+
+Those programs are installed via APT because they require host integration or
+PAM integration that is not managed within Home Manager:
+
+```bash
+sudo apt -y install \
+  xdg-desktop-portal \
+  xdg-desktop-portal-gtk \
+  mumble \
+  swaylock \
+  podman
+```
