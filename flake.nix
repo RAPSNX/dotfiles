@@ -37,7 +37,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    sofka.url = "github:nklmilojevic/sofka/c2d4b808ec888f9fc2d5b06ca117c4c16a2b79bd";
+    sofka.url = "github:nklmilojevic/sofka";
 
     import-tree.url = "github:vic/import-tree";
   };
@@ -86,6 +86,27 @@
         inputs.krewfile.homeManagerModules.krewfile
         inputs.tflow.homeManagerModules.default
         (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
+        ./modules/nix.nix
+      ];
+
+      devboxModules = [
+        inputs.neonix.homeManagerModules.neonix
+        inputs.krewfile.homeManagerModules.krewfile
+        inputs.tflow.homeManagerModules.default
+        ./modules/home/common/roles.nix
+        ./modules/home/cli/atuin/default.nix
+        ./modules/home/cli/core/default.nix
+        ./modules/home/cli/custom/default.nix
+        ./modules/home/cli/direnv/default.nix
+        ./modules/home/cli/git/default.nix
+        ./modules/home/cli/k8s/default.nix
+        ./modules/home/cli/langs/default.nix
+        ./modules/home/cli/lazygit/default.nix
+        ./modules/home/cli/pet/default.nix
+        ./modules/home/cli/starship/default.nix
+        ./modules/home/cli/terminals/tmux/default.nix
+        ./modules/home/cli/tflow/default.nix
+        ./modules/home/cli/zsh/default.nix
         ./modules/nix.nix
       ];
     in
@@ -139,8 +160,8 @@
         };
 
         # Portable temporary VM
-        "rap@devbox" = lib.homeManagerConfiguration {
-          modules = homeModules ++ [ ./hosts/devbox/home.nix ];
+        "nix@devbox" = lib.homeManagerConfiguration {
+          modules = devboxModules ++ [ ./hosts/devbox/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs mylib; };
         };

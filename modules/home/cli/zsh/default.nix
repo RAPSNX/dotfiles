@@ -66,13 +66,13 @@
         clr = "clear";
         tf = "terraform";
 
+        # Gardener
         g = "gardenctl";
-        gt = "gardenctl target";
-        gtc = "gardenctl target --control-plane";
-        gtcp = "gardenctl target control-plane";
+        gt = "gardenctl --control-plane";
         gos = "eval $(gardenctl provider-env zsh)";
         o = "openstack";
 
+        # Kubectl
         k = "kubectl";
         kk = "sofka";
         kns = "kubectl ns";

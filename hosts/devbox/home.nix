@@ -1,17 +1,12 @@
 {
   lib,
-  pkgs,
   ...
 }:
 {
   home = {
-    username = "ubuntu";
-    homeDirectory = "/home/ubuntu";
+    username = "nix";
+    homeDirectory = "/home/nix";
     stateVersion = "22.05";
-
-    packages = [
-      pkgs.nerd-fonts.caskaydia-cove
-    ];
 
     sessionVariables = {
       EDITOR = "nvim";
@@ -21,10 +16,15 @@
 
   roles = {
     email = "raphael.groemmer@digits.schwarz";
+    cli.core.graphicalTools = false;
   };
 
-  targets.genericLinux.enable = true;
-  fonts.fontconfig.enable = true;
+  targets.genericLinux = {
+    enable = true;
+    gpu.enable = false;
+  };
+
+  services.ssh-agent.enable = true;
 
   programs = {
     home-manager.enable = true;
