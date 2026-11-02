@@ -66,15 +66,18 @@
         clr = "clear";
         tf = "terraform";
 
+        # Gardener
         g = "gardenctl";
-        gtcp = "gardenctl target control-plane";
+        gt = "gardenctl --control-plane";
         gos = "eval $(gardenctl provider-env zsh)";
         o = "openstack";
 
+        # Kubectl
         k = "kubectl";
-        kk = "k9s -c pods";
+        kk = "sofka";
         kns = "kubectl ns";
         selc = "source selc_";
+        devbox-proxy = "source devbox-proxy_";
 
         pett = "pet clip -t";
         petc = "pet  -t";
