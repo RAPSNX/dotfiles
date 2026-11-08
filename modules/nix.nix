@@ -29,6 +29,16 @@
         # Automatically accept nixConfig settings declared by flakes.
         accept-flake-config = true;
 
+        extra-substituters = [
+          "https://noctalia.cachix.org"
+          "https://nkl-sofka.cachix.org"
+        ];
+
+        extra-trusted-public-keys = [
+          "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+          "nkl-sofka.cachix.org-1:hLg9frFNJynrxe7SSBb/p6pbawlpZmG10bw+wLsTufw="
+        ];
+
       };
 
       # Make `nixpkgs` resolve to the same nixpkgs input used by this flake.

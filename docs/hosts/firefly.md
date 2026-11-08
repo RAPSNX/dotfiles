@@ -36,6 +36,26 @@ Verify command on nixos.org/download
 sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
 ```
 
+**Configure binary caches before continuing.**
+
+Before the first Home Manager build, add these settings to `/etc/nix/nix.conf`
+with `sudoedit /etc/nix/nix.conf`. Merge them with existing `extra-*` entries if
+present; retain the default `https://cache.nixos.org` substituter and its key.
+These are the publisher caches declared in `modules/nix.nix`:
+
+```ini
+extra-substituters = https://noctalia.cachix.org https://nkl-sofka.cachix.org
+extra-trusted-public-keys = noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4= nkl-sofka.cachix.org-1:hLg9frFNJynrxe7SSBb/p6pbawlpZmG10bw+wLsTufw=
+```
+
+Restart the daemon with `sudo systemctl restart nix-daemon`. Home Manager also
+declares these caches, but user configuration cannot grant the daemon trust in
+new signing keys. Verify the effective settings with:
+
+```bash
+sudo nix config show | rg '^(substituters|trusted-public-keys) ='
+```
+
 2. Clone dotfiles
   1. Change username `home.nix`, if necessary.
 3. Switch config via `devshells` target.

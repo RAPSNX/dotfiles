@@ -37,6 +37,13 @@ in
     programs.hyprland = {
       enable = true;
       withUWSM = false;
+      # Keep the cached build's optional UWSM support without enabling UWSM sessions.
+      # The NixOS module otherwise rebuilds Hyprland with NO_UWSM enabled.
+      package = pkgs.hyprland // {
+        override = lib.setFunctionArgs (
+          args: pkgs.hyprland.override (builtins.removeAttrs args [ "withUWSM" ])
+        ) (lib.functionArgs pkgs.hyprland.override);
+      };
     };
 
     security.sudo.extraRules = [
