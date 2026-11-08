@@ -48,8 +48,6 @@
         fi
         [ -f "$GCTL_CACHE" ] && source "$GCTL_CACHE"
         eval $(gardenctl kubectl-env zsh)
-
-        [ -f ~/.config/rapsn/additional.env ] && source ~/.config/rapsn/additional.env
       '';
     };
   };

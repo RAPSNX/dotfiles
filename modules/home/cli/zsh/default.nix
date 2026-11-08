@@ -48,6 +48,7 @@
         (lib.mkOrder 500 "")
         (lib.mkOrder 1000 ''
           export GOPATH="''${GOPATH:-$HOME/go}"
+          [ -f "${config.xdg.configHome}/rapsn/additional.env" ] && source "${config.xdg.configHome}/rapsn/additional.env"
           ${config.roles.cli.zsh.zshrc}
         '')
         (lib.mkOrder 1500 "")
