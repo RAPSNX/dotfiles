@@ -4,6 +4,8 @@
     ./hardware-configuration.nix
   ];
 
+  nixpkgs.config.problems.handlers."gtk+".broken = "warn";
+
   # Host specific configuration
   hostConfig = {
     boot = {

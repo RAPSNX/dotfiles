@@ -45,9 +45,6 @@
         fi
       '';
 
-      noisetorchExe = lib.getExe pkgs.noisetorch;
-      setcapExe = lib.getExe' pkgs.libcap "setcap";
-      getcapExe = lib.getExe' pkgs.libcap "getcap";
       cmpExe = lib.getExe' pkgs.diffutils "cmp";
     in
     lib.mkIf (config.roles.apparmor-gen != [ ] || config.roles.work) {
@@ -64,12 +61,6 @@
           if [[ $apparmor_changed -eq 1 ]]; then
             warnEcho "AppArmor profiles require an update, run"
             warnEcho "  sudo ${apparmorSetupScript}"
-          fi
-        ''}
-        ${lib.optionalString config.roles.work ''
-          if [[ "$(${getcapExe} ${noisetorchExe} 2>/dev/null)" != "${noisetorchExe} cap_sys_resource=ep" ]]; then
-            warnEcho "NoiseTorch capabilities are missing, run"
-            warnEcho "  sudo ${setcapExe} 'CAP_SYS_RESOURCE=+ep' ${noisetorchExe}"
           fi
         ''}
       '';

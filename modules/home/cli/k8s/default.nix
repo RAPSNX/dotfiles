@@ -4,6 +4,7 @@
     ./k9s.nix
     ./krewfile.nix
     ./kubecolor.nix
+    ./sofka.nix
   ];
 
   home.packages = builtins.attrValues {

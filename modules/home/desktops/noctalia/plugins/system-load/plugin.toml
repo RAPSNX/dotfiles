@@ -1,0 +1,42 @@
+id = "rapsnx/system-load"
+name = "System Load"
+version = "1.2.0"
+plugin_api = 42
+author = "rapsnx"
+license = "MIT"
+description = "CPU MHz, load averages, resource pressure, and sampled process activity"
+
+[[setting]]
+key = "collector"
+type = "string"
+label_key = "collector.label"
+default = ""
+
+[[setting]]
+key = "firefox_command"
+type = "string"
+label_key = "firefox.label"
+default = "firefox"
+
+[[widget]]
+id = "frequency"
+entry = "frequency.luau"
+
+[widget.actions]
+left = "panel-toggle control-center system"
+
+[[widget]]
+id = "load"
+entry = "load.luau"
+
+[widget.actions]
+right = "panel-toggle control-center system"
+
+[[panel]]
+id = "processes"
+entry = "panel.luau"
+width = 560
+height = "content"
+max_height = 640
+position = "top_right"
+open_near_click = true

@@ -7,12 +7,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland-git = {
-      url = "github:hyprwm/hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     neonix = {
-      url = "github:rapsnx/neonix";
+      url = "github:rapsnx/neonix/fancy";
     };
     krewfile = {
       url = "github:brumhard/krewfile";
@@ -33,20 +29,30 @@
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     catppuccin.url = "github:catppuccin/nix";
 
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/cachix";
+    };
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    sofka.url = "github:nklmilojevic/sofka";
+
     import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
     inputs@{
-      self,
       nixpkgs,
       home-manager,
       pre-commit-hooks,
       ...
     }:
     let
-      lib = nixpkgs.lib // home-manager.lib;
-      mylib = import ./lib { inherit lib; };
+      baseLib = nixpkgs.lib // home-manager.lib;
+      mylib = import ./lib { lib = baseLib; };
+      lib = baseLib // mylib;
 
       systems = [
         "aarch64-linux"
@@ -68,6 +74,8 @@
 
       nixosModules = [
         inputs.catppuccin.nixosModules.catppuccin
+        inputs.noctalia.nixosModules.default
+        inputs.noctalia-greeter.nixosModules.default
         (inputs.import-tree.match ".*/default\\.nix" ./modules/nixos)
         ./modules/nix.nix
       ];
@@ -78,6 +86,27 @@
         inputs.krewfile.homeManagerModules.krewfile
         inputs.tflow.homeManagerModules.default
         (inputs.import-tree.match ".*/default\\.nix" ./modules/home)
+        ./modules/nix.nix
+      ];
+
+      devboxModules = [
+        inputs.neonix.homeManagerModules.neonix
+        inputs.krewfile.homeManagerModules.krewfile
+        inputs.tflow.homeManagerModules.default
+        ./modules/home/common/roles.nix
+        ./modules/home/cli/atuin/default.nix
+        ./modules/home/cli/core/default.nix
+        ./modules/home/cli/custom/default.nix
+        ./modules/home/cli/direnv/default.nix
+        ./modules/home/cli/git/default.nix
+        ./modules/home/cli/k8s/default.nix
+        ./modules/home/cli/langs/default.nix
+        ./modules/home/cli/lazygit/default.nix
+        ./modules/home/cli/pet/default.nix
+        ./modules/home/cli/starship/default.nix
+        ./modules/home/cli/terminals/tmux/default.nix
+        ./modules/home/cli/tflow/default.nix
+        ./modules/home/cli/zsh/default.nix
         ./modules/nix.nix
       ];
     in
@@ -120,14 +149,21 @@
         "rap@zion" = lib.homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/zion/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs self mylib; };
+          extraSpecialArgs = { inherit inputs mylib; };
         };
 
         # Firefly workmachine
         "nix@firefly" = lib.homeManagerConfiguration {
           modules = homeModules ++ [ ./hosts/firefly/home.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs self mylib; };
+          extraSpecialArgs = { inherit inputs mylib; };
+        };
+
+        # Portable temporary VM
+        "nix@devbox" = lib.homeManagerConfiguration {
+          modules = devboxModules ++ [ ./hosts/devbox/home.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs mylib; };
         };
       };
     };

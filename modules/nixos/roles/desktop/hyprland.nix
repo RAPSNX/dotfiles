@@ -7,48 +7,16 @@
 let
   cfg = config.hostConfig.roles.desktop;
 
-  tuigreetTheme = lib.concatStringsSep ";" [
-    "container=black"
-    "text=white"
-    "border=magenta"
-    "title=magenta"
-    "greet=cyan"
-    "prompt=blue"
-    "input=magenta"
-    "time=green"
-    "action=yellow"
-    "button=red"
-  ];
-
-  rebootWindows = pkgs.writeShellScript "reboot-windows" ''
+  rebootWindows = pkgs.writeShellScriptBin "reboot-windows" ''
     exec ${lib.getExe' pkgs.systemd "systemctl"} reboot \
       --boot-loader-entry=auto-windows
   '';
-
-  tuigreetCommand = lib.escapeShellArgs [
-    "${pkgs.tuigreet}/bin/tuigreet"
-
-    "--sessions"
-    "${config.services.displayManager.sessionData.desktops}/share/wayland-sessions"
-
-    "--session-wrapper"
-    "${config.services.displayManager.sessionData.wrapper}"
-
-    "--power-reboot"
-    "/run/wrappers/bin/sudo ${rebootWindows}"
-
-    "--time"
-    "--remember"
-    "--remember-user-session"
-    "--asterisks"
-
-    "--theme"
-    tuigreetTheme
-  ];
 in
 {
   config = lib.mkIf cfg {
     boot.plymouth.enable = true;
+
+    environment.systemPackages = [ rebootWindows ];
 
     console = {
       font = "ter-v32n";
@@ -69,6 +37,13 @@ in
     programs.hyprland = {
       enable = true;
       withUWSM = false;
+      # Keep the cached build's optional UWSM support without enabling UWSM sessions.
+      # The NixOS module otherwise rebuilds Hyprland with NO_UWSM enabled.
+      package = pkgs.hyprland // {
+        override = lib.setFunctionArgs (
+          args: pkgs.hyprland.override (builtins.removeAttrs args [ "withUWSM" ])
+        ) (lib.functionArgs pkgs.hyprland.override);
+      };
     };
 
     security.sudo.extraRules = [
@@ -77,25 +52,12 @@ in
 
         commands = [
           {
-            command = "${rebootWindows}";
+            command = "/run/current-system/sw/bin/reboot-windows";
             options = [ "NOPASSWD" ];
           }
         ];
       }
     ];
 
-    services.greetd = {
-      enable = true;
-      useTextGreeter = true;
-
-      settings = {
-        terminal.vt = 1;
-
-        default_session = {
-          command = tuigreetCommand;
-          user = "greeter";
-        };
-      };
-    };
   };
 }

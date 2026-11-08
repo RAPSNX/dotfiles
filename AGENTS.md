@@ -5,6 +5,7 @@ Repository guidelines and operational instructions for AI agents working in this
 ## Core Philosophy
 - **Keep it Simple & Minimal:** Prefer straightforward, minimal solutions over clever or complex abstractions.
 - **No Overengineering:** If a requested change or prompt requires broad architectural changes, excessive boilerplate, or sophisticated logic, **STOP and ask** the user before proceeding.
+- **No need to document everything in detail** Not every change should be documented in bloated way, documentation should stay clean and human readable.
 
 ## Overview & Architecture
 - **Nix Flake & Home-Manager:** Declarative configuration managing multi-system NixOS hosts and standalone Home-Manager targets.
