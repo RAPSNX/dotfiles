@@ -23,6 +23,7 @@
     desktop = {
       noctalia = {
         enable = true;
+        systemLoad.enable = true;
         externalLockCommand = "/usr/bin/swaylock --daemonize";
         polkitAgent = false;
       };

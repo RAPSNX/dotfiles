@@ -17,6 +17,7 @@
 
     desktop = {
       noctalia = {
+        systemLoad.enable = true;
         enable = true;
         windowsReboot.enable = true;
       };

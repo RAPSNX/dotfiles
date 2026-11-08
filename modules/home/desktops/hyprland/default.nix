@@ -122,7 +122,6 @@ in
 
               dwindle = {
                 preserve_split = true;
-                special_scale_factor = 0.8;
               };
 
               input = {
@@ -178,6 +177,24 @@ in
               {
                 workspace = "4";
                 monitor = "desc:Samsung Electric Company LC27G7xT H4ZNC00167";
+              }
+              {
+                workspace = "special:scratchy";
+                gaps_out = {
+                  top = 150;
+                  bottom = 150;
+                  left = 260;
+                  right = 260;
+                };
+              }
+              {
+                workspace = "special:aux";
+                gaps_out = {
+                  top = 150;
+                  bottom = 150;
+                  left = 260;
+                  right = 260;
+                };
               }
             ];
 

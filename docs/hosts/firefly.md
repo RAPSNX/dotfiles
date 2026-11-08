@@ -13,6 +13,9 @@ rsync -av --update  ~/.mozilla/firefox/default ~/Nextcloud/Home/Backups/firefox_
 
 Firefly operates on Ubuntu with Home Manager managing the desktop environment for user `raphaelgroemmer`. To ensure stability and seamless GNOME fallback, responsibilities are cleanly divided:
 
+For the MHz/load bar, process dropdown, and incident capture, see
+[Noctalia monitoring](../reference/noctalia.md#firefly-load-monitoring).
+
 | Subsystem | Managed by | Description |
 |---|---|---|
 | Display Manager & Session Base | Ubuntu | GDM, PAM authentication, `/usr/share/wayland-sessions/` |

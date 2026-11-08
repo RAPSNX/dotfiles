@@ -66,6 +66,8 @@ in
   options.roles.desktop.noctalia = {
     enable = lib.mkEnableOption "Enable the Noctalia desktop shell";
 
+    systemLoad.enable = lib.mkEnableOption "CPU frequency, load pressure, and a process dropdown";
+
     windowsReboot.enable = lib.mkEnableOption "Add the Windows boot-loader action to Noctalia";
 
     polkitAgent = lib.mkOption {
@@ -89,7 +91,16 @@ in
     xdg.dataFile = {
       "noctalia/plugins/hypr-submap/plugin.toml".source = ./plugins/hypr-submap/plugin.toml;
       "noctalia/plugins/hypr-submap/widget.luau".source = ./plugins/hypr-submap/widget.luau;
+    }
+    // lib.optionalAttrs cfg.systemLoad.enable {
+      "noctalia/plugins/system-load".source = ./plugins/system-load;
     };
+
+    home.packages = lib.optionals cfg.systemLoad.enable [
+      (pkgs.writeShellScriptBin "firefly-system-capture" ''
+        exec ${lib.getExe pkgs.python3} ${./plugins/system-load/collector.py} "$@"
+      '')
+    ];
 
     programs.noctalia = {
       enable = true;
@@ -105,7 +116,15 @@ in
         accessibility.ui_scale = 1.0;
 
         plugins = {
-          enabled = [ "rapsnx/hypr-submap" ];
+          enabled = [ "rapsnx/hypr-submap" ] ++ lib.optional cfg.systemLoad.enable "rapsnx/system-load";
+        };
+
+        plugin_settings = lib.optionalAttrs cfg.systemLoad.enable {
+          "rapsnx/system-load".collector = lib.getExe (
+            pkgs.writeShellScriptBin "noctalia-process-snapshot" ''
+              exec ${lib.getExe pkgs.python3} ${./plugins/system-load/collector.py} --snapshot "$@"
+            ''
+          );
         };
 
         shell = import ./settings/shell.nix {
@@ -196,7 +215,10 @@ in
         dock.enabled = false;
 
       }
-      // import ./settings/panel.nix;
+      // import ./settings/panel.nix {
+        inherit lib;
+        systemLoad = cfg.systemLoad.enable;
+      };
     };
 
     # NOTE:

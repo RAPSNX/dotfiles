@@ -1,4 +1,8 @@
 {
+  lib,
+  systemLoad ? false,
+}:
+{
   control_center = {
     sidebar = "compact";
     hidden_tabs = [ "weather" ];
@@ -31,8 +35,21 @@
     center = [ "clock" ];
     end = [
       "tray"
-      "cpu"
-      "temp"
+    ]
+    ++ (
+      if systemLoad then
+        [ "cpu_frequency" ]
+      else
+        [
+          "cpu"
+          "temp"
+        ]
+    )
+    ++ lib.optionals systemLoad [
+      "system_load"
+      "gpu"
+    ]
+    ++ [
       "ram"
       "network"
       "brightness"
@@ -44,51 +61,62 @@
     ];
   };
 
-  widget = {
-    submap = {
-      type = "rapsnx/hypr-submap:submap";
+  widget =
+    lib.optionalAttrs systemLoad {
+      cpu_frequency.type = "rapsnx/system-load:frequency";
+      system_load.type = "rapsnx/system-load:load";
+      gpu = {
+        type = "sysmon";
+        stat = "gpu_usage";
+        show_value = true;
+        visualization = "none";
+      };
+    }
+    // {
+      submap = {
+        type = "rapsnx/hypr-submap:submap";
+      };
+      clock = {
+        format = "{:%H:%M}";
+        tooltip_format = "{:%A, %d %B %Y}";
+      };
+      workspaces = {
+        style = "regular";
+        show_labels = true;
+        label_source = "id";
+        focused_output_only = false;
+        hide_when_empty = false;
+        labels_only_when_occupied = false;
+      };
+      cpu = {
+        show_value = true;
+        show_glyph = true;
+        visualization = "none";
+      };
+      temp = {
+        show_value = true;
+        show_glyph = true;
+        visualization = "none";
+      };
+      ram = {
+        show_value = true;
+        show_glyph = true;
+        visualization = "none";
+      };
+      network = {
+        show_label = true;
+        show_vpn_label = true;
+      };
+      volume.show_label = false;
+      brightness.show_label = false;
+      battery.show_label = false;
+      tray = {
+        drawer = false;
+        hide_passive = false;
+      };
+      keyboard_layout = {
+        hide_when_single_layout = false;
+        show_glyph = true;
+      };
     };
-    clock = {
-      format = "{:%H:%M}";
-      tooltip_format = "{:%A, %d %B %Y}";
-    };
-    workspaces = {
-      style = "regular";
-      show_labels = true;
-      label_source = "id";
-      focused_output_only = false;
-      hide_when_empty = false;
-      labels_only_when_occupied = false;
-    };
-    cpu = {
-      show_value = true;
-      show_glyph = true;
-      visualization = "none";
-    };
-    temp = {
-      show_value = true;
-      show_glyph = true;
-      visualization = "none";
-    };
-    ram = {
-      show_value = true;
-      show_glyph = true;
-      visualization = "none";
-    };
-    network = {
-      show_label = true;
-      show_vpn_label = true;
-    };
-    volume.show_label = false;
-    brightness.show_label = false;
-    battery.show_label = false;
-    tray = {
-      drawer = false;
-      hide_passive = false;
-    };
-    keyboard_layout = {
-      hide_when_single_layout = false;
-      show_glyph = true;
-    };
-  };
 }
