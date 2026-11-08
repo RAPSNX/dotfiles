@@ -13,7 +13,7 @@ in
       recommendedServices.enable = true;
     };
 
-    programs.noctalia-greeter = {
+    services.displayManager.noctalia-greeter = {
       enable = true;
       settings = {
         keyboard = {
@@ -31,7 +31,7 @@ in
       settings = {
         terminal.vt = 1;
         default_session = {
-          command = lib.mkForce "${config.programs.noctalia-greeter.package}/bin/noctalia-greeter-session --";
+          command = lib.mkForce "${config.services.displayManager.noctalia-greeter.package}/bin/noctalia-greeter-session --";
           user = "greeter";
         };
       };
