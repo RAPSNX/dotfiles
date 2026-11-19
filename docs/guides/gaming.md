@@ -1,58 +1,50 @@
-# Gaming and Battle.net
+# Gaming, HDR and Battle.net
 
-`hostConfig.roles.gaming.enable` installs Steam, Lutris, UMU, Gamescope, and
-GameMode. Steam owns the Proton 11+ runtime; Home Manager links that runtime to
-UMU so it can launch Lutris games without downloading a second copy.
+Enable `hostConfig.roles.gaming.enable` for Steam, Lutris, UMU, Gamescope and GameMode.
 
-## One-time Steam Runtime setup
+## Runtime setup
 
-Run these commands as `rap` after enabling the gaming role. Steam Runtime 4.0
-is Steam tool `4183110` and is required by Proton 11+.
+Install Steam Runtime 4 for Proton 11+:
 
 ```sh
 steam steam://install/4183110
 ```
 
-Wait for Steam to finish the download, then verify the runtime exists:
+UMU uses its own runtime at `~/.local/share/umu/steamrt4`. If
+`toolmanifest.vdf` is missing, launch the game once with `UMU_RUNTIME_UPDATE=1`,
+then remove the override. Keep an existing runtime; do not replace it with a symlink.
 
-```sh
-runtime="$HOME/.local/share/Steam/steamapps/common/SteamLinuxRuntime_4"
-test -f "$runtime/toolmanifest.vdf" && test -f "$runtime/mtree.txt.gz" \
-  && echo "Steam Runtime 4 is ready"
-```
+## HDR
 
-Remove any incomplete runtime that UMU created before activating the Home
-Manager link:
+Use the Alienware display (`DP-1`, 3840×2160 at 240 Hz) and enable HDR in-game.
 
-```sh
-rm -rf "$HOME/.local/share/umu/steamrt4"
-```
+- **Steam session:** quit Steam, select **Steam** at login, choose
+  **GE-Proton11-12** in the game's Compatibility settings, and leave launch options empty.
+- **Steam on Hyprland:** for compatible GE-Proton games, use:
 
-From this repository, apply the system and home configurations:
+  ```sh
+  PROTON_ENABLE_WAYLAND=1 PROTON_FORCE_HDR=1 %command%
+  ```
 
-```sh
-nh os switch .
-nh home switch .
-```
+- **Lutris:** under **Configure → System options**, enable **Gamescope** and
+  **Enable HDR (Experimental)** per game. Select fullscreen, `3840x2160`, `240` Hz
+  and `--backend wayland`. Use GE-Proton via UMU with X11/XWayland;
+  do not also enable native Wayland/Proton HDR.
 
-Start a new graphical session, then confirm that UMU resolves to Steam's
-runtime:
-
-```sh
-readlink -f "$HOME/.local/share/umu/steamrt4"
-```
-
-The command should print
-`$HOME/.local/share/Steam/steamapps/common/SteamLinuxRuntime_4`.
+Keep desktop-only launch options out of the Steam session. Leave HDR options
+unset for SDR games. In Lutris, use its MangoHud toggle instead of adding a wrapper.
 
 ## Battle.net
 
-Open Lutris, select **+** → **Search the Lutris website for installers**, and
-install the standard Battle.net entry into a new Lutris-managed directory such
-as `~/Games/battlenet`. Do not run the Battle.net installer manually with
-`wine` or set `WINEPREFIX` yourself.
+In Lutris, use **+ → Search the Lutris website for installers → Battle.net**.
+Install into a new directory such as `~/Games/battlenet`; do not run the installer
+manually with Wine or set `WINEPREFIX` yourself.
 
-If UMU reports an HTTP 403 while checking for runtime updates, the valid linked
-Steam runtime is still used. A `FileNotFoundError` for
-`steamrt4/toolmanifest.vdf` means the Steam Runtime bootstrap or Home Manager
-link is incomplete.
+## Troubleshooting
+
+- **UMU HTTP 403:** an existing complete runtime can still work; check the runtime above.
+- **No HDR:** check the monitor OSD and the game's HDR setting. Enshrouded's
+  `enshrouded.log` must report HDR enabled/supported and an HDR swapchain;
+  surface support alone is insufficient. The previous audit did not verify live HDR.
+- **4K/240 Hz fails:** test 120 Hz first. After leaving an HDR game in Hyprland,
+  check that the desktop returns to normal SDR colors.

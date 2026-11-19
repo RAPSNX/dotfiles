@@ -143,7 +143,7 @@ in
           enabled = true;
           fill_mode = "crop";
           directory = "${config.home.homeDirectory}/.local/share/wallpapers";
-          default.path = toString ../../../../extra/wallpapers/minimal-space.jpg;
+          default.path = "${../../../../extra/wallpapers/minimal-space.jpg}";
         };
 
         notification = {

@@ -7,6 +7,7 @@
   xdg.autostart.enable = true;
 
   catppuccin = {
+    cache.enable = true;
     enable = true;
     autoEnable = true;
     flavor = "mocha";
