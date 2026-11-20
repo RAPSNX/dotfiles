@@ -148,3 +148,20 @@ packages = builtins.attrValues {
 2. Build module, and wait until nix will fail and output the first `hash`. Continue with the second.
 
 Mind also the language specific `hash`es for example `vendorHash` for `go` modules.
+
+## trusted-substituters
+On `home-manager`, the flake setup can not add trusted-substituters, because this is a administrative action.
+The `/etc/nix/nix.conf` must be configured:
+
+
+```bash
+# output of `nix config show substituters`
+extra-substituters = https://noctalia.cachix.org
+# output of `nix config show trusted-substituters`
+trusted-substituters = https://noctalia.cachix.org
+# output of `nix config show trusted-public-keys` 
+extra-trusted-public-keys = noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
+
+# restart the nix daemon
+sudo systemctl restart nix-daemon.service
+```

@@ -1,69 +1,77 @@
 {
   pkgs,
+  lib,
+  config,
   ...
 }:
 {
-  home.packages = builtins.attrValues {
-    # Core utility
-    inherit (pkgs)
-      coreutils
-      dnsutils
-      gnumake
-      gnutar
-      gzip
-      unzip
-      gnused
-      gnugrep
-      killall
-      pciutils
-      parallel
-
-      # Inspection
-      htop
-
-      # Network tools
-      inetutils
-      curl
-      wget
-
-      # Network inspection
-      termshark
-      nmap
-      netcat
-      tcpdump
-      iproute2
-
-      # Text processing
-      jq
-      yq-go
-      gawk
-
-      # Find utils
-      fd
-      ripgrep
-
-      # Copy tools
-      rclone
-
-      # SSH / Security
-      openssh
-      libfido2
-      keepassxc
-
-      # Clipboard
-      wl-clipboard
-
-      # AI Shit
-      codex
-      claude-code
-      nodejs
-
-      # Monitor / I2C com
-      ddcutil
-
-      ;
+  options.roles.cli.core.graphicalTools = lib.mkOption {
+    type = lib.types.bool;
+    default = true;
+    description = "Install graphical utilities from the core CLI module.";
   };
-  programs = {
+
+  config.home.packages =
+    (builtins.attrValues {
+      # Core utility
+      inherit (pkgs)
+        coreutils
+        dnsutils
+        gnumake
+        gnutar
+        gzip
+        unzip
+        gnused
+        gnugrep
+        killall
+        pciutils
+        parallel
+
+        # Inspection
+        htop
+
+        # Network tools
+        gost
+        inetutils
+        curl
+        wget
+
+        # Network inspection
+        termshark
+        nmap
+        netcat
+        tcpdump
+        iproute2
+
+        # Text processing
+        jq
+        yq-go
+        gawk
+
+        # Find utils
+        fd
+        ripgrep
+
+        # Copy tools
+        rclone
+
+        # SSH / Security
+        openssh
+        libfido2
+
+        # AI Shit
+        codex
+        claude-code
+        nodejs
+        ;
+    })
+    ++ lib.optionals config.roles.cli.core.graphicalTools [
+      pkgs.keepassxc
+      pkgs.wl-clipboard
+      pkgs.ddcutil
+    ];
+
+  config.programs = {
     bat.enable = true;
     fzf = {
       enable = true;

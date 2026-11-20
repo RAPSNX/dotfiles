@@ -22,7 +22,6 @@ in
       binfmt.emulatedSystems = lib.mkIf cfg.armSupport [ "aarch64-linux" ];
 
       consoleLogLevel = 3;
-      initrd.verbose = false;
 
       kernelParams = [
         "quiet"

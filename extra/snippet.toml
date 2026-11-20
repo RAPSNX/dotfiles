@@ -88,3 +88,15 @@
   Output = ""
   Tag = ["jq"]
   command = "jq '.something' < input.json | yq -p=json -P '.'"
+
+[[Snippets]]
+  Description = "failsave oneline loop"
+  Output = ""
+  Tag = []
+  command = "while IFS= read -r seed; do"
+
+[[Snippets]]
+  Description = "get ondemand locally"
+  Output = ""
+  Tag = []
+  command = "read -r OND_NAME && k get secrets -n ondemand \"$OND_NAME\"-credentials -oyaml | yq '.data.gardenKubeconfig' | base64 -d > ~/.garden/envs/ond.yaml"

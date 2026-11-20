@@ -1,0 +1,12 @@
+id           = "rapsnx/hypr-submap"
+name         = "Hyprland Submap"
+version      = "1.0.0"
+plugin_api   = 3
+author       = "rapsnx"
+license      = "MIT"
+description  = "Displays active Hyprland submap mode on the Noctalia bar"
+dependencies = ["socat", "hyprland"]
+
+[[widget]]
+id    = "submap"
+entry = "widget.luau"

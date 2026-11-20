@@ -3,20 +3,21 @@
   home.packages = builtins.attrValues {
     # Audio
     inherit (pkgs)
-      pavucontrol
       spek
       vlc
 
       # Screenshot / Recording
-      grimblast
       wf-recorder
-      noisetorch
+      satty
+      grim
+      slurp
 
       # Tools
       nwg-displays
       nwg-look
       gparted
       gnome-disk-utility
+      socat
 
       # Explorer
       thunar

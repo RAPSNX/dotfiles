@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 let
@@ -15,9 +14,6 @@ in
       graphics = {
         enable = true;
         enable32Bit = true;
-        extraPackages = builtins.attrValues {
-          inherit (pkgs) mesa;
-        };
       };
     };
   };

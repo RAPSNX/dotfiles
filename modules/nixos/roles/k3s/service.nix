@@ -12,7 +12,7 @@ in
     services.k3s = {
       enable = true;
       role = "server";
-      package = pkgs.k3s_1_33;
+      package = pkgs.k3s_1_34;
 
       # Configuration
       configPath = builtins.toFile "config.yaml" ''

@@ -1,0 +1,6 @@
+{
+  "collector": {
+    "label": "Process snapshot command"
+  },
+  "firefox": { "label": "Firefox executable" }
+}
