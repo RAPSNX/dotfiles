@@ -9,6 +9,9 @@ local openedPanel = nil
 local bar = nil
 local tooltip = nil
 local launches = {}
+local pressureCallbacks = nil
+local panelTicks = false
+local renderCount = 0
 local thresholds = {
   cpu_usage_activity_threshold = 50, cpu_usage_critical_threshold = 90,
   cpu_temp_activity_threshold = 60, cpu_temp_critical_threshold = 85,
@@ -20,7 +23,14 @@ noctalia = {
   nowMs = function() return clock end,
   getColor = function(_) return "#313244" end,
   getSetting = function(path) return thresholds[string.match(path, "system.monitor.(.+)")] end,
-  readFileAsync = function(_, callback) callback("some avg10=8.00 avg60=1.00 avg300=0.10 total=5"); return true end,
+  readFileAsync = function(_, callback)
+    if pressureCallbacks then
+      table.insert(pressureCallbacks, callback)
+    else
+      callback("some avg10=8.00 avg60=1.00 avg300=0.10 total=5")
+    end
+    return true
+  end,
   togglePanel = function(id) openedPanel = id end,
   getConfig = function(key)
     if key == "firefox_command" then return "/firefox" end
@@ -43,7 +53,13 @@ barWidget = {
   setTooltip = function(value) tooltip = value end,
   render = function(tree) bar = tree end,
 }
-panel = { render = function(tree) rendered = tree end }
+panel = {
+  setWantsSecondTicks = function(enabled) panelTicks = enabled end,
+  render = function(tree)
+    rendered = tree
+    renderCount += 1
+  end,
+}
 ui = {}
 for _, kind in ipairs({ "label", "row", "column", "scroll", "separator", "glyph", "progress", "button" }) do
   ui[kind] = function(props, children) return { props = props, children = children or {} } end
@@ -76,6 +92,7 @@ end
 
 local function checkProgress(node)
   if node.props.progress then assert(node.props.progress >= 0 and node.props.progress <= 1) end
+  if node.props.textAlign then assert(node.props.textAlign == "end") end
   for _, child in ipairs(node.children) do checkProgress(child) end
 end
 
@@ -122,10 +139,24 @@ end
 
 require("./panel.luau")
 onOpen()
+assert(panelTicks, "The panel must opt in to periodic updates")
 assert(#requests == 1 and contains(rendered, "Collecting first sample"))
 assert(contains(rendered, "System activity") and contains(rendered, "Top applications"))
+local beforePressure = renderCount
+stats = { cpu = { freqMhz = 3800, usagePercent = 26, tempC = 51 }, loadAvg = { 4.2, 2.6, 1.1 } }
+pressureCallbacks = {}
 update()
 assert(#requests == 1) -- No overlapping scans.
+assert(#pressureCallbacks == 3)
+pressureCallbacks[1]("some avg10=9.00")
+pressureCallbacks[2]("some avg10=11.00")
+assert(renderCount == beforePressure)
+pressureCallbacks[3]("some avg10=13.00")
+pressureCallbacks = nil
+assert(renderCount == beforePressure + 1)
+for _, value in ipairs({ "3800 MHz", "26%", "51°C", "4.2", "2.6", "1.1", "9%", "11%", "13%" }) do
+  assert(contains(rendered, value), "Missing refreshed metric: " .. value)
+end
 onClose()
 update()
 assert(#requests == 1) -- No scans while closed.
@@ -152,14 +183,30 @@ assert(contains(rendered, "120%"))
 findText(rendered, "Inspect in Firefox").props.onClick()
 assert(#launches == 1)
 checkProgress(rendered)
-clock = 9000
+clock = 6000
+update()
+responseData = { at = 6, processes = firefox(3), inaccessible = 0, scanMs = 20 }
+requests[4]({ exitCode = 0, stdout = "sample" })
+assert(contains(rendered, "Firefox · Web content") and contains(rendered, "30%"))
+assert(not contains(rendered, "120%"))
+clock = 13000
 update()
 assert(contains(rendered, "Stale process sample"))
-requests[4]({ exitCode = 1, stdout = "" })
+pressureCallbacks = {}
+update()
+assert(#pressureCallbacks == 3)
 onClose()
 onOpen()
+assert(#requests == 5 and contains(rendered, "Collecting first sample"))
+local afterReopen = renderCount
+for _, callback in ipairs(pressureCallbacks) do callback("some avg10=100.00") end
+pressureCallbacks = nil
+assert(renderCount == afterReopen) -- Late pressure reads do not redraw the reopened panel.
+requests[5]({ exitCode = 1, stdout = "" })
+assert(not contains(rendered, "Process collector failed"))
+update()
 responseData = nil
-requests[5]({ exitCode = 0, stdout = "invalid" })
+requests[6]({ exitCode = 0, stdout = "invalid" })
 assert(contains(rendered, "Invalid process sample"))
 -- Five independent applications with long names and >100% CPU stay bounded.
 local function applications(cpu)
@@ -172,10 +219,10 @@ local function applications(cpu)
 end
 update()
 responseData = { at = 6, processes = applications(0), inaccessible = 0, scanMs = 20 }
-requests[6]({ exitCode = 0, stdout = "sample" })
+requests[7]({ exitCode = 0, stdout = "sample" })
 update()
 responseData = { at = 8, processes = applications(8), inaccessible = 0, scanMs = 20 }
-requests[7]({ exitCode = 0, stdout = "sample" })
+requests[8]({ exitCode = 0, stdout = "sample" })
 assert(contains(rendered, "400%"))
 assert(findText(rendered, "a very long application name with several words 101").props.maxLines == 1)
 assert(findText(rendered, "a very long application name with several words 101").props.maxWidth == 220)

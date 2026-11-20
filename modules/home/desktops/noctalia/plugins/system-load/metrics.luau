@@ -1,22 +1,28 @@
 local M = {}
+local resources = { "cpu", "io", "memory" }
 local pressure = {}
-local pending = {}
+local readingPressure = false
 
 function M.refreshPressure(callback)
-  for _, resource in ipairs({ "cpu", "io", "memory" }) do
-    if not pending[resource] then
-      pending[resource] = true
-      local accepted = noctalia.readFileAsync("/proc/pressure/" .. resource, function(contents)
-        pending[resource] = nil
-        local value = contents and string.match(contents, "some avg10=([%d.]+)")
-        pressure[resource] = value and { value = tonumber(value), at = noctalia.nowMs() } or nil
-        callback()
-      end)
-      if not accepted then
-        pending[resource] = nil
-      end
+  if readingPressure then return false end
+  readingPressure = true
+  local remaining = #resources
+  local function finishRead()
+    remaining -= 1
+    if remaining == 0 then
+      readingPressure = false
+      callback()
     end
   end
+  for _, resource in ipairs(resources) do
+    local accepted = noctalia.readFileAsync("/proc/pressure/" .. resource, function(contents)
+      local value = contents and string.match(contents, "some avg10=([%d.]+)")
+      pressure[resource] = value and { value = tonumber(value), at = noctalia.nowMs() } or nil
+      finishRead()
+    end)
+    if not accepted then finishRead() end
+  end
+  return true
 end
 
 function M.pressureValue(resource)
@@ -26,7 +32,7 @@ end
 
 function M.pressureText()
   local values = {}
-  for _, resource in ipairs({ "cpu", "io", "memory" }) do
+  for _, resource in ipairs(resources) do
     local value = M.pressureValue(resource)
     table.insert(values, value and string.format("%.0f", value) or "—")
   end

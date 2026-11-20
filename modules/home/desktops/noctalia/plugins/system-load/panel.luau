@@ -10,6 +10,7 @@ local errorText = nil
 local mode = "cpu"
 local expanded = {}
 noctalia.setUpdateInterval(2000)
+panel.setWantsSecondTicks(true)
 
 local function caption(text)
   return ui.label({ text = text, fontSize = 11, color = "on_surface_variant", maxLines = 1 })
@@ -104,9 +105,9 @@ local function render()
             caption(tostring(#p.children) .. " processes" .. (p.pid > 0 and " · PID " .. tostring(p.pid) or "")),
           }),
           ui.column({ gap = 0, width = 190, align = "end" }, {
-            ui.label({ text = p.cpu and string.format("%.0f%%", p.cpu) or "—", fontSize = 14, textAlign = "right" }),
+            ui.label({ text = p.cpu and string.format("%.0f%%", p.cpu) or "—", fontSize = 14, textAlign = "end" }),
             ui.label({ text = string.format("Runnable %.1f · Blocked %.1f", p.r, p.d),
-              fontSize = 10, textAlign = "right", maxLines = 1, maxWidth = 190,
+              fontSize = 10, textAlign = "end", maxLines = 1, maxWidth = 190,
               color = p.d > 0 and "primary" or "on_surface_variant" }),
           }),
         }),
@@ -124,7 +125,7 @@ local function render()
               caption("PID " .. tostring(child.pid)),
             }),
             ui.column({ width = 130, align = "end", gap = 1 }, {
-              ui.label({ text = child.cpu and string.format("%.0f%%", child.cpu) or "—", fontSize = 12, textAlign = "right" }),
+              ui.label({ text = child.cpu and string.format("%.0f%%", child.cpu) or "—", fontSize = 12, textAlign = "end" }),
               caption(string.format("Blocked %.1f", child.d)),
             }),
           }))
@@ -175,7 +176,6 @@ local function sample()
   local command = noctalia.getConfig("collector")
   if not command or command == "" then
     errorText = "Process collector is not configured."
-    render()
     return
   end
   busy = true
@@ -208,15 +208,18 @@ local function sample()
   if not accepted then
     busy = false
     errorText = "Could not start process collector; retrying."
-    render()
   end
 end
 
 function update()
   if not active then return end
-  metrics.refreshPressure(render)
+  local requestGeneration = generation
   sample()
-  render()
+  if not metrics.refreshPressure(function()
+    if active and requestGeneration == generation then render() end
+  end) then
+    render()
+  end
 end
 
 function onOpen()
@@ -226,6 +229,7 @@ function onOpen()
   mode = "cpu"
   expanded = {}
   result, receivedAt, errorText = nil, nil, nil
+  render()
   update()
 end
 

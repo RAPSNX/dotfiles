@@ -29,6 +29,7 @@ def parse_stat(text):
         "kernel": bool(int(fields[6]) & 0x00200000),
         "ticks": int(fields[11]) + int(fields[12]),
         "start": int(fields[19]),
+        "threads": int(fields[17]),
     }
 
 
@@ -103,17 +104,24 @@ def process_snapshot(proc=Path("/proc"), known=None):
             continue
         try:
             leader = parse_stat((entry / "stat").read_text())
-            runnable = blocked = 0
-            for task in (entry / "task").iterdir():
-                try:
-                    stat = leader if task.name == entry.name else parse_stat((task / "stat").read_text())
-                    runnable += stat["state"] == "R"
-                    blocked += stat["state"] == "D"
-                except PermissionError:
-                    inaccessible += 1
-                except (OSError, ValueError, IndexError):
-                    # Threads can exit between enumeration and reading stat.
-                    continue
+            runnable = int(leader["state"] == "R")
+            blocked = int(leader["state"] == "D")
+            if leader["threads"] > 1:
+                with os.scandir(entry / "task") as tasks:
+                    for task in tasks:
+                        if task.name == entry.name:
+                            continue
+                        try:
+                            with open(task.path + "/stat", "rb") as stream:
+                                stat = stream.read()
+                            state = stat[stat.rindex(b")") + 2]
+                            runnable += state == ord("R")
+                            blocked += state == ord("D")
+                        except PermissionError:
+                            inaccessible += 1
+                        except (OSError, ValueError, IndexError):
+                            # Threads can exit between enumeration and reading stat.
+                            continue
             process = {
                 "pid": int(entry.name),
                 "ppid": leader["ppid"],

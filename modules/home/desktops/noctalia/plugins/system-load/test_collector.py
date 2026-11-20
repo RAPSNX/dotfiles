@@ -11,34 +11,44 @@ collector = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(collector)
 
 
-def stat(pid, name, state="S", ticks=100, start=25, ppid=0, kernel=False):
+def stat(pid, name, state="S", ticks=100, start=25, ppid=0, kernel=False, threads=1):
     fields = ["0"] * 22
     fields[0], fields[11], fields[19] = state, str(ticks), str(start)
     fields[1], fields[6] = str(ppid), str(0x00200000 if kernel else 0)
+    fields[17] = str(threads)
     return f"{pid} ({name}) " + " ".join(fields)
 
 
 class CollectorTests(unittest.TestCase):
     def test_stat_names_with_parentheses_and_cpu_fields(self):
         result = collector.parse_stat(stat(42, "a (worker)\n", "D", ticks=250))
-        self.assertEqual(result, {"name": "a (worker)?", "state": "D", "ticks": 250, "start": 25, "ppid": 0, "kernel": False})
+        self.assertEqual(result, {"name": "a (worker)?", "state": "D", "ticks": 250, "start": 25,
+                                  "ppid": 0, "kernel": False, "threads": 1})
+
+    def test_single_thread_uses_leader_state_without_enumerating_tasks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            proc = Path(directory)
+            (proc / "42").mkdir()
+            (proc / "42/stat").write_text(stat(42, "worker", state="D"))
+            result = collector.process_snapshot(proc)
+        self.assertEqual([(p["r"], p["d"]) for p in result["processes"]], [(0, 1)])
 
     def test_counts_worker_threads_and_survives_exit_and_bad_stat(self):
         with tempfile.TemporaryDirectory() as directory:
             proc = Path(directory)
             (proc / "42/task").mkdir(parents=True)
-            (proc / "42/stat").write_text(stat(42, "browser"))
+            (proc / "42/stat").write_text(stat(42, "browser", state="D", threads=5))
             for tid, state in [(42, "S"), (43, "R"), (44, "D"), (45, "D")]:
                 task = proc / f"42/task/{tid}"
                 task.mkdir()
-                (task / "stat").write_text(stat(tid, "worker", state))
+                (task / "stat").write_text(stat(tid, "worker (child)", state))
             (proc / "42/task/46").mkdir()  # Thread has exited.
             (proc / "99").mkdir()
             (proc / "99/stat").write_text("malformed")
             result = collector.process_snapshot(proc)
         self.assertEqual(len(result["processes"]), 1)
         process = result["processes"][0]
-        self.assertEqual((process["r"], process["d"]), (1, 2))
+        self.assertEqual((process["r"], process["d"]), (1, 3))
         self.assertEqual(process["cpuSeconds"], 100 / os.sysconf("SC_CLK_TCK"))
         self.assertNotIn("args", process)
 
