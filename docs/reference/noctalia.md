@@ -37,12 +37,3 @@ Noctalia manages wallpapers directly. The declarative configuration supplies `mi
 | `Super+.` | Open emoji search |
 | `Alt+Tab` | Open window switcher |
 
-## trusted-substituters
-On `home-manager`, the flake setup can not add trusted-substituters, because this is a administrative action.
-To add noctalia cache, change the `/etc/nix/nix.conf`
-
-```
-extra-substituters = https://noctalia.cachix.org
-trusted-substituters = https://noctalia.cachix.org
-extra-trusted-public-keys = noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
-```
